@@ -18,7 +18,7 @@ export default function ImageBox() {
     if (!rawImage) return "/images/default-image.jpg";
     return rawImage.startsWith("http")
       ? rawImage
-      : `http://localhost:8000/${rawImage.replace(/^\/+/, "")}`;
+      : `https://backendfix-production.up.railway.app/${rawImage.replace(/^\/+/, "")}`;
   };
 
   useEffect(() => {
