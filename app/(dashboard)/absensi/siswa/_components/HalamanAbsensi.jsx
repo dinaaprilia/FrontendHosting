@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import KehadiranBulanan from './BulananHadir';
-import AttendanceTable from './riwayatsiswa';
+import AttendanceTable from './RiwayatSiswa';
 
 export default function HalamanAbsensi() {
   const [selectedDate, setSelectedDate] = useState(new Date());

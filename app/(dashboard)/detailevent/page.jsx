@@ -2,7 +2,7 @@
 import React from "react";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
-import StudyTourCards from "./_components/TourHistory";
+import StudyTourCards from "../riwayattour/_components/TourHistory";
 import { FaArrowLeft } from "react-icons/fa";
 
 export default function eventdetail() {
