@@ -19,7 +19,7 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
       const token = localStorage.getItem('token');
 
       try {
-        const res = await fetch("http://localhost:8000/api/user", {
+        const res = await fetch("https://backendfix-production.up.railway.app/api/user", {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -34,7 +34,7 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
           nama: userData.nama,
           kelas: userData.kelas ?? '-',
           foto_profil: userData.foto_profil
-            ? `http://localhost:8000/storage/${userData.foto_profil}`
+            ? `https://backendfix-production.up.railway.app/storage/${userData.foto_profil}`
             : '/images/profil.png',
           role: userData.role,
         });
@@ -46,7 +46,7 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
             return;
           }
 
-          const anakRes = await fetch(`http://localhost:8000/api/siswa/${anakId}`, {
+          const anakRes = await fetch(`https://backendfix-production.up.railway.app/api/siswa/${anakId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
@@ -59,11 +59,11 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
             nama: anakData.nama,
             kelas: anakData.kelas,
             foto_profil: anakData.foto_profil
-              ? `http://localhost:8000/storage/${anakData.foto_profil}`
+              ? `https://backendfix-production.up.railway.app/storage/${anakData.foto_profil}`
               : '/images/profil.png',
           });
 
-          const resWali = await fetch(`http://localhost:8000/api/guru-wali?kelas=${encodeURIComponent(anakData.kelas)}`, {
+          const resWali = await fetch(`https://backendfix-production.up.railway.app/api/guru-wali?kelas=${encodeURIComponent(anakData.kelas)}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
@@ -73,7 +73,7 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
           const waliData = await resWali.json();
           setWaliKelas(waliData.nama ?? '-');
         } else if (userData.kelas) {
-          const resWali = await fetch(`http://localhost:8000/api/guru-wali?kelas=${encodeURIComponent(userData.kelas)}`, {
+          const resWali = await fetch(`https://backendfix-production.up.railway.app/api/guru-wali?kelas=${encodeURIComponent(userData.kelas)}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
@@ -109,14 +109,14 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
             return;
           }
 
-          response = await fetch(`http://localhost:8000/api/absensi-anak-bulanan?bulan=${bulan}&tahun=${tahun}&anak_id=${anakId}`, {
+          response = await fetch(`https://backendfix-production.up.railway.app/api/absensi-anak-bulanan?bulan=${bulan}&tahun=${tahun}&anak_id=${anakId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
             },
           });
         } else {
-          response = await fetch(`http://localhost:8000/api/absensi-saya-bulanan?bulan=${bulan}&tahun=${tahun}`, {
+          response = await fetch(`https://backendfix-production.up.railway.app/api/absensi-saya-bulanan?bulan=${bulan}&tahun=${tahun}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               Accept: "application/json",
