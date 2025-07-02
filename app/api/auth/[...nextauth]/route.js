@@ -11,7 +11,7 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch("http://localhost:8000/api/login", {
+        const res = await fetch("https://backendfix-production.up.railway.app/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
