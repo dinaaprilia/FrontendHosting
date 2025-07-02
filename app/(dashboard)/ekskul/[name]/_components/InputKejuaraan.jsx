@@ -31,8 +31,8 @@ export default function InputKejuaraan({ ekskulId, onSuccess, initialData }) {
 
       const method = initialData?.id ? "PUT" : "POST";
       const url = initialData?.id
-        ? `http://localhost:8000/api/achievements/${initialData.id}`
-        : `http://localhost:8000/api/ekskul/${ekskulId}/achievements`;
+        ? `https://backendfix-production.up.railway.app/api/achievements/${initialData.id}`
+        : `https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/achievements`;
 
       const res = await fetch(url, {
         method,
