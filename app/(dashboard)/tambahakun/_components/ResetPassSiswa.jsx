@@ -19,7 +19,7 @@ export default function ResetPasswordForm({ userId, onSuccess, onCancel }) {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/siswa/${userId}`, {
+      const response = await fetch(`https://backendfix-production.up.railway.app/api/siswa/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
