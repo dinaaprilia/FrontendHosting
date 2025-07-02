@@ -11,7 +11,7 @@ export default function AbsensiAlert() {
     const fetchStatus = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await fetch("http://localhost:8000/api/absensi-hari-ini", {
+        const res = await fetch("https://backendfix-production.up.railway.app/api/absensi-hari-ini", {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
