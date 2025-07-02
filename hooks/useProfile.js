@@ -12,7 +12,7 @@ export default function useProfile() {
         return null;
       }
 
-      const res = await axios.get('http://localhost:8000/api/user-profile', {
+      const res = await axios.get('https://backendfix-production.up.railway.app/api/user-profile', {
         headers: {
           Authorization: `Bearer ${token}`
         }
