@@ -34,7 +34,7 @@ export default function AttendanceForm() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:8000/api/siswa-kelas?kelas=${encodeURIComponent(kelas)}`);
+        const response = await fetch(`https://backendfix-production.up.railway.app/api/siswa-kelas?kelas=${encodeURIComponent(kelas)}`);
         if (!response.ok) throw new Error("Gagal mengambil data siswa");
         const data = await response.json();
         setStudents(data);
