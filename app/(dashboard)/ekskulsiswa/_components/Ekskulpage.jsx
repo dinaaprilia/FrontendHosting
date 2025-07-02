@@ -11,7 +11,7 @@ export default function EkskulList() {
   const pathname = usePathname();
   const [ekskulData, setEkskulData] = useState([]);
 
-  const API_URL = 'http://localhost:8000/api/ekskul-saya'; // ✅ Hanya ekskul milik siswa
+  const API_URL = 'https://backendfix-production.up.railway.app/api/ekskul-saya'; // ✅ Hanya ekskul milik siswa
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +38,7 @@ export default function EkskulList() {
 
   const fetchEkskulById = async (id) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:8000/api/ekskul/${id}`, {
+    const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -50,7 +50,7 @@ export default function EkskulList() {
       image: data.image?.startsWith("http")
         ? data.image
         : data.image
-          ? `http://localhost:8000/${data.image.replace(/^\/+/, "")}`
+          ? `https://backendfix-production.up.railway.app/${data.image.replace(/^\/+/, "")}`
           : '/images/default-image.jpg',
     };
   };
@@ -77,7 +77,7 @@ export default function EkskulList() {
             const imageSrc = ekskul.image
               ? ekskul.image.startsWith("http")
                 ? ekskul.image
-                : `http://localhost:8000/${ekskul.image}`
+                : `https://backendfix-production.up.railway.app/${ekskul.image}`
               : "/images/default-image.jpg";
 
             return (
