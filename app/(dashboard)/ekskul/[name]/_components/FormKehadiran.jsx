@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://backendfix-production.up.railway.app/api";
 
 export default function KehadiranEkskul({ ekskulId, ekskulName }) {
   const [students, setStudents] = useState([]);
