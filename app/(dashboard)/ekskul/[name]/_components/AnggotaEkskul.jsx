@@ -20,7 +20,7 @@ export default function AnggotaEkskul() {
     if (!ekskulId) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/anggota`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/anggota`, {
         headers: { Accept: "application/json" },
       });
       const data = await res.json();
@@ -41,7 +41,7 @@ export default function AnggotaEkskul() {
     if (!ekskulId) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/anggota`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/anggota`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export default function AnggotaEkskul() {
     if (!anggotaToDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/ekskul/anggota/${anggotaToDelete.id}`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/anggota/${anggotaToDelete.id}`, {
         method: "DELETE",
         headers: { Accept: "application/json" },
       });
