@@ -23,9 +23,9 @@ export default function HarianAbsensiee({ studentId: propStudentId }) {
 
         let apiUrl = '';
         if (userRole === 'orangtua') {
-          apiUrl = `http://localhost:8000/api/absensi-anak?tanggal=${selectedDate}`;
+          apiUrl = `https://backendfix-production.up.railway.app/api/absensi-anak?tanggal=${selectedDate}`;
         } else {
-          apiUrl = `http://localhost:8000/api/absensi-hari-ini?tanggal=${selectedDate}`;
+          apiUrl = `https://backendfix-production.up.railway.app/api/absensi-hari-ini?tanggal=${selectedDate}`;
         }
 
         const response = await fetch(apiUrl, {
