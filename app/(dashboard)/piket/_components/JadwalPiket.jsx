@@ -19,7 +19,7 @@ export default function JadwalPiketPopup({ onClose, onSimpan }) {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/piket-card", {
+      const res = await fetch("https://backendfix-production.up.railway.app/api/piket-card", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
