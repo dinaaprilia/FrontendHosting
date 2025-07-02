@@ -26,7 +26,7 @@ const AdminTable = () => {
   };
 
   const fetchGuruData = () => {
-    fetch("http://localhost:8000/api/guru")
+    fetch("https://backendfix-production.up.railway.app/api/guru")
       .then((res) => {
         if (!res.ok) throw new Error("Gagal mengambil data guru");
         return res.json();
@@ -73,7 +73,7 @@ const AdminTable = () => {
     if (!guruToDelete) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8000/api/users/${guruToDelete.id}`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/users/${guruToDelete.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
