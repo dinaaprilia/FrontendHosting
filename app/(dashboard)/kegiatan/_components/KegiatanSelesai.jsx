@@ -13,7 +13,7 @@ export default function ActivityEndPopup({ onClose }) {
     // Fetch data dari endpoint Laravel
     const fetchActivities = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/aktivitas/ended'); // Ganti domain sesuai hosting API kamu
+        const res = await fetch('https://backendfix-production.up.railway.app/api/aktivitas/ended'); // Ganti domain sesuai hosting API kamu
         const data = await res.json();
         if (data.status === 'success') {
           setActivities(data.data);
