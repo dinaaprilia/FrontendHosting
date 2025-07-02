@@ -23,7 +23,7 @@ const StudentCard = () => {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/detail-siswa?nisn=${nisn}`);
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/detail-siswa?nisn=${nisn}`);
         if (!res.ok) {
           throw new Error("Gagal mengambil data siswa");
         }
