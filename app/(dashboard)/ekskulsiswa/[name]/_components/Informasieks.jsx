@@ -31,7 +31,7 @@ export default function InformasiEkskul() {
 
     setEkskulName(ekskul.name); // ✅ typo diperbaiki
 
-    fetch(`http://localhost:8000/api/ekskul/${ekskulId}/informasi`)
+    fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/informasi`)
       .then((res) => res.json())
       .then((data) => setInformasiData(data))
       .catch((err) => console.error('❌ Gagal ambil informasi:', err));
