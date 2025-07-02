@@ -22,7 +22,7 @@ export default function EventCalendar() {
   const [note, setNote] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  const API_BASE = 'http://localhost:8000/api';
+  const API_BASE = 'https://backendfix-production.up.railway.app/api';
 
   useEffect(() => {
     fetch(`${API_BASE}/events`)
