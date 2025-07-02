@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
-import DetailAbsensiClient from "./DetailAbsensiClient";
+import DetailAbsensiClient from "./_components/DetailAbsensiClient";
 
 export default function DetailAbsensiPage() {
   return (
