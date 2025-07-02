@@ -17,7 +17,7 @@ export default function EkskulList() {
   const [selectedId, setSelectedId] = useState(null);
   const { user, loading } = useUserContext(); // GUNAKAN user dari Context
 
-  const API_URL = 'http://localhost:8000/api/ekskul';
+  const API_URL = 'https://backendfix-production.up.railway.app/api/ekskul';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +44,7 @@ export default function EkskulList() {
 
   const fetchEkskulById = async (id) => {
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:8000/api/ekskul/${id}`, {
+    const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -56,7 +56,7 @@ export default function EkskulList() {
       image: data.image?.startsWith('http')
         ? data.image
         : data.image
-        ? `http://localhost:8000/${data.image.replace(/^\/+/g, '')}`
+        ? `https://backendfix-production.up.railway.app/${data.image.replace(/^\/+/g, '')}`
         : '/images/default.png',
     };
   };
@@ -120,7 +120,7 @@ export default function EkskulList() {
             const imageSrc = ekskul.image
               ? ekskul.image.startsWith('http')
                 ? ekskul.image
-                : `http://localhost:8000/${ekskul.image}`
+                : `https://backendfix-production.up.railway.app/${ekskul.image}`
               : '/images/default.png';
 
             return (
