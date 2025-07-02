@@ -28,7 +28,7 @@ export default function AttendanceForm() {
 
       try {
         // ✅ Ambil data user login
-        const resUser = await fetch('http://localhost:8000/api/user', {
+        const resUser = await fetch('https://backendfix-production.up.railway.app/api/user', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const resultUser = await resUser.json();
@@ -37,7 +37,7 @@ export default function AttendanceForm() {
 
         // ✅ Ambil data piket untuk kelas & tanggal hari ini
         const resPiket = await fetch(
-          `http://localhost:8000/api/absensi-piket?kelas=${resultUser.user.kelas}&tanggal=${tanggalHariIni}`,
+          `https://backendfix-production.up.railway.app/api/absensi-piket?kelas=${resultUser.user.kelas}&tanggal=${tanggalHariIni}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
