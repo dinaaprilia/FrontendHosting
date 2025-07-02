@@ -33,7 +33,7 @@ export default function KegiatanEksCard() {
 
   useEffect(() => {
     if (!ekskulId) return;
-    fetch(`http://localhost:8000/api/ekskul/${ekskulId}/kegiatan`)
+    fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/kegiatan`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
