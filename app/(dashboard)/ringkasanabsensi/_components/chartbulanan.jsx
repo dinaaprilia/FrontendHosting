@@ -17,7 +17,7 @@ const AttendanceChart = ({ selectedDate, onDateChange }) => {
     const bulan = selectedDate.getMonth() + 1;
     const tahun = selectedDate.getFullYear();
 
-    fetch(`http://localhost:8000/api/statistik-bulanan?bulan=${bulan}&tahun=${tahun}`)
+    fetch(`https://backendfix-production.up.railway.app/api/statistik-bulanan?bulan=${bulan}&tahun=${tahun}`)
       .then(res => res.json())
       .then(res => {
         if (res.data) {
