@@ -11,7 +11,7 @@ export default function ActivityNowPopup({ onClose }) {
   useEffect(() => {
     async function fetchActivities() {
       try {
-        const res = await fetch('http://localhost:8000/api/aktivitas/ongoing'); // ganti dengan endpoint API kamu
+        const res = await fetch('https://backendfix-production.up.railway.app/api/aktivitas/ongoing'); // ganti dengan endpoint API kamu
         const json = await res.json();
         if (json.status === 'success') {
           setActivities(json.data);
