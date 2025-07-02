@@ -15,7 +15,7 @@ export default function AmountPopup({ onClose }) {
         setLoading(true);
         setError(null);
 
-        const res = await fetch('http://localhost:8000/api/peserta-ongoing');
+        const res = await fetch('https://backendfix-production.up.railway.app/api/peserta-ongoing');
         if (!res.ok) {
           throw new Error(`HTTP ${res.status} - ${res.statusText}`);
         }
