@@ -30,7 +30,7 @@ const UserTable = () => {
       /^(X|XI|XII)-[A-Z]$/.test((user.kelas || "").toUpperCase());
     const kelasWali = isWali ? user.kelas : null;
 
-    fetch("http://localhost:8000/api/siswa")
+    fetch("https://backendfix-production.up.railway.app/api/siswa")
       .then((res) => {
         if (!res.ok) throw new Error("Gagal mengambil data siswa");
         return res.json();
@@ -94,7 +94,7 @@ const UserTable = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8000/api/users/${userToDelete.id}`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/users/${userToDelete.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
