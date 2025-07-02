@@ -24,7 +24,7 @@ export default function EkskulDetail() {
     useEffect(() => {
     const fetchEkskul = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/ekskul/by-name/${name}`);
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/by-name/${name}`);
         const data = await res.json();
         setEkskulId(data.id);        // simpan ID
         setEkskulName(data.name);    // simpan nama ekskul asli dari database
