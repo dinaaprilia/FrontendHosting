@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import AttendanceForm from "./PiketForm";
-import StudentList from "./ListSiswa";
+import AttendanceForm from "./AbsensiForm";
+import StudentList from "./ListSIswa";
 import { FaArrowLeft } from "react-icons/fa";
 
-export default function InputPiketClient() {
+export default function InputAbsensiClient() {
   const searchParams = useSearchParams();
   const kelas = searchParams.get("kelas") || "Tidak Diketahui";
 
