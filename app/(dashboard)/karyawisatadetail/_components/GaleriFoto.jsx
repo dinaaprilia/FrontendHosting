@@ -23,7 +23,7 @@ export default function UploadGallery({ judul, tanggal }) {
 
   const fetchUploadedImages = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/karya-wisata/galeri`, {
+      const res = await axios.get(`https://backendfix-production.up.railway.app/api/karya-wisata/galeri`, {
         params: { judul, tanggal },
       });
       setUploadedImages(res.data?.data || []);
@@ -61,7 +61,7 @@ export default function UploadGallery({ judul, tanggal }) {
     files.forEach((file) => formData.append("files[]", file));
 
     try {
-      const res = await fetch("http://localhost:8000/api/karya-wisata/upload-gallery", {
+      const res = await fetch("https://backendfix-production.up.railway.app/api/karya-wisata/upload-gallery", {
         method: "POST",
         body: formData,
       });
@@ -92,7 +92,7 @@ export default function UploadGallery({ judul, tanggal }) {
 
   const confirmDelete = async () => {
     try {
-      const res = await axios.delete(`http://localhost:8000/api/karya-wisata/gallery/${selectedImageId}`);
+      const res = await axios.delete(`https://backendfix-production.up.railway.app/api/karya-wisata/gallery/${selectedImageId}`);
       if (res.data?.status === "success") {
         fetchUploadedImages();
       } else {
@@ -158,7 +158,7 @@ export default function UploadGallery({ judul, tanggal }) {
               {uploadedImages.map((img, index) => (
                 <div key={img.id} className="relative group">
                   <img
-                    src={`http://localhost:8000${img.url}`}
+                    src={`https://backendfix-production.up.railway.app${img.url}`}
                     alt={`Uploaded ${index}`}
                     className="w-full h-auto rounded-md shadow-sm"
                   />
