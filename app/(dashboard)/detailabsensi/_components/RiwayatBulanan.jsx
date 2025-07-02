@@ -32,7 +32,7 @@ const AttendanceTable = () => {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:8000/api/absensi-detail?nisn=${nisn}`)
+    fetch(`https://backendfix-production.up.railway.app/api/absensi-detail?nisn=${nisn}`)
       .then((res) => {
         if (!res.ok) throw new Error('Gagal mengambil data absensi');
         return res.json();
