@@ -13,7 +13,7 @@ const KegiatanSummary = () => {
   });
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/jumlah-kegiatan")
+    fetch("https://backendfix-production.up.railway.app/api/jumlah-kegiatan")
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
