@@ -11,7 +11,7 @@ export default function StudentPopup({ onClose }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/siswa') // Ganti dengan URL API Laravel sesuai server kamu
+    fetch('https://backendfix-production.up.railway.app/api/siswa') // Ganti dengan URL API Laravel sesuai server kamu
       .then((res) => {
         if (!res.ok) throw new Error('Gagal mengambil data siswa');
         return res.json();
