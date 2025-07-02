@@ -24,7 +24,7 @@ export default function EkskulChart() {
       return;
     }
 
-    fetch(`http://localhost:8000/api/statistik-ekskul?ekskul_id=${ekskulId}`, {
+    fetch(`https://backendfix-production.up.railway.app/api/statistik-ekskul?ekskul_id=${ekskulId}`, {
       headers: {
         Accept: "application/json",
       },
