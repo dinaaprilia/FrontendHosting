@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import AttendanceForm from "./AbsensiForm";
+import AttendanceForm from "./AbsensiPiket";
 import StudentList from "./ListSIswa";
 import { FaArrowLeft } from "react-icons/fa";
 
