@@ -21,7 +21,7 @@ const buildImageURL = (rawImage) => {
 
   return rawImage.startsWith("http")
     ? rawImage
-    : `http://localhost:8000/${rawImage.replace(/^\/+/, "")}`;
+    : `https://backendfix-production.up.railway.app/${rawImage.replace(/^\/+/, "")}`;
 };
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const buildImageURL = (rawImage) => {
     formData.append("id", ekskulId);
 
     try {
-      const response = await fetch("http://localhost:8000/api/ekskul/upload-photo", {
+      const response = await fetch("https://backendfix-production.up.railway.app/api/ekskul/upload-photo", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const buildImageURL = (rawImage) => {
       const result = await response.json();
       const updatedImage = result.ekskul.image?.startsWith("http")
         ? result.ekskul.image
-        : `http://localhost:8000/${result.ekskul.image}`;
+        : `https://backendfix-production.up.railway.app/${result.ekskul.image}`;
 
       setImageSrc(updatedImage);
       setEkskulName(result.ekskul.name);
