@@ -21,7 +21,7 @@ export default function FormInformasi() {
     };
 
     try {
-      const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/informasi`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/informasi`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
