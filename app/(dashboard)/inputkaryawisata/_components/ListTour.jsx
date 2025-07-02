@@ -53,7 +53,7 @@ export default function ListForm() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/users/siswa")
+    axios.get("https://backendfix-production.up.railway.app/api/users/siswa")
       .then(res => {
         const filtered = res.data.data.filter(s => s.kelas === kelas);
         setStudents(filtered);
@@ -66,8 +66,8 @@ export default function ListForm() {
     const fetchInfo = async () => {
       try {
         const [infoRes, ikutRes] = await Promise.all([
-          axios.get("http://localhost:8000/api/karya-wisata-info/current-title"),
-          axios.get("http://localhost:8000/api/ikut-serta-karya-wisata", { params: { kelas } })
+          axios.get("https://backendfix-production.up.railway.app/api/karya-wisata-info/current-title"),
+          axios.get("https://backendfix-production.up.railway.app/api/ikut-serta-karya-wisata", { params: { kelas } })
         ]);
 
         const info = infoRes.data?.data;
@@ -154,7 +154,7 @@ export default function ListForm() {
           tanggal: list[s.id].tanggal,
         }));
 
-      await axios.post("http://localhost:8000/api/absensi-karya-wisata", {
+      await axios.post("https://backendfix-production.up.railway.app/api/absensi-karya-wisata", {
         kelas,
         judul,
         data: payload,
@@ -229,7 +229,7 @@ export default function ListForm() {
             onClick={() => {
               setConfirmAction(() => async () => {
                 try {
-                  await axios.post("http://localhost:8000/api/ikut-serta-karya-wisata", {
+                  await axios.post("https://backendfix-production.up.railway.app/api/ikut-serta-karya-wisata", {
                     kelas,
                     biaya: cost,
                     batas_pendaftaran: endDate,
