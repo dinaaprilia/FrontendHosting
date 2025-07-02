@@ -6,7 +6,7 @@ const AchievementViewer = ({ ekskulId }) => {
 
   const fetchAchievements = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/achievements`);
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/achievements`);
       if (!res.ok) throw new Error("Gagal fetch data prestasi");
       const data = await res.json();
       setAchievements(data);
