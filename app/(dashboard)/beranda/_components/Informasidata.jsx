@@ -22,7 +22,7 @@ export default function listInform() {
   const { data, loading, error, getUserData } = useUserContext();
   
 
-  const API_BASE = 'http://localhost:8000/api/informasi';
+  const API_BASE = 'https://backendfix-production.up.railway.app/api/informasi';
 
   useEffect(() => {
     fetch(API_BASE)
@@ -101,7 +101,7 @@ const handleAddInfo = async (newInfo) => {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch('http://localhost:8000/api/input-informasi', {  // <-- pastikan ini sudah benar
+    const response = await fetch('https://backendfix-production.up.railway.app/api/input-informasi', {  // <-- pastikan ini sudah benar
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ const handleAddInfo = async (newInfo) => {
   <img
     src={
       info?.photo
-        ? `http://localhost:8000/storage/${info.photo}`
+        ? `https://backendfix-production.up.railway.app/storage/${info.photo}`
         : "/images/profil.png"
     }
     alt="User"
