@@ -7,7 +7,7 @@ export default function useUpdatePassword() {
       const token = localStorage.getItem('token');
 
       const response = await axios.post(
-        'http://localhost:8000/api/update-password',
+        'https://backendfix-production.up.railway.app/api/update-password',
         {
           old_password: oldPassword,
           new_password: newPassword,
