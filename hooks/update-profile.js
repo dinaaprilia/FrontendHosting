@@ -38,7 +38,7 @@ const updateProfileImage = async (imageFile) => {
     const formData = new FormData();
     formData.append('foto_profil', imageFile);
 
-    const res = await axios.post('http://localhost:8000/api/upload-foto-profil', formData, {
+    const res = await axios.post('https://backendfix-production.up.railway.app/api/upload-foto-profil', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
