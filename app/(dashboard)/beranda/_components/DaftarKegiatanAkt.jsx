@@ -38,7 +38,7 @@ const AktivitasKegiatan = () => {
   ];
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/semua-kegiatan")
+    fetch("https://backendfix-production.up.railway.app/api/semua-kegiatan")
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
