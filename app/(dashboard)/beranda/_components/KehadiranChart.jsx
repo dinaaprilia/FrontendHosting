@@ -37,7 +37,7 @@ const KehadiranChart = () => {
   useEffect(() => {
     const dateStr = formatDateISO(selectedDate);
 
-    fetch(`http://localhost:8000/api/kehadiran-chart?date=${dateStr}`)
+    fetch(`https://backendfix-production.up.railway.app/api/kehadiran-chart?date=${dateStr}`)
       .then((res) => res.json())
       .then((data) => {
         const labels = data.map((item) => item.kelas);
