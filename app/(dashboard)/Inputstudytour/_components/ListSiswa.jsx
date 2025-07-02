@@ -23,7 +23,7 @@ export default function StudentList() {
       setError(null);
       try {
         const response = await fetch(
-          `http://localhost:8000/api/siswa-kelas?kelas=${encodeURIComponent(kelas)}`
+          `https://backendfix-production.up.railway.app/api/siswa-kelas?kelas=${encodeURIComponent(kelas)}`
         );
         if (!response.ok) {
           throw new Error("Gagal mengambil data siswa");
