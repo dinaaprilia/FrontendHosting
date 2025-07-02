@@ -11,7 +11,7 @@ export default function TambahAnggotaForm({ onAddAnggota, onClose, existingAnggo
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/siswa-tersedia")
+    fetch("https://backendfix-production.up.railway.app/api/siswa-tersedia")
       .then((res) => res.json())
       .then((data) => {
         setNamaList(data.namaList || []);
