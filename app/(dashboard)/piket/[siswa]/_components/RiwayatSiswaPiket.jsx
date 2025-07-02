@@ -32,7 +32,7 @@ export default function AttendanceTable() {
       if (!token) return;
 
       try {
-        const resUser = await fetch('http://localhost:8000/api/user', {
+        const resUser = await fetch('https://backendfix-production.up.railway.app/api/user', {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -45,11 +45,11 @@ export default function AttendanceTable() {
           name: resultUser.user.nama,
           kelas: kelas ?? '-',
           photo: resultUser.user.foto_profil
-            ? `http://localhost:8000/storage/${resultUser.user.foto_profil}`
+            ? `https://backendfix-production.up.railway.app/storage/${resultUser.user.foto_profil}`
             : '/images/profil.png',
         });
 
-        const resData = await fetch(`http://localhost:8000/api/piket-saya?bulan=${selectedMonth}&tahun=${selectedYear}`, {
+        const resData = await fetch(`https://backendfix-production.up.railway.app/api/piket-saya?bulan=${selectedMonth}&tahun=${selectedYear}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
