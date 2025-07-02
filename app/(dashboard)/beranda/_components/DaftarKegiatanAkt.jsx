@@ -18,7 +18,7 @@ const AktivitasKegiatan = () => {
   const bukaModalPeserta = (judul, startDateObj) => {
     if (!startDateObj) return;
     const tanggalFormatted = new Date(startDateObj).toLocaleDateString("sv-SE");
-    fetch(`http://localhost:8000/api/peserta-karya-wisata?judul=${encodeURIComponent(judul)}&tanggal=${tanggalFormatted}`)
+    fetch(`https://backendfix-production.up.railway.app/api/peserta-karya-wisata?judul=${encodeURIComponent(judul)}&tanggal=${tanggalFormatted}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
