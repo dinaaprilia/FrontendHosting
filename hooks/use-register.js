@@ -19,7 +19,7 @@ const user = async (body) => {
     console.log("Kirim data:", body);
 
     const response = await axios.post(
-      "http://localhost:8000/api/addUser",
+      "https://backendfix-production.up.railway.app/api/addUser",
       body,
       {
         headers: {
