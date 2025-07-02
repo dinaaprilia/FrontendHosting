@@ -14,12 +14,15 @@ export default function ImageBox() {
   const [mentor, setMentor] = useState("Mentor");
   const [ekskulId, setEkskulId] = useState(null);
 
-  const buildImageURL = (rawImage) => {
-    if (!rawImage) return "/images/default-image.jpg";
-    return rawImage.startsWith("http")
-      ? rawImage
-      : `http://localhost:8000/${rawImage.replace(/^\/+/, "")}`;
-  };
+const buildImageURL = (rawImage) => {
+  if (!rawImage || typeof rawImage !== "string" || !rawImage.includes(".")) {
+    return "/images/default.png";
+  }
+
+  return rawImage.startsWith("http")
+    ? rawImage
+    : `http://localhost:8000/${rawImage.replace(/^\/+/, "")}`;
+};
 
   useEffect(() => {
     const storedEkskul = localStorage.getItem("selectedEkskul");

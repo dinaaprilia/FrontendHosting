@@ -145,19 +145,19 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
   const displayKelas = user.role === 'orangtua' ? dataAnak?.kelas : user.kelas;
 
   return (
-    <div className="bg-white border shadow-md rounded-2xl p-6 max-w-7xl mx-auto text-center">
-      <div className="flex items-center space-x-4 mb-6 ml-6">
-        <p className="font-semibold">Pilih Bulan & Tahun:</p>
+    <div className="bg-white border shadow-md rounded-2xl p-4 sm:p-6 md:p-8 max-w-7xl mx-auto text-center sm:-mt-5 -mt-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 sm:mb-6">
+        <p className="font-semibold text-sm sm:text-base">Pilih Bulan & Tahun:</p>
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setSelectedDate(date)}
           dateFormat="MMMM yyyy"
           showMonthYearPicker
-          className="border px-3 py-2 rounded-lg shadow-sm"
+          className="border px-3 py-2 rounded-lg shadow-sm w-full sm:w-auto mt-2 sm:mt-0"
         />
       </div>
 
-      <div className="w-36 h-36 relative rounded-full overflow-hidden mx-auto mb-6">
+      <div className="w-24 h-24 sm:w-36 sm:h-36 relative rounded-full overflow-hidden mx-auto mb-4 sm:mb-6">
         <Image
           src={displayFoto}
           alt="Foto Siswa"
@@ -167,36 +167,28 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
         />
       </div>
 
-      <h3 className="font-bold text-2xl text-gray-900">{displayNama}</h3>
-      <p className="font-semibold text-lg text-black">{displayKelas}</p>
+      <h3 className="font-bold text-lg sm:text-2xl text-gray-900">{displayNama}</h3>
+      <p className="font-semibold text-base sm:text-lg text-black">{displayKelas}</p>
 
-      {user.role === 'siswa' || user.role === 'orangtua' ? (
-        <div className="flex justify-center items-center text-sm text-gray-600 mb-5">
-          <IoPeople className="mr-2 text-lg text-gray-600" />
+      {(user.role === 'siswa' || user.role === 'orangtua') && (
+        <div className="flex justify-center items-center text-xs sm:text-sm text-gray-600 mb-4 sm:mb-5 mt-2 sm:mt-0">
+          <IoPeople className="mr-1 sm:mr-2 text-sm sm:text-lg text-gray-600" />
           <span>{waliKelas}</span>
         </div>
-      ) : null}
+      )}
 
-      <div className="flex justify-center items-center mb-4">
-        <div className="w-2/3 bg-gray-200 h-8 rounded-full overflow-hidden">
-          <div className="bg-[#5CB338] h-8 rounded-l-full" style={{ width: `${hadir}%` }}></div>
+      {[
+        { label: 'Hadir', value: hadir, color: '#5CB338' },
+        { label: 'Tidak Hadir', value: tidakHadir, color: '#FB4141' },
+        { label: 'Terlambat', value: terlambat, color: '#FFBB03' },
+      ].map((item, i) => (
+        <div key={i} className="flex flex-col sm:flex-row justify-center items-center mb-3 sm:mb-4">
+          <div className="w-full sm:w-2/3 bg-gray-200 h-6 sm:h-8 rounded-full overflow-hidden">
+            <div className="h-6 sm:h-8 rounded-l-full" style={{ width: `${item.value}%`, backgroundColor: item.color }}></div>
+          </div>
+          <span className="mt-1 sm:mt-0 sm:ml-3 text-sm sm:text-md font-medium">{item.value}%</span>
         </div>
-        <span className="ml-3 text-md font-medium">{hadir}%</span>
-      </div>
-
-      <div className="flex justify-center items-center mb-4">
-        <div className="w-2/3 bg-gray-200 h-8 rounded-full overflow-hidden">
-          <div className="bg-[#FB4141] h-8 rounded-l-full" style={{ width: `${tidakHadir}%` }}></div>
-        </div>
-        <span className="ml-3 text-md font-medium">{tidakHadir}%</span>
-      </div>
-
-      <div className="flex justify-center items-center mb-6">
-        <div className="w-2/3 bg-gray-200 h-8 rounded-full overflow-hidden">
-          <div className="bg-[#FFBB03] h-8 rounded-l-full" style={{ width: `${terlambat}%` }}></div>
-        </div>
-        <span className="ml-3 text-md font-medium">{terlambat}%</span>
-      </div>
+      ))}
     </div>
   );
 }

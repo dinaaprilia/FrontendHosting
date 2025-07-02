@@ -68,8 +68,8 @@ export default function EkskulList() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 flex-1 mt-10 max-w-7xl rounded-md">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+    <div className="p-6 bg-gray-50 flex-1 sm:mt-10 mt-8 max-w-7xl rounded-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:mt-8 mt-2">
         {ekskulData.length === 0 ? (
           <p className="text-center text-gray-500 col-span-2">Belum ada data ekskul.</p>
         ) : (

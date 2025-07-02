@@ -42,7 +42,7 @@ export default function KaryaCard() {
               <p className="text-sm font-medium opacity-80">{formatDate(event.tanggal)}</p>
             </div>
             <div className="flex-1 flex justify-center">
-              <p className="text-[#0f285a] font-bold text-2xl text-center">{event.title || '-'}</p>
+              <p className="text-[#0f285a] font-bold sm:text-2xl text-lg text-center">{event.title || '-'}</p>
             </div>
           </div>
         </Link>

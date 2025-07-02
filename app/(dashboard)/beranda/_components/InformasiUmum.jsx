@@ -16,12 +16,24 @@ export default function InformasiList() {
   const [editedText, setEditedText] = useState('');
   const { data: session } = useSession();
 
-  const API_BASE = 'http://localhost:8000/api/informasi';
-
+  // Fetch data informasi
   useEffect(() => {
-    fetch(API_BASE)
-      .then((res) => res.json())
-      .then((data) => setInformasiData(data));
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const res = await fetch('http://localhost:8000/api/informasi', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        if (!res.ok) throw new Error('Gagal mengambil data informasi');
+        const data = await res.json();
+        setInformasiData(data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
   }, []);
 
   const openModal = (info) => {
@@ -36,52 +48,96 @@ export default function InformasiList() {
     setSelectedInfo(null);
   };
 
-  const handleDelete = () => {
-    fetch(`${API_BASE}/${selectedInfo.id}`, { method: 'DELETE' })
-      .then(() => {
-        setInformasiData((prev) => prev.filter((i) => i.id !== selectedInfo.id));
-        closeModal();
+  // Fungsi tambah info (POST)
+const handleAddInfo = async (newInfo) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await fetch('http://localhost:8000/api/input-informasi', {  // <-- pastikan ini sudah benar
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(newInfo),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Gagal menambahkan informasi');
+    }
+
+    const savedInfo = await response.json();
+
+    setInformasiData((prev) => [savedInfo, ...prev]);
+  } catch (error) {
+    console.error('Error saat menambahkan informasi:', error.message);
+  }
+};
+
+
+  // Fungsi hapus info (DELETE)
+  const handleDelete = async () => {
+    if (!selectedInfo) return;
+    const token = localStorage.getItem('token');
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/informasi/${selectedInfo.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
       });
+
+      if (!res.ok) throw new Error('Gagal menghapus informasi');
+
+      setInformasiData((prev) => prev.filter((i) => i.id !== selectedInfo.id));
+      closeModal();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Fungsi edit info (PUT)
+  const handleSaveEdit = async () => {
+    if (!selectedInfo) return;
+    const token = localStorage.getItem('token');
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/informasi/${selectedInfo.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text: editedText }),
+      });
+
+      if (!res.ok) throw new Error('Gagal mengupdate informasi');
+
+      const updated = await res.json();
+
+      setInformasiData((prev) =>
+        prev.map((i) => (i.id === updated.id ? { ...i, text: updated.text } : i))
+      );
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const handleEdit = () => setIsEditing(true);
-
-  const handleSaveEdit = () => {
-    fetch(`${API_BASE}/${selectedInfo.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ text: editedText }),
-    })
-      .then((res) => res.json())
-      .then((updated) => {
-        setInformasiData((prev) =>
-          prev.map((i) => (i.id === updated.id ? { ...i, text: updated.text } : i))
-        );
-        setIsEditing(false);
-      });
-  };
-
-  const handleAddInfo = async (newInfo) => {
-    const finalInfo = {
-      ...newInfo,
-      author: session?.user?.name || 'Admin Sistem',
-      foto_profil: session?.user?.image || 'default.jpg',
-    };
-
-    const res = await fetch(API_BASE, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(finalInfo),
-    });
-
-    const created = await res.json();
-    setInformasiData((prev) => [created, ...prev]);
-  };
 
   const getShortText = (text) => {
     if (typeof text !== 'string') return '-';
     const words = text.split(' ');
     return words.length > 8 ? words.slice(0, 8).join(' ') + '...' : text;
+  };
+
+  const formatTanggal = (dateStr) => {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
   return (
@@ -117,79 +173,77 @@ export default function InformasiList() {
         ))}
       </div>
 
-     <Modal
-  isOpen={modalIsOpen}
-  onRequestClose={closeModal}
-  contentLabel="Informasi Detail"
-  className="fixed inset-0 flex items-center justify-center p-4 z-50"
-  overlayClassName="fixed inset-0 bg-black bg-opacity-50"
->
-  <div
-    className="bg-white w-full max-w-md rounded-xl shadow-lg p-4 sm:p-6 
-               max-h-[90vh] overflow-y-auto"
-  >
-    {selectedInfo && (
-      <>
-        <h2 className="text-lg font-bold mb-2">
-          {selectedInfo?.date ? formatTanggal(selectedInfo.date) : '-'}
-        </h2>
-        <h3 className="text-gray-800 font-semibold mb-2">
-          {selectedInfo?.title?.trim() || '-'}
-        </h3>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Informasi Detail"
+        className="fixed inset-0 flex items-center justify-center p-4 z-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div
+          className="bg-white w-full max-w-md rounded-xl shadow-lg p-4 sm:p-6 max-h-[90vh] overflow-y-auto"
+        >
+          {selectedInfo && (
+            <>
+              <h2 className="text-lg font-bold mb-2">
+                {selectedInfo?.date ? formatTanggal(selectedInfo.date) : '-'}
+              </h2>
+              <h3 className="text-gray-800 font-semibold mb-2">
+                {selectedInfo?.title?.trim() || '-'}
+              </h3>
 
-        {isEditing ? (
-          <textarea
-            className="w-full border p-2 rounded-lg"
-            value={editedText}
-            onChange={(e) => setEditedText(e.target.value)}
-          />
-        ) : (
-          <p className="text-gray-700 mb-4 break-words">{selectedInfo?.text?.trim() || '-'}</p>
-        )}
+              {isEditing ? (
+                <textarea
+                  className="w-full border p-2 rounded-lg"
+                  value={editedText}
+                  onChange={(e) => setEditedText(e.target.value)}
+                />
+              ) : (
+                <p className="text-gray-700 mb-4 break-words">{selectedInfo?.text?.trim() || '-'}</p>
+              )}
 
-        <div className="text-sm text-gray-500 flex items-center mb-4">
-          <img
-            src={selectedInfo?.photo || '/images/profil.jpg'}
-            alt="User"
-            className="w-6 h-6 rounded-full mr-2"
-          />
-          {selectedInfo?.author?.trim() || '-'} / {selectedInfo?.time?.trim() || '-'}
-        </div>
+              <div className="text-sm text-gray-500 flex items-center mb-4">
+                <img
+                  src={selectedInfo?.photo || '/images/profil.jpg'}
+                  alt="User"
+                  className="w-6 h-6 rounded-full mr-2"
+                />
+                {selectedInfo?.author?.trim() || '-'} / {selectedInfo?.time?.trim() || '-'}
+              </div>
 
-        <div className="mt-4 flex flex-wrap justify-end gap-2">
-          {isEditing ? (
-            <button
-              onClick={handleSaveEdit}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg"
-            >
-              Simpan
-            </button>
-          ) : (
-            <button
-              onClick={handleEdit}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg flex items-center"
-            >
-              <FaEdit className="mr-1" /> Edit
-            </button>
+              <div className="mt-4 flex flex-wrap justify-end gap-2">
+                {isEditing ? (
+                  <button
+                    onClick={handleSaveEdit}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg"
+                  >
+                    Simpan
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleEdit}
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg flex items-center"
+                  >
+                    <FaEdit className="mr-1" /> Edit
+                  </button>
+                )}
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg flex items-center"
+                >
+                  <FaTrash className="mr-1" /> Hapus
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-2 rounded-lg"
+                >
+                  Tutup
+                </button>
+              </div>
+            </>
           )}
-          <button
-            onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg flex items-center"
-          >
-            <FaTrash className="mr-1" /> Hapus
-          </button>
-          <button
-            onClick={closeModal}
-            className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-2 rounded-lg"
-          >
-            Tutup
-          </button>
         </div>
-      </>
-    )}
-  </div>
-</Modal>
-
+      </Modal>
     </div>
   );
 }

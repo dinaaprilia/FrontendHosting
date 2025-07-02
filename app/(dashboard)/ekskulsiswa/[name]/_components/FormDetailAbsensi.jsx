@@ -89,6 +89,7 @@ export default function RekapanChart({ ekskulId }) {
             <Legend />
             <Bar dataKey="Hadir" fill="#16a34a" radius={[4, 4, 0, 0]} /> {/* green-600 */}
             <Bar dataKey="Tidak Hadir" fill="#dc2626" radius={[4, 4, 0, 0]} /> {/* red-600 */}
+            <Bar dataKey="Terlambat" fill="#ca8a04" radius={[4, 4, 0, 0]} /> {/* yellow-600 */}
           </BarChart>
         </ResponsiveContainer>
       )}

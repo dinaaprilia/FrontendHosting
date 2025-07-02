@@ -104,10 +104,10 @@ const StudentCard = () => {
             {data.statistik?.hadir ?? 0}
           </div>
           <div className="flex-1 h-14 sm:h-16 bg-[#FB4141] text-white flex items-center justify-center rounded-full text-lg sm:text-xl font-bold shadow-md">
-            {data.statistik?.terlambat ?? 0}
+            {data.statistik?.tidak_hadir ?? 0}
           </div>
           <div className="flex-1 h-14 sm:h-16 bg-[#FFBB03] text-white flex items-center justify-center rounded-full text-lg sm:text-xl font-bold shadow-md">
-            {data.statistik?.tidak_hadir ?? 0}
+            {data.statistik?.terlambat ?? 0}
           </div>
         </div>
       </div>

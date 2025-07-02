@@ -66,16 +66,16 @@ export default function AttendanceTable() {
   }, [selectedMonth, selectedYear]);
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg w-full mt-5">
+    <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-lg w-full mt-2">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
         <div className="flex items-center space-x-2">
-          <FaClipboardList className="text-blue-700 text-2xl" />
-          <h2 className="font-semibold text-xl text-black">Riwayat Piket Kelas</h2>
+          <FaClipboardList className="text-blue-700 text-xl sm:text-2xl" />
+          <h2 className="font-semibold text-lg sm:text-xl text-black">Riwayat Piket Kelas</h2>
         </div>
-        <div className="flex space-x-4">
+        <div className="flex space-x-2 sm:space-x-4">
           <select
-            className="border border-gray-300 rounded px-2 py-1"
+            className="border border-gray-300 rounded px-2 py-1 text-xs sm:text-sm"
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
           >
@@ -84,7 +84,7 @@ export default function AttendanceTable() {
             ))}
           </select>
           <select
-            className="border border-gray-300 rounded px-2 py-1"
+            className="border border-gray-300 rounded px-2 py-1 text-xs sm:text-sm"
             value={selectedYear}
             onChange={(e) => setSelectedYear(parseInt(e.target.value))}
           >
@@ -100,23 +100,25 @@ export default function AttendanceTable() {
         <img
           src={user.photo}
           alt="Foto Profil"
-          className="w-16 h-16 rounded-full mr-4 border-2 border-blue-300"
+          className="w-12 h-12 sm:w-16 sm:h-16 rounded-full mr-3 sm:mr-4 border-2 border-blue-300 object-cover"
         />
         <div>
-          <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
-          <p className="text-gray-500">{user.kelas}</p>
+          <h2 className="text-base sm:text-xl font-semibold text-gray-800">
+            {user.name.replace(/^Orangtua\s+/i, '')}
+          </h2>
+          <p className="text-gray-500 text-sm sm:text-base">{user.kelas}</p>
         </div>
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse text-xs sm:text-sm md:text-base">
           <thead>
             <tr className="bg-blue-100 text-black">
-              <th className="p-4 text-center font-medium border-b border-gray-300 w-[25%]">Hari / Tanggal</th>
-              <th className="p-4 text-center font-medium border-b border-gray-300 w-[20%]">Berkontribusi</th>
-              <th className="p-4 text-center font-medium border-b border-gray-300 w-[20%]">Tidak Berkontribusi</th>
-              <th className="p-4 text-center font-medium border-b border-gray-300 w-[20%]">Waktu</th>
+              <th className="p-3 sm:p-4 text-center font-medium border-b border-gray-300 w-[25%]">Hari / Tanggal</th>
+              <th className="p-3 sm:p-4 text-center font-medium border-b border-gray-300 w-[20%]">Berkontribusi</th>
+              <th className="p-3 sm:p-4 text-center font-medium border-b border-gray-300 w-[20%]">Tidak Berkontribusi</th>
+              <th className="p-3 sm:p-4 text-center font-medium border-b border-gray-300 w-[20%]">Waktu</th>
             </tr>
           </thead>
           <tbody>
@@ -127,14 +129,14 @@ export default function AttendanceTable() {
             ) : (
               data.map((item, index) => (
                 <tr key={index} className="hover:bg-gray-50 transition-colors duration-200">
-                  <td className="p-4 border-b border-gray-200 text-gray-700 text-center">{item.tanggal}</td>
-                  <td className="p-4 border-b border-gray-200">
-                    <div className={`w-6 h-6 rounded-full mx-auto ${item.status === 'berkontribusi' ? getStatusColor('berkontribusi') : 'bg-gray-300'}`} />
+                  <td className="p-3 sm:p-4 border-b border-gray-200 text-gray-700 text-center">{item.tanggal}</td>
+                  <td className="p-3 sm:p-4 border-b border-gray-200">
+                    <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full mx-auto ${item.status === 'berkontribusi' ? getStatusColor('berkontribusi') : 'bg-gray-300'}`} />
                   </td>
-                  <td className="p-4 border-b border-gray-200">
-                    <div className={`w-6 h-6 rounded-full mx-auto ${item.status === 'tidak berkontribusi' ? getStatusColor('tidak berkontribusi') : 'bg-gray-300'}`} />
+                  <td className="p-3 sm:p-4 border-b border-gray-200">
+                    <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full mx-auto ${item.status === 'tidak berkontribusi' ? getStatusColor('tidak berkontribusi') : 'bg-gray-300'}`} />
                   </td>
-                  <td className="p-4 border-b border-gray-200 text-gray-700 text-center">{item.waktu || '-'}</td>
+                  <td className="p-3 sm:p-4 border-b border-gray-200 text-gray-700 text-center">{item.waktu || '-'}</td>
                 </tr>
               ))
             )}

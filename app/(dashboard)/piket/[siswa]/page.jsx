@@ -22,7 +22,7 @@ export default function PiketSiswa() {
       <Sidebar />
 
       <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
-        <h1 className="text-3xl text-black font-bold w-full max-w-6xl mt-14 -mb-4">
+        <h1 className="sm:text-3xl text-2xl text-black font-bold w-full max-w-6xl sm:mt-14 mt-12 -mb-4">
           Piket Harian Siswa
         </h1>
 
@@ -30,7 +30,7 @@ export default function PiketSiswa() {
           <PiketCard key={refreshKey} />
         </div>
 
-        <div className="flex justify-center mt-3">
+        <div className="flex justify-center sm:mt-3 mt-1">
           <AttendanceTable key={refreshKey} />
         </div>
 

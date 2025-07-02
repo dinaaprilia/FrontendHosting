@@ -11,6 +11,8 @@ export default function AnggotaEkskul() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [anggotaToDelete, setAnggotaToDelete] = useState(null);
   const [detailPopup, setDetailPopup] = useState(null);
+  const [showErrorModal, setShowErrorModal] = useState(false); // ✅ NEW
+  const [errorMessage, setErrorMessage] = useState(""); // ✅ NEW
 
   const fetchAnggotaEkskul = async () => {
     const ekskul = JSON.parse(localStorage.getItem("selectedEkskul"));
@@ -25,6 +27,8 @@ export default function AnggotaEkskul() {
       setAnggotaEkskul(data);
     } catch (err) {
       console.error("❌ Gagal fetch anggota ekskul:", err);
+      setErrorMessage("Gagal mengambil data anggota ekskul.");
+      setShowErrorModal(true);
     }
   };
 
@@ -50,7 +54,8 @@ export default function AnggotaEkskul() {
       await fetchAnggotaEkskul();
     } catch (err) {
       console.error("❌ Error saat tambah anggota:", err);
-      alert("Gagal menambahkan anggota. Cek konsol.");
+      setErrorMessage("Gagal menambahkan anggota.");
+      setShowErrorModal(true);
     }
   };
 
@@ -75,7 +80,8 @@ export default function AnggotaEkskul() {
       await fetchAnggotaEkskul();
     } catch (err) {
       console.error("❌ Error saat hapus anggota:", err);
-      alert("Gagal menghapus anggota.");
+      setErrorMessage("Gagal menghapus anggota.");
+      setShowErrorModal(true);
     }
   };
 
@@ -97,7 +103,7 @@ export default function AnggotaEkskul() {
 
       <div className="flex-1 overflow-y-auto">
         <table className="w-full text-left text-sm max-sm:text-xs">
-          <thead className="sticky top-0 bg-white z-10">
+          <thead className="sticky top-0 bg-white z-20">
             <tr className="text-gray-700 border-b">
               <th className="py-3 w-12 pl-4">No</th>
               <th className="text-center w-40">Nama</th>
@@ -110,10 +116,10 @@ export default function AnggotaEkskul() {
             {anggotaEkskul.map((anggota, index) => (
               <tr key={anggota.id} className="border-b max-sm:text-xs">
                 <td className="py-4 text-center">{index + 1}.</td>
-                <td className="py-4 text-left">
+                <td className="py-4 text-left font-medium text-blue-800">
                   <div className="flex items-center gap-3 max-sm:gap-2">
                     <img
-                      src="/images/profilsiswa.jpg"
+                      src="/images/profil.png"
                       alt="avatar"
                       className="w-8 h-8 rounded-full object-cover"
                     />
@@ -147,6 +153,7 @@ export default function AnggotaEkskul() {
         <TambahAnggotaForm
           onAddAnggota={handleAddAnggota}
           onClose={() => setIsPopupOpen(false)}
+          existingAnggota={anggotaEkskul} // ✅ kirim data anggota ekskul
         />
       )}
 
@@ -176,11 +183,26 @@ export default function AnggotaEkskul() {
       )}
 
       {detailPopup && (
-  <DetailSiswaPopup
-    onClose={() => setDetailPopup(null)}
-    anggota={detailPopup}
-  />
-)}
+        <DetailSiswaPopup
+          onClose={() => setDetailPopup(null)}
+          anggota={detailPopup}
+        />
+      )}
+
+      {/* Modal Error */}
+      {showErrorModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10 px-4">
+          <div className="bg-white p-4 rounded-lg shadow-lg w-72 text-center">
+            <p className="mb-4 font-semibold text-red-600">{errorMessage}</p>
+            <button
+              onClick={() => setShowErrorModal(false)}
+              className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

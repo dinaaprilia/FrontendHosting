@@ -9,7 +9,7 @@ export default function DaftarEkskul() {
   useEffect(() => {
     const fetchEkskul = async () => {
       try {
-        const token = localStorage.getItem("token"); // Ambil token dari localStorage
+        const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:8000/api/ekskul-saya", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export default function DaftarEkskul() {
   }, []);
 
 return (
-  <div className="max-w-3xl mx-auto p-4 bg-white rounded-2xl shadow-lg">
+  <div className="max-w-3xl mx-auto p-4 bg-white rounded-2xl shadow-lg h-[439px] overflow-y-auto">
     <h2 className="text-lg font-semibold flex items-center mb-2  ">
       <FaListAlt className="mr-2" /> Daftar Ekskul Anda
     </h2>
@@ -51,7 +51,7 @@ return (
             className="flex items-center justify-between bg-white p-4 mb-4 rounded-xl border-2 border-blue-400 shadow-sm"
           >
             <div>
-              <h3 className="text-lg font-bold text-gray-800">{ekskul.nama}</h3>
+              <h3 className="text-lg font-bold text-gray-800">{ekskul.name}</h3>
               <div className="flex items-center text-gray-600 mt-1">
                 <img
                   src="/images/profil.png"

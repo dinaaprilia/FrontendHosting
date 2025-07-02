@@ -61,7 +61,7 @@ export default function ImageBox() {
 
   return (
     <div className="w-full flex justify-center items-center sm:p-4 p-2 relative">
-      <div className="w-full max-w-7xl relative">
+      <div className="w-full sm:max-w-7xl max-w-5xl relative">
         <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] rounded-2xl overflow-hidden">
           <Image
             src={imageSrc}

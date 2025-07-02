@@ -16,7 +16,7 @@ export default function Ekskul() {
       {/* Konten Utama */}
       <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
         <h1 className="sm:text-3xl text-2xl text-black font-bold w-full max-w-6xl sm:mt-14 mt-10 sm:-mb-4 -mb-8">
-          Ekstra Kulikuler
+          Ekstrakurikuler
         </h1>
 
         <EkskulList/>

@@ -1,25 +1,30 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/hooks/UserContext"; // ✅ pakai UserContext
+
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import EkskulList from "./_components/Ekskulpage";
 
 export default function Ekskul() {
+  const { user, loading } = useUserContext(); // ✅ ambil user & loading dari context
   const [isAllowed, setIsAllowed] = useState(null); // null: loading
   const router = useRouter();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user?.role === "siswa") {
+    if (loading) return; // tunggu data selesai di-fetch
+    if (!user) return;
+
+    if (user.role === "siswa") {
       setIsAllowed(true);
     } else {
       setIsAllowed(false);
-      router.push("/unauthorized"); // atau "/beranda"
+      router.push("/unauthorized");
     }
-  }, []);
+  }, [user, loading]);
 
-  if (isAllowed === null) {
+  if (loading || isAllowed === null) {
     return <p className="text-center p-4">Memuat halaman ekskul...</p>;
   }
 
@@ -37,7 +42,7 @@ export default function Ekskul() {
 
       {/* Konten Utama */}
       <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
-        <h1 className="text-3xl text-black font-bold w-full max-w-6xl mt-14 -mb-4">
+        <h1 className="sm:text-3xl text-2xl text-black font-bold w-full max-w-6xl sm:mt-14 mt-12 -mb-4">
           Ekstra Kulikuler
         </h1>
 

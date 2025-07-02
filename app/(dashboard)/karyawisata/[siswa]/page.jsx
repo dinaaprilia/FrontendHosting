@@ -1,30 +1,38 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUserContext } from "@/hooks/UserContext"; // ✅ Pakai context
+
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import InfoKaryaWisata from "./_components/InfoSIswaKarya";
 import ClassGrid from "./_components/SeluruhKelas";
 
-useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
+export default function KaryaWisataPage() {
+  const { user, loading } = useUserContext(); // ✅ Ambil user dari context
+  const [isAllowed, setIsAllowed] = useState(null);
+  const router = useRouter();
 
-    if (userData?.role === "siswa") {
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return;
+
+    if (user.role === "siswa") {
       setIsAllowed(true);
     } else {
       setIsAllowed(false);
       router.push("/unauthorized");
     }
-  }, []);
+  }, [user, loading, router]);
 
-  if (isAllowed === null) {
-    return <p className="text-center p-4">Memuat halaman absensi...</p>;
+  if (loading || isAllowed === null) {
+    return <p className="text-center p-4">Memuat halaman karya wisata...</p>;
   }
 
   if (!isAllowed) {
     return null;
   }
-  
-export default function karyawisata() {
+
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Header */}
@@ -40,17 +48,12 @@ export default function karyawisata() {
         </h1>
 
         <div className="flex justify-center mt-5">
-            <InfoKaryaWisata/>
-          </div>
-
-
-        <div className="bg-white p-4 rounded-2xl shadow-md mt-5 min-h-fit">
-
-          <div className="flex gap-4 items-center ml-4">
-  
+          <InfoKaryaWisata />
         </div>
 
-        <ClassGrid/>
+        <div className="bg-white p-4 rounded-2xl shadow-md mt-5 min-h-fit">
+          <div className="flex gap-4 items-center ml-4"></div>
+          <ClassGrid />
         </div>
       </main>
     </div>

@@ -11,42 +11,28 @@ export default function HarianAbsensiee({ studentId: propStudentId }) {
   const [loadingStatus, setLoadingStatus] = useState(true); // untuk loading fetch absensi
 
   const userRole = user?.role;
-  const studentId = propStudentId || user?.student?.id || user?.children?.[0]?.id || user?.id; // ✅ fix fallback user.id untuk siswa
+  const studentId = propStudentId || user?.student?.id || user?.children?.[0]?.id;
 
   useEffect(() => {
-    console.log("➡️ useEffect triggered");
-    console.log("➡️ loading:", loading);
-    console.log("➡️ userRole:", userRole);
-    console.log("➡️ studentId:", studentId);
-
-    if (loading || !userRole || !studentId) {
-      console.log("❌ Fetch dibatalkan karena loading atau data tidak lengkap");
-      return;
-    }
+    if (loading || !userRole || !studentId) return;
 
     const fetchStatus = async () => {
       try {
         setLoadingStatus(true);
         const token = localStorage.getItem('token');
 
-        console.log("➡️ token:", token);
-
         let apiUrl = '';
         if (userRole === 'orangtua') {
           apiUrl = `http://localhost:8000/api/absensi-anak?tanggal=${selectedDate}`;
         } else {
-          apiUrl = `http://localhost:8000/api/absensi-hari-ini?tanggal=${selectedDate}&studentId=${studentId}`;
+          apiUrl = `http://localhost:8000/api/absensi-hari-ini?tanggal=${selectedDate}`;
         }
-
-        console.log("➡️ Fetching from URL:", apiUrl);
 
         const response = await fetch(apiUrl, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         const data = await response.json();
-        console.log("➡️ Data absensi hari ini:", data);
-
         if (!data.status) {
           setStatusKehadiran('belum_absen');
         } else {
@@ -75,7 +61,7 @@ export default function HarianAbsensiee({ studentId: propStudentId }) {
           color: '#50bb2c',
           textColor: '#154306',
         };
-      case 'tidak hadir':
+      case 'tidak_hadir':
         return {
           text: isParent ? 'Yah, anak Anda tidak hadir hari ini' : 'Yah, kamu tidak hadir hari ini',
           image: '/images/Yah.png',
@@ -105,8 +91,6 @@ export default function HarianAbsensiee({ studentId: propStudentId }) {
   if (loading) {
     return <p className="text-center text-gray-500">Memuat data pengguna...</p>;
   }
-
-  console.log("➡️ statusKehadiran:", statusKehadiran);
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-white rounded-2xl shadow-md space-y-4 text-sm sm:text-base">

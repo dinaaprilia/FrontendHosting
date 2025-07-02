@@ -17,21 +17,17 @@ function Toast({ message, type, onClose }) {
   );
 }
 
-export default function ListForm() {
+export default function ListForm({ isViewer = false }) {
   const searchParams = useSearchParams();
   const kelas = searchParams.get("kelas") || "X-A";
-
-  // ✅ Tambahkan user role hardcoded (bisa dari localStorage/session nanti)
-  const userRole = "siswa"; // ganti ke "guru" jika admin
-  const isSiswa = userRole === "siswa";
 
   const [students, setStudents] = useState([]);
   const [list, setList] = useState({});
   const [isEditing, setIsEditing] = useState(true);
   const [lastEdit, setLastEdit] = useState(null);
 
-  const [judul] = useState("Karya Wisata");
-  const [tanggal, setTanggal] = useState("");
+  const [judul, setJudul] = useState("-");
+  const [tanggal, setTanggal] = useState("-");
   const [hari, setHari] = useState("-");
   const [cost, setCost] = useState("-");
   const [endDate, setEndDate] = useState("-");
@@ -41,15 +37,18 @@ export default function ListForm() {
   const [toast, setToast] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const formatDateWithDay = (dateStr) => {
-    if (!dateStr) return "-";
+    if (!dateStr || !mounted) return "-";
     const options = { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" };
     return new Date(dateStr).toLocaleDateString("id-ID", options);
   };
 
   const getDayName = (dateStr) => {
-    if (!dateStr) return "-";
+    if (!dateStr || !mounted) return "-";
     return new Date(dateStr).toLocaleDateString("id-ID", { weekday: "long" });
   };
 
@@ -62,24 +61,58 @@ export default function ListForm() {
   }, [kelas]);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/karya-wisata-info")
-      .then(res => {
-        const info = res.data.data;
-        if (info?.tanggal) {
-          setTanggal(info.tanggal);
+    if (!mounted) return;
+
+    const fetchInfo = async () => {
+      try {
+        const [infoRes, ikutRes] = await Promise.all([
+          axios.get("http://localhost:8000/api/karya-wisata-info/current-title"),
+          axios.get("http://localhost:8000/api/ikut-serta-karya-wisata", { params: { kelas } })
+        ]);
+
+        const info = infoRes.data?.data;
+        const ikut = ikutRes.data?.data;
+
+        if (info) {
+          const newJudul = info.title || "-";
+          setJudul(newJudul);
+          setTanggal(info.tanggal || "-");
           setHari(formatDateWithDay(info.tanggal));
+          localStorage.setItem("judul_karya_wisata", newJudul);
         }
-      });
-  }, []);
+
+        if (ikut) {
+          setCost(ikut.biaya || "-");
+          setEndDate(ikut.batas_pendaftaran || "-");
+          setEndDay(getDayName(ikut.batas_pendaftaran));
+        }
+
+        let cache = {};
+        try {
+          cache = JSON.parse(localStorage.getItem("absensi_karya_" + kelas)) || {};
+        } catch (e) {
+          console.warn("⚠️ Gagal parse cache:", e);
+        }
+
+        if (cache?.judul === info?.title) {
+          setList(cache.list || {});
+        } else {
+          setList({});
+        }
+      } catch (err) {
+        console.error("Gagal mengambil data info atau ikut-serta:", err);
+      }
+    };
+
+    fetchInfo();
+  }, [kelas, mounted]);
 
   useEffect(() => {
-    if (endDate && endDate !== "-") {
-      setEndDay(getDayName(endDate));
-    }
+    if (endDate && endDate !== "-") setEndDay(getDayName(endDate));
   }, [endDate]);
 
   const handleListChange = (id, status) => {
-    if (!isEditing || !endDate || endDate === "-" || isSiswa) return;
+    if (isViewer || !isEditing || !endDate || endDate === "-") return;
 
     const now = new Date();
     const dateStr = now.toLocaleDateString("id-ID");
@@ -88,20 +121,27 @@ export default function ListForm() {
     }).replace(":", ".");
     const day = now.toLocaleDateString("id-ID", { weekday: "long" });
 
-    setList(prev => ({
-      ...prev,
+    const updated = {
+      ...list,
       [id]: {
         status,
         waktu: timeStr,
         tanggal: `${day}, ${dateStr}`,
       }
-    }));
+    };
 
+    setList(updated);
     setLastEdit(`${day}, ${dateStr} ${timeStr}`);
+
+    localStorage.setItem("absensi_karya_" + kelas, JSON.stringify({
+      judul,
+      list: updated,
+      cost,
+      endDate
+    }));
   };
 
   const handleSave = async () => {
-    if (isSiswa) return;
     try {
       const payload = students
         .filter(s => list[s.id])
@@ -114,8 +154,16 @@ export default function ListForm() {
 
       await axios.post("http://localhost:8000/api/absensi-karya-wisata", {
         kelas,
+        judul,
         data: payload,
       });
+
+      localStorage.setItem("absensi_karya_" + kelas, JSON.stringify({
+        judul,
+        list,
+        cost,
+        endDate
+      }));
 
       setToast({ message: "✅ Data absensi berhasil disimpan.", type: "success" });
       setIsEditing(false);
@@ -126,10 +174,9 @@ export default function ListForm() {
   };
 
   const handleGenerate = () => {
-    if (isSiswa) return;
     setCost("Rp 50000");
     setIsGenerateEdit(true);
-    if (tanggal) {
+    if (tanggal && tanggal !== "-") {
       const deadline = new Date(tanggal);
       deadline.setDate(deadline.getDate() + 3);
       setEndDate(deadline.toISOString().split("T")[0]);
@@ -137,14 +184,14 @@ export default function ListForm() {
   };
 
   const handleConfirmYes = async () => {
-    if (isSiswa) return;
     if (confirmAction) await confirmAction();
     setShowConfirm(false);
   };
 
+  if (!mounted) return null;
+
   return (
     <div className="max-w-7xl mx-auto bg-white p-6 rounded-2xl shadow text-sm sm:text-base">
-      {/* Info */}
       <div className="mb-4 space-y-2">
         <div className="flex max-sm:flex-col"><strong className="w-28">Kelas</strong><span>: {kelas}</span></div>
         <div className="flex max-sm:flex-col"><strong className="w-28">Hari</strong><span>: {hari}</span></div>
@@ -152,7 +199,7 @@ export default function ListForm() {
         <div className="flex items-start max-sm:flex-col">
           <strong className="w-28">Biaya</strong>
           <span className="max-sm:mt-1">:
-            {isGenerateEdit && !isSiswa ? (
+            {isGenerateEdit && !isViewer ? (
               <input type="text" className="ml-2 p-1 border rounded max-sm:ml-0 max-sm:w-full" value={cost} onChange={(e) => setCost(e.target.value)} />
             ) : (
               <span className="ml-2">{cost}</span>
@@ -162,7 +209,7 @@ export default function ListForm() {
         <div className="flex items-start max-sm:flex-col">
           <strong className="w-28">Selesai</strong>
           <span className="max-sm:mt-1">:
-            {isGenerateEdit && !isSiswa ? (
+            {isGenerateEdit && !isViewer ? (
               <>
                 <input type="date" className="ml-2 p-1 border rounded max-sm:ml-0 max-sm:w-full" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 <span className="ml-2 text-gray-500 italic max-sm:ml-0">({endDay})</span>
@@ -174,8 +221,7 @@ export default function ListForm() {
         </div>
       </div>
 
-      {/* Tombol */}
-      {!isSiswa && (
+      {!isViewer && (
         <div className="mb-4 flex flex-wrap gap-2">
           <button onClick={handleGenerate} className="px-4 py-2 bg-purple-600 text-white rounded-md">Generate Info</button>
           {isGenerateEdit && (
@@ -202,7 +248,6 @@ export default function ListForm() {
         </div>
       )}
 
-      {/* Tabel */}
       <div className="overflow-x-auto">
         <table className="w-full border-t border-gray-300 min-w-[600px]">
           <thead>
@@ -227,7 +272,7 @@ export default function ListForm() {
                       name={`radio-${s.id}`}
                       checked={list[s.id]?.status === status}
                       onChange={() => handleListChange(s.id, status)}
-                      disabled={!isEditing || !endDate || endDate === "-" || isSiswa}
+                      disabled={isViewer || !isEditing || !endDate || endDate === "-"}
                     />
                   </td>
                 ))}
@@ -239,8 +284,7 @@ export default function ListForm() {
         </table>
       </div>
 
-      {/* Tombol simpan/edit */}
-      {!isSiswa && (
+      {!isViewer && (
         <div className="mt-4 flex flex-wrap gap-2">
           {isEditing ? (
             <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={handleSave} disabled={!endDate || endDate === "-"}>Save</button>
@@ -252,7 +296,6 @@ export default function ListForm() {
 
       {lastEdit && <p className="mt-2 text-gray-500 text-sm">Last edit: {lastEdit}</p>}
 
-      {/* Toast */}
       {toast && (
         <Toast
           message={toast.message}
@@ -261,26 +304,13 @@ export default function ListForm() {
         />
       )}
 
-      {/* Konfirmasi */}
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-72 text-center">
-            <p className="mb-4 font-semibold">
-              Lanjutkan submit?
-            </p>
+            <p className="mb-4 font-semibold">Lanjutkan submit?</p>
             <div className="flex justify-center gap-4">
-              <button
-                onClick={handleConfirmYes}
-                className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
-              >
-                Ya
-              </button>
-              <button
-                onClick={() => setShowConfirm(false)}
-                className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-              >
-                Tidak
-              </button>
+              <button onClick={handleConfirmYes} className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Ya</button>
+              <button onClick={() => setShowConfirm(false)} className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Tidak</button>
             </div>
           </div>
         </div>

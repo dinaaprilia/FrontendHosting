@@ -3,9 +3,7 @@ import React from "react";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import KegiatanSummary from "./_components/kegiatansummary";
-import ActivityTable from "./_components/tabelaktivitas";
-
-
+import AktivitasKegiatan from "./_components/tabelaktivitas";
 
 export default function Aktivitas() {
   return (
@@ -20,7 +18,7 @@ export default function Aktivitas() {
 
         <KegiatanSummary/>
 
-        <ActivityTable/>
+        <AktivitasKegiatan/>
 
       </main>
     </div>

@@ -17,7 +17,7 @@ export default function wisatadetail() {
       {/* Konten Utama */}
       <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
         <div className="flex items-center justify-between mt-14 mb-4 max-w-6xl">
-                  <h1 className="text-3xl text-black font-bold">
+                  <h1 className="sm:text-3xl text-lg text-black font-bold">
                   Detail Riwayat Kegiatan
                   </h1>
                   <button 

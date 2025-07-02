@@ -7,75 +7,61 @@ import axios from "axios";
 
 export default function InfoKaryaWisata() {
   const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
+  const [title, setTitle] = useState("-");
+  const [date, setDate] = useState("-");
   const [hasData, setHasData] = useState(false);
   const [eventType] = useState("Karya Wisata");
 
+  const fetchCurrentInfo = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/karya-wisata-info/current-title");
+      const data = res.data?.data;
+      if (data) {
+        setTitle(data.title || "-");
+        setDate(data.tanggal || "-");
+        setHasData(!!data.title && !!data.tanggal);
+      }
+    } catch (err) {
+      console.error("❌ Gagal mengambil data info:", err);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/karya-wisata-info")
-      .then((res) => {
-        const data = res.data.data;
-        if (data) {
-          const today = new Date().toISOString().split("T")[0];
-          if (data.tanggal < today) {
-            setTitle("");
-            setDate("");
-            setHasData(false);
-            return;
-          }
-
-          const currentData = {
-            title: data.title,
-            tanggal: data.tanggal,
-          };
-
-          // Ambil cache sebelumnya dari localStorage
-          const existing = JSON.parse(localStorage.getItem("karya_wisata_history")) || [];
-
-          // Cek apakah data baru ini belum ada di cache (berdasarkan title + tanggal)
-          const alreadyExists = existing.some(
-            (item) =>
-              item.title === currentData.title && item.tanggal === currentData.tanggal
-          );
-
-          if (!alreadyExists) {
-            const updated = [...existing, currentData];
-            localStorage.setItem("karya_wisata_history", JSON.stringify(updated));
-          }
-
-          setTitle(currentData.title);
-          setDate(currentData.tanggal);
-          setHasData(true);
-        }
-      })
-      .catch((err) => {
-        console.error("Gagal ambil data:", err);
-      });
+    fetchCurrentInfo();
   }, []);
 
   const handleClick = () => {
-    if (hasData) {
-      router.push("/karyawisatadetail");
+    if (title && date && hasData) {
+      redirectToDetail(title, date);
     }
+  };
+
+  const redirectToDetail = (judul, tanggal) => {
+    const slug = judul
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+    const encodedJudul = encodeURIComponent(judul);
+    const encodedTanggal = encodeURIComponent(tanggal);
+
+    router.push(`/detailkaryawisata/${slug}?judul=${encodedJudul}&tanggal=${encodedTanggal}`);
   };
 
   return (
     <div
-      className="bg-[#869ddd] p-4 sm:p-6 rounded-2xl shadow-lg w-full max-w-7xl mt-5 flex flex-col sm:flex-row justify-between items-start sm:items-center cursor-pointer hover:opacity-90 relative"
+      className="bg-[#869ddd] p-6 rounded-2xl shadow-lg w-full max-w-7xl sm:h-[220px] h-auto mt-5 flex sm:flex-row flex-col justify-between items-start cursor-pointer hover:opacity-90"
       onClick={handleClick}
     >
-      <div className="flex-1 flex flex-col justify-center">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <FaBullhorn className="text-white text-xl sm:text-2xl" />
-          <h2 className="text-white font-semibold text-lg sm:text-2xl">
-            {eventType}
-          </h2>
+      <div className="flex-1 flex flex-col justify-center max-sm:w-full">
+        <div className="flex items-center gap-3 max-sm:flex-col max-sm:items-start">
+          <FaBullhorn className="text-white text-2xl" />
+          <h2 className="text-white font-semibold sm:text-2xl text-xl">{eventType}</h2>
         </div>
 
-        <p className="text-white font-medium text-sm sm:text-xl mt-1">
-          {date
+        <p className="text-white font-medium sm:text-xl text-base mt-1 break-words">
+          {date !== "-" && date
             ? new Date(date).toLocaleDateString("id-ID", {
                 day: "2-digit",
                 month: "short",
@@ -84,21 +70,16 @@ export default function InfoKaryaWisata() {
             : "-"}
         </p>
 
-        <div className="mt-2">
-          <p
-            className="text-xl sm:text-3xl font-bold text-blue-950"
-            onClick={() => router.push("/studytourdetail")}
-          >
-            {title || "-"}
-          </p>
+        <div className="flex justify-center items-center sm:ml-28 ml-0 mt-2 max-sm:w-full">
+          <p className="sm:text-3xl text-2xl font-bold text-blue-950 break-words">{title || "-"}</p>
         </div>
       </div>
 
-      <div className="w-16 h-16 sm:w-24 sm:h-24 mt-3 sm:mt-0 sm:mr-4 flex-shrink-0">
+      <div className="sm:w-24 w-16 sm:h-24 h-16 sm:mr-8 mr-2 overflow-hidden flex-shrink-0 sm:mt-10 mt-2">
         <img
           src="/images/tour.png"
-          alt="Gambar Tour"
-          className="w-full h-full object-cover rounded-lg"
+          alt="Foto Karya Wisata"
+          className="w-full h-full object-cover"
         />
       </div>
     </div>

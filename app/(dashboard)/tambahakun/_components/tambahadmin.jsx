@@ -1,17 +1,16 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { FaDownload, FaUserPlus, FaTrash } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import TambahAkunForm from "./InputManualAdm";
 import { IoMdCloseCircle } from "react-icons/io";
+import TambahAkunForm from "./InputManualAdm";
 import ProfileDetailGuru from "./DetailProfilGuru";
 
 const AdminTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [file, setFile] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
   const [showAddAccountPopup, setShowAddAccountPopup] = useState(false);
   const [selectedGuru, setSelectedGuru] = useState(null);
   const [guru, setGuru] = useState([]);
@@ -57,13 +56,7 @@ const AdminTable = () => {
         return;
       }
       setFile(selectedFile);
-      setShowPopup(true);
     }
-  };
-
-  const handleConfirmUpload = () => {
-    alert("✅ File berhasil disiapkan untuk upload: " + file.name);
-    setShowPopup(false);
   };
 
   const handleCloseAddAccountPopup = () => {
@@ -104,7 +97,7 @@ const AdminTable = () => {
   };
 
   return (
-    <div className="p-4 mt-10 bg-white rounded-xl shadow-md w-full">
+    <div className="p-4 sm:mt-10 mt-5 bg-white rounded-xl shadow-md w-full">
       {showSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white text-green-700 px-6 py-3 rounded-lg shadow-lg border border-green-500">
@@ -121,13 +114,14 @@ const AdminTable = () => {
         </div>
       )}
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
         <TextField
           label="Search"
           variant="outlined"
           size="small"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full sm:w-auto"
         />
         <div className="flex gap-2">
           <input
@@ -155,10 +149,11 @@ const AdminTable = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
         <table className="w-full border-collapse border border-gray-300">
-          <thead>
+          <thead className="sticky top-0 bg-gray-200 z-5">
             <tr className="bg-gray-200">
+              <th className="border border-gray-300 p-2">No</th>
               <th className="border border-gray-300 p-2">NIP</th>
               <th className="border border-gray-300 p-2">Nama</th>
               <th className="border border-gray-300 p-2">Kelas</th>
@@ -174,20 +169,23 @@ const AdminTable = () => {
           <tbody>
             {filteredUsers.map((guru, index) => (
               <tr key={index} className="text-center">
+                <td className="border border-gray-300 p-2">{index + 1}</td>
                 <td className="border border-gray-300 p-2">{guru.nip || "-"}</td>
                 <td className="border border-gray-300 p-2">
-                  <a
-                    href="#"
-                    className="text-blue-500 underline"
+                  <button
+                    type="button"
+                    className="text-blue-500 underline hover:text-blue-700"
                     onClick={() => setSelectedGuru(guru)}
                   >
                     {formatName(guru.nama) || "-"}
-                  </a>
+                  </button>
                 </td>
                 <td className="border border-gray-300 p-2">{guru.kelas || "-"}</td>
-                <td className="border border-gray-300 p-2">{
-                  guru.tanggal_lahir ? new Date(guru.tanggal_lahir).toLocaleDateString("id-ID") : "-"
-                }</td>
+                <td className="border border-gray-300 p-2">
+                  {guru.tanggal_lahir
+                    ? new Date(guru.tanggal_lahir).toLocaleDateString("id-ID")
+                    : "-"}
+                </td>
                 <td className="border border-gray-300 p-2">{guru.jenis_kelamin || "-"}</td>
                 <td className="border border-gray-300 p-2">{guru.agama || "-"}</td>
                 <td className="border border-gray-300 p-2">{guru.nomor_hp || "-"}</td>
@@ -209,7 +207,7 @@ const AdminTable = () => {
 
       {showAddAccountPopup && (
         <div className="fixed mt-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-2xl shadow-lg max-w-4xl relative">
+          <div className="bg-white h-auto p-6 rounded-2xl shadow-lg max-w-4xl relative">
             <button
               className="absolute top-2 right-2 text-gray-600 text-xl"
               onClick={handleCloseAddAccountPopup}
@@ -227,20 +225,20 @@ const AdminTable = () => {
 
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-72 text-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg w-[90%] max-w-sm text-center">
             <p className="mb-4 font-semibold text-gray-800">
               Anda yakin ingin menghapus akun ini?
             </p>
-            <div className="flex justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
               <button
                 onClick={handleConfirmYes}
-                className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full sm:w-auto"
               >
                 Ya
               </button>
               <button
                 onClick={() => setShowConfirm(false)}
-                className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full sm:w-auto"
               >
                 Tidak
               </button>

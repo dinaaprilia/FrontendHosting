@@ -78,8 +78,6 @@ export default function ListForm() {
           setJudul(newJudul);
           setTanggal(info.tanggal || "-");
           setHari(formatDateWithDay(info.tanggal));
-
-          // ✅ Simpan judul ke localStorage
           localStorage.setItem("judul_karya_wisata", newJudul);
         }
 
@@ -98,8 +96,10 @@ export default function ListForm() {
 
         if (cache?.judul === info?.title) {
           setList(cache.list || {});
+          setIsEditing(false); // ✅ jika cache valid, jangan mode edit
         } else {
           setList({});
+          setIsEditing(true); // ✅ jika tidak cocok, aktifkan edit
         }
       } catch (err) {
         console.error("Gagal mengambil data info atau ikut-serta:", err);
@@ -128,7 +128,7 @@ export default function ListForm() {
       [id]: {
         status,
         waktu: timeStr,
-        tanggal: `${day}, ${dateStr}`,
+        tanggal: new Date().toISOString().split("T")[0]
       }
     };
 
@@ -191,7 +191,6 @@ export default function ListForm() {
   };
 
   if (!mounted) return null;
-
   return (
     <div className="max-w-7xl mx-auto bg-white p-6 rounded-2xl shadow text-sm sm:text-base">
       <div className="mb-4 space-y-2">

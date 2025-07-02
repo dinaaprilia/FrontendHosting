@@ -66,7 +66,7 @@ const AttendanceTable = ({ selectedDate }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg w-full mt-5">
+    <div className="bg-white p-6 rounded-2xl shadow-lg w-full mt-4">
       <h2 className="text-center font-semibold text-xl text-blue-900 mb-2">
         {monthYear}
       </h2>

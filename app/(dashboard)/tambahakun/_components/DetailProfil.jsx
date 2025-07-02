@@ -9,6 +9,7 @@ export default function ProfileDetail({ user, onClose }) {
   const [formData, setFormData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [kelasList, setKelasList] = useState([]);
+  const [agamaList, setAgamaList] = useState([]);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -38,12 +39,15 @@ export default function ProfileDetail({ user, onClose }) {
       }
     };
 
+    const hardcodedAgama = ["Islam", "Kristen", "Katolik", "Hindu", "Buddha", "Konghucu"];
+    setAgamaList(hardcodedAgama);
+
     fetchKelas();
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = async () => {
@@ -101,13 +105,13 @@ export default function ProfileDetail({ user, onClose }) {
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
       {showSuccessPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-white text-green-700 font-semibold px-6 py-3 rounded-lg shadow-xl border border-green-500">
+          <div className="bg-white text-green-700 font-semibold px-6 py-3 rounded-lg shadow-xl border border-green-500 sm:overflow-hidden overflow-y-auto ">
             ✅ Profil berhasil diperbarui
           </div>
         </div>
       )}
 
-      <div className="max-w-4xl bg-white p-8 rounded-2xl shadow-xl relative w-full">
+     <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-xl relative w-[95%] max-w-4xl mx-auto h-[400px] sm:h-auto sm:overflow-hidden overflow-y-auto">
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
           onClick={onClose}
@@ -115,9 +119,9 @@ export default function ProfileDetail({ user, onClose }) {
           ✖
         </button>
 
-        <h2 className="text-center text-2xl font-semibold mb-6">Detail Profil</h2>
+        <h2 className="text-center sm:text-2xl text-xl font-semibold mb-6">Detail Profil</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="col-span-1 flex justify-center">
             <div className="w-28 h-28 bg-gray-100 rounded-2xl overflow-hidden shadow-md">
               <img
@@ -127,9 +131,8 @@ export default function ProfileDetail({ user, onClose }) {
               />
             </div>
           </div>
-
-          <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-6">
-            {['nama', 'email', 'nomor_hp', 'agama'].map((field) => (
+          <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+            {['nama', 'email', 'nomor_hp'].map((field) => (
               <div key={field}>
                 <label className="font-semibold text-black capitalize">{field.replace('_', ' ')}</label>
                 {isEditing ? (
@@ -145,6 +148,25 @@ export default function ProfileDetail({ user, onClose }) {
                 )}
               </div>
             ))}
+
+            <div>
+              <label className="font-semibold text-black">Agama</label>
+              {isEditing ? (
+                <select
+                  name="agama"
+                  value={formData.agama || ''}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded"
+                >
+                  <option value="">Pilih Agama</option>
+                  {agamaList.map((agama, index) => (
+                    <option key={index} value={agama}>{agama}</option>
+                  ))}
+                </select>
+              ) : (
+                <p>{user.agama || '-'}</p>
+              )}
+            </div>
 
             <div>
               <label className="font-semibold text-black">Tanggal Lahir</label>
@@ -200,7 +222,7 @@ export default function ProfileDetail({ user, onClose }) {
           </div>
         </div>
 
-        <div className="flex justify-center gap-4 mt-8">
+         <div className="flex justify-center gap-4 mt-8">
           {isEditing ? (
             <>
               <button

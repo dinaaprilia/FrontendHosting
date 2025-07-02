@@ -6,15 +6,16 @@ import { FaPlus, FaUser, FaTrash } from 'react-icons/fa';
 import { IoMdLogIn } from 'react-icons/io';
 import PopupForm from './EkskulForm';
 import axios from 'axios';
+import { useUserContext } from '@/hooks/UserContext'; // pastikan path ini sesuai
 
 export default function EkskulList() {
   const router = useRouter();
   const pathname = usePathname();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [ekskulData, setEkskulData] = useState([]);
-
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const { user, loading } = useUserContext(); // GUNAKAN user dari Context
 
   const API_URL = 'http://localhost:8000/api/ekskul';
 
@@ -29,7 +30,7 @@ export default function EkskulList() {
         });
 
         const validEkskul = Array.isArray(res.data)
-          ? res.data.filter(item => item.name && item.mentor)
+          ? res.data.filter((item) => item.name && item.mentor)
           : [];
 
         setEkskulData(validEkskul);
@@ -42,7 +43,7 @@ export default function EkskulList() {
   }, [pathname]);
 
   const fetchEkskulById = async (id) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     const res = await fetch(`http://localhost:8000/api/ekskul/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -52,17 +53,17 @@ export default function EkskulList() {
       id: data.id,
       name: data.name,
       mentor: data.mentor,
-      image: data.image?.startsWith("http")
+      image: data.image?.startsWith('http')
         ? data.image
         : data.image
-          ? `http://localhost:8000/${data.image.replace(/^\/+/, "")}`
-          : '/images/default-image.jpg',
+        ? `http://localhost:8000/${data.image.replace(/^\/+/g, '')}`
+        : '/images/default.png',
     };
   };
 
   const handleMasukClick = async (ekskul) => {
     const updatedEkskul = await fetchEkskulById(ekskul.id);
-    localStorage.setItem("selectedEkskul", JSON.stringify(updatedEkskul));
+    localStorage.setItem('selectedEkskul', JSON.stringify(updatedEkskul));
     router.push(`/ekskul/${ekskul.name.toLowerCase().replace(/\s+/g, '')}`);
   };
 
@@ -80,16 +81,16 @@ export default function EkskulList() {
     if (!selectedId) return;
 
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       await axios.delete(`${API_URL}/${selectedId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       setEkskulData((prev) => prev.filter((e) => e.id !== selectedId));
-      console.log("✅ Ekskul berhasil dihapus");
+      console.log('✅ Ekskul berhasil dihapus');
     } catch (err) {
-      console.error("❌ Gagal menghapus ekskul:", err.response?.data || err.message);
-      alert("Gagal menghapus ekskul.");
+      console.error('❌ Gagal menghapus ekskul:', err.response?.data || err.message);
+      alert('Gagal menghapus ekskul.');
     } finally {
       setShowConfirm(false);
       setSelectedId(null);
@@ -98,12 +99,14 @@ export default function EkskulList() {
 
   return (
     <div className="p-6 bg-gray-50 flex-1 mt-10 max-w-7xl rounded-md">
-      <button
-        onClick={() => setIsPopupOpen(true)}
-        className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 mb-4"
-      >
-        <FaPlus className="w-5 h-5 mr-2" /> Tambah Ekskul
-      </button>
+      {user?.role === 'admin' && (
+        <button
+          onClick={() => setIsPopupOpen(true)}
+          className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 mb-4"
+        >
+          <FaPlus className="w-5 h-5 mr-2" /> Tambah Ekskul
+        </button>
+      )}
 
       {isPopupOpen && (
         <PopupForm onAddEkskul={handleAddEkskul} onClose={() => setIsPopupOpen(false)} />
@@ -115,10 +118,10 @@ export default function EkskulList() {
         ) : (
           ekskulData.map((ekskul, index) => {
             const imageSrc = ekskul.image
-              ? ekskul.image.startsWith("http")
+              ? ekskul.image.startsWith('http')
                 ? ekskul.image
                 : `http://localhost:8000/${ekskul.image}`
-              : "/images/default-image.jpg";
+              : '/images/default.png';
 
             return (
               <div
@@ -133,13 +136,15 @@ export default function EkskulList() {
                 <div className="p-4">
                   <div className="flex justify-between items-start">
                     <h3 className="text-xl font-bold text-blue-800">{ekskul.name}</h3>
-                    <button
-                      onClick={() => confirmDelete(ekskul.id)}
-                      className="text-red-600 hover:text-red-800"
-                      title="Hapus Ekskul"
-                    >
-                      <FaTrash className="w-5 h-5" />
-                    </button>
+                    {user?.role === 'admin' && (
+                      <button
+                        onClick={() => confirmDelete(ekskul.id)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Hapus Ekskul"
+                      >
+                        <FaTrash className="w-5 h-5" />
+                      </button>
+                    )}
                   </div>
                   <div className="flex items-center text-gray-600 text-sm mt-2">
                     <FaUser className="w-4 h-4 mr-2" />
@@ -163,7 +168,6 @@ export default function EkskulList() {
         )}
       </div>
 
-      {/* Modal Konfirmasi Hapus */}
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-72 text-center">

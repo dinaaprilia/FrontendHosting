@@ -44,9 +44,9 @@ export default function ResetPasswordForm({ userId, onSuccess, onCancel }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-xl font-bold mb-6 text-center text-gray-800">Reset Password</h2>
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4">
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg w-full max-w-md">
+        <h2 className="text-lg sm:text-xl font-bold mb-6 text-center text-gray-800">Reset Password</h2>
 
         {/* Password Baru */}
         <div className="mb-4 relative">
@@ -87,17 +87,17 @@ export default function ResetPasswordForm({ userId, onSuccess, onCancel }) {
         </div>
 
         {/* Tombol */}
-        <div className="flex justify-end gap-3 mt-6">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
           <button
             onClick={onCancel}
-            className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition"
+            className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg transition w-full sm:w-auto"
           >
             Batal
           </button>
           <button
             onClick={handleReset}
             disabled={loading}
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition font-semibold"
+            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition font-semibold w-full sm:w-auto"
           >
             {loading ? 'Menyimpan...' : 'Simpan Password'}
           </button>

@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fa';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { IoPerson } from "react-icons/io5";
+import { useUserContext } from "@/hooks/UserContext"; // ✅ gunakan context
 
 const allMenuItems = [
   { name: 'Beranda', icon: <FaHome />, path: '/beranda' },
@@ -30,20 +31,18 @@ const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [role, setRole] = useState(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const { user } = useUserContext(); // ✅ pakai context
 
   const showFullMenu = isMobileOpen || !isCollapsed;
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth >= 768) {
-        setIsMobileOpen(false);
-      }
+      if (window.innerWidth >= 768) setIsMobileOpen(false);
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -52,9 +51,6 @@ const Sidebar = () => {
   useEffect(() => {
     const collapsedState = localStorage.getItem("sidebarCollapsed") === "true";
     setIsCollapsed(collapsedState);
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    setRole(user?.role || null);
   }, [pathname]);
 
   const toggleSidebar = () => {
@@ -63,9 +59,7 @@ const Sidebar = () => {
     localStorage.setItem("sidebarCollapsed", newState);
   };
 
-  const toggleMobileSidebar = () => {
-    setIsMobileOpen(!isMobileOpen);
-  };
+  const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
 
   const handleMenuClick = (path) => {
     if (path) {
@@ -76,14 +70,31 @@ const Sidebar = () => {
 
   const menuItems = allMenuItems
     .map(item => {
+      if (!user) return null;
+
+      const role = user.role;
+      const kelasGuru = user.kelas?.toUpperCase() || "";
+      const isWaliKelas = /^(X|XI|XII)-[A-Z]$/.test(kelasGuru);
+
       if (item.name === "Absensi" && role === "siswa") return { ...item, path: "/absensi/siswa" };
       if (item.name === "Ekskul" && role === "siswa") return { ...item, path: "/ekskulsiswa" };
       if (item.name === "Piket" && role === "siswa") return { ...item, path: "/piket/siswa" };
+      if (item.name === "Karya Wisata" && role === "siswa") return { ...item, path: "/karyawisata/siswa" };
+
       return item;
     })
     .filter(item => {
+      if (!item || !user) return false;
+
+      const role = user.role;
+      const kelasGuru = user.kelas?.toUpperCase() || "";
+      const isWaliKelas = /^(X|XI|XII)-[A-Z]$/.test(kelasGuru);
+
       if (role === "siswa" && (item.name === "Tambah Akun" || item.name === "Kegiatan")) return false;
       if (role === "orangtua" && item.name !== "Beranda") return false;
+      if (item.name === "Tambah Akun" && !(role === "admin" || (role === "guru" && isWaliKelas))) return false;
+      if (item.name === "Kegiatan" && role === "guru" && isWaliKelas) return false;
+
       return true;
     });
 
@@ -103,8 +114,7 @@ const Sidebar = () => {
         />
       )}
 
-      <div className={`
-        fixed md:static top-0 left-0 h-screen z-[70] bg-[#98abe2] drop-shadow-lg text-white
+      <div className={`fixed md:static top-0 left-0 h-screen z-[70] bg-[#98abe2] drop-shadow-lg text-white
         transition-all duration-700 ease-in-out
         ${isMobile ? (isMobileOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'}
         md:flex md:flex-col

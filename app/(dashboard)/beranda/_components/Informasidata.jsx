@@ -7,6 +7,7 @@ import GreenButton from './TombolTambah';
 import { useSession } from 'next-auth/react';
 import { parseISO, format } from 'date-fns';
 import { id as localeID } from 'date-fns/locale';
+import { useUserContext } from '@/hooks/UserContext';
 
 Modal.setAppElement(typeof document !== 'undefined' ? document.body : null);
 
@@ -18,7 +19,8 @@ export default function listInform() {
   const [editedText, setEditedText] = useState('');
   const [editedTitle, setEditedTitle] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
-  const { data: session } = useSession();
+  const { data, loading, error, getUserData } = useUserContext();
+  
 
   const API_BASE = 'http://localhost:8000/api/informasi';
 
@@ -27,6 +29,10 @@ export default function listInform() {
       .then((res) => res.json())
       .then((data) => setInformasiData(data));
   }, []);
+
+    useEffect(() => {
+      getUserData();
+    }, []);
 
   const openModal = (info) => {
     setSelectedInfo(info);
@@ -91,22 +97,32 @@ export default function listInform() {
       });
   };
 
-  const handleAddInfo = async (newInfo) => {
-    const finalInfo = {
-      ...newInfo,
-      author: session?.user?.name?.trim() || 'Admin Sistem',
-      photo: session?.user?.foto_profil || '/images/profil.jpg',
-    };
+const handleAddInfo = async (newInfo) => {
+  const token = localStorage.getItem('token');
 
-    const res = await fetch(API_BASE, {
+  try {
+    const response = await fetch('http://localhost:8000/api/input-informasi', {  // <-- pastikan ini sudah benar
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(finalInfo),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(newInfo),
     });
 
-    const created = await res.json();
-    setInformasiData((prev) => [created, ...prev]);
-  };
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Gagal menambahkan informasi');
+    }
+
+    const savedInfo = await response.json();
+
+    setInformasiData((prev) => [savedInfo, ...prev]);
+  } catch (error) {
+    console.error('Error saat menambahkan informasi:', error.message);
+  }
+};
+
 
   const getShortText = (text) => {
     if (typeof text !== 'string') return '-';
@@ -167,15 +183,19 @@ export default function listInform() {
               {getShortText(info?.text?.trim() || '-')}
             </p>
             <div className="mt-2 text-gray-500 text-sm flex items-center flex-wrap">
-              <img
-                src={info?.photo || '/images/profil.jpg'}
-                alt="User"
-                className="w-5 h-5 rounded-full mr-2"
-              />
-              <span className="truncate">
-                {info?.author?.trim() || 'Anonim'} / {info?.time?.trim() || '-'}
-              </span>
-            </div>
+  <img
+    src={
+      info?.photo
+        ? `http://localhost:8000/storage/${info.photo}`
+        : "/images/profil.png"
+    }
+    alt="User"
+    className="w-8 h-8 rounded-full object-cover mr-2"
+  />
+  <span className="truncate">
+    {info?.author?.trim() || 'Anonim'} / {info?.time?.trim() || '-'}
+  </span>
+</div>
           </div>
         ))}
       </div>

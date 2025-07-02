@@ -15,7 +15,7 @@ export default function FormInformasi() {
     const payload = {
       date,
       description,
-      author: "Admin",
+      author: "Mentor", // langsung set sebagai "Mentor"
       time: "17:00",
       color: "bg-blue-600"
     };
@@ -37,8 +37,10 @@ export default function FormInformasi() {
   };
 
   return (
-    <div className="sm:ml-0 ml-5 p-6 w-96 max-sm:w-[90%] max-sm:px-4 rounded-lg bg-white shadow-md sm:mt-0 mt-6">
+    <div className="sm:ml-0 ml-5 p-6 w-96 max-sm:w-[90%] max-sm:px-4 rounded-lg bg-white shadow-md sm:mt-0 mt-6 z-50">
       <h2 className="sm:text-lg text-base font-bold text-black">Tambah Informasi</h2>
+
+      <p className="mt-2 text-sm text-gray-700 font-semibold">Mentor</p>
 
       <div className="mt-4">
         <label className="block font-medium text-black">Hari / Tanggal</label>
@@ -72,9 +74,9 @@ export default function FormInformasi() {
 
       <button
         onClick={handleSubmit}
-        className="mt-4 w-full  bg-blue-600 hover:bg-blue-700 transition text-white py-2 rounded-lg flex justify-center items-center"
+        className="mt-4 w-full bg-blue-600 hover:bg-blue-700 transition text-white py-2 rounded-lg flex justify-center items-center"
       >
-        <AiOutlineUpload className="h-6 w-6 mr-2 " />
+        <AiOutlineUpload className="h-6 w-6 mr-2" />
         Unggah
       </button>
     </div>

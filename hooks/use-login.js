@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/hooks/UserContext'; // pastikan path-nya benar
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const { getUserData } = useUserContext(); // ✅ Ambil dari context
 
   const login = async ({ identifier, password }) => {
-
     setLoading(true);
     setError(null);
 
@@ -18,20 +19,16 @@ const useLogin = () => {
         password,
       });
 
-      const { user: userData, token } = response.data;
+      const { token } = response.data;
 
       // ✅ Simpan token ke localStorage
       localStorage.setItem("token", token);
 
-      // Optional: Simpan user lokal jika kamu pakai
-      localStorage.setItem("user", JSON.stringify(userData));
+      // ✅ Refresh user dari API dan simpan ke context
+      await getUserData(); // ini akan mengisi state user di context
 
-      // ✅ Redirect berdasarkan role
-      if (userData.role === "siswa") {
-        router.push("/beranda");
-      } else {
-        router.push("/beranda");
-      }
+      // ✅ Redirect ke beranda
+      router.push("/beranda");
     } catch (err) {
       console.error("Login error:", err);
       setError("Ups! NIP/NISN atau password salah. Coba lagi, ya.");

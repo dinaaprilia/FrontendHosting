@@ -32,28 +32,28 @@ export default function Beranda() {
 
         {/* RecentActivity lebih lebar */}
         <div className="w-full max-w-6xl mx-auto">
-          
+
         </div>
 
         {/* <div className="flex max-w-6xl mx-auto ml-auto">
           <InformasiCard />
         </div> */}
-         <div className="flex max-w-6xl mx-auto gap-4 mt-4">
+        <div className="flex max-w-6xl mx-auto gap-4 mt-4">
           <div className="w-1/2">
-            <ListInformsiswa/>
+            <ListInformsiswa />
           </div>
-           <div className="w-1/2 mt-1">
-    <HarianAbsensi />
-  </div> 
+          <div className="w-1/2 mt-1">
+            <HarianAbsensi />
+          </div>
         </div>
         <div className="flex max-w-6xl mx-auto gap-4 mt-4">
-  <div className="w-1/2">
-    <DaftarEkskul />
-  </div>
-  <div className="w-1/2">
-    <EventCalendar />
-  </div>
-</div>
+          <div className="w-1/2">
+            <DaftarEkskul />
+          </div>
+          <div className="w-1/2">
+            <EventCalendar />
+          </div>
+        </div>
 
       </main>
     </div>

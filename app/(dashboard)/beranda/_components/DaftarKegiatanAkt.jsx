@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { FaDownload, FaUser } from "react-icons/fa";
-import PesertaModal from "./Peserta";
+import PesertaModal from "../../kegiatan/_components/Peserta";
 
 const AktivitasKegiatan = () => {
   const [activities, setActivities] = useState([]);
@@ -160,7 +160,7 @@ const endRaw = item.is_karya_wisata === "1"
   };
 
   return (
-    <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-md p-4 text-center -mt-1">
+    <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-4 text-center mt-5">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Daftar Kegiatan Aktivitas</h2>
         <button
@@ -233,7 +233,7 @@ const endRaw = item.is_karya_wisata === "1"
         </div>
       </div>
 
-      <div className="overflow-y-auto max-h-[455px] border border-gray-300 rounded">
+      <div className="overflow-y-auto max-h-[250px] border border-gray-300 rounded">
         <table className="min-w-full text-center">
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>

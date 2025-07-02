@@ -69,7 +69,7 @@ const RecentActivity = () => {
                 <td className="py-3 px-2">
                   <div className="flex items-center justify-center gap-2">
                     <img
-                      src={activity.avatar}
+                      src={activity.avatar || "/images/profil.png"}
                       alt={activity.name}
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                     />

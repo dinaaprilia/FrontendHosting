@@ -6,7 +6,6 @@ import { FaArrowLeft } from "react-icons/fa";
 import StudentParticipation from "./_components/DetailSiswa";
 import UploadGallery from "./_components/GaleriFoto";
 
-
 export default function KaryaDetail() {
   return (
     <div className="flex h-screen overflow-hidden">

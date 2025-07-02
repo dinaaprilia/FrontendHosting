@@ -3,17 +3,15 @@
 import { useState, useEffect } from 'react';
 import { FaBell } from 'react-icons/fa';
 import Modal from 'react-modal';
-import { useSession } from 'next-auth/react';
 import { parseISO, format } from 'date-fns';
 import { id as localeID } from 'date-fns/locale';
 
 Modal.setAppElement(typeof document !== 'undefined' ? document.body : null);
 
-export default function ListInformsiswa() {
+export default function listInform() {
   const [informasiData, setInformasiData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(null);
-  const { data: session } = useSession();
 
   const API_BASE = 'http://localhost:8000/api/informasi';
 
@@ -50,7 +48,6 @@ export default function ListInformsiswa() {
   const isToday = (dateString) => {
     const today = new Date();
     const inputDate = new Date(dateString);
-
     return (
       today.getDate() === inputDate.getDate() &&
       today.getMonth() === inputDate.getMonth() &&
@@ -64,12 +61,11 @@ export default function ListInformsiswa() {
         <h2 className="text-lg font-semibold flex items-center">
           <FaBell className="mr-2" /> Informasi Umum
         </h2>
+        {/* GreenButton viewer-only: hidden */}
       </div>
 
       <div
-        className={`mt-4 space-y-3 ${
-          informasiData.length > 2 ? 'max-h-[350px] overflow-y-auto pr-1' : ''
-        }`}
+        className={`mt-4 space-y-3 ${informasiData.length > 2 ? 'max-h-[350px] overflow-y-auto pr-1' : ''}`}
       >
         {informasiData.map((info, index) => (
           <div
@@ -92,9 +88,13 @@ export default function ListInformsiswa() {
             </p>
             <div className="mt-2 text-gray-500 text-sm flex items-center flex-wrap">
               <img
-                src={info?.photo || '/images/profil.jpg'}
+                src={
+                  info?.photo
+                    ? `http://localhost:8000/storage/${info.photo}`
+                    : "/images/profil.png"
+                }
                 alt="User"
-                className="w-5 h-5 rounded-full mr-2"
+                className="w-8 h-8 rounded-full object-cover mr-2"
               />
               <span className="truncate">
                 {info?.author?.trim() || 'Anonim'} / {info?.time?.trim() || '-'}
@@ -104,7 +104,7 @@ export default function ListInformsiswa() {
         ))}
       </div>
 
-      {/* Modal Detail */}
+      {/* Modal Detail View Only */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

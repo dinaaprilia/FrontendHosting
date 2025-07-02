@@ -47,7 +47,7 @@ export default function KegiatanEksCard() {
   }, [ekskulId]);
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-7xl h-[220px] max-sm:h-auto mt-1 flex max-sm:flex-col max-sm:gap-4 max-sm:items-center justify-between items-start cursor-default hover:opacity-90">
+    <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-7xl h-[220px] max-sm:h-auto sm:mt-1 -mt-15 flex max-sm:flex-col max-sm:gap-4 max-sm:items-center justify-between items-start cursor-default hover:opacity-90">
       <div className="flex-1 flex flex-col justify-center max-sm:items-center max-sm:text-center">
         <div className="flex items-center gap-2 max-sm:flex-col max-sm:gap-1 max-sm:mb-2">
           <FaBullhorn className="text-black sm:text-2xl text-xl" />

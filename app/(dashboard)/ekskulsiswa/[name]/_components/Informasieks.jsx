@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import { FaBell } from 'react-icons/fa';
 import Modal from 'react-modal';
+import GreenButton from './TombolTambah';
 
 Modal.setAppElement(typeof document !== 'undefined' ? document.body : null);
 
-export default function InformasiEkskulviewer() {
+export default function InformasiEkskul() {
   const [informasiData, setInformasiData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(null);
@@ -28,7 +29,7 @@ export default function InformasiEkskulviewer() {
 
     if (!ekskulId) return;
 
-    setEkskulName(ekskul.name);
+    setEkskulName(ekskul.name); // ✅ typo diperbaiki
 
     fetch(`http://localhost:8000/api/ekskul/${ekskulId}/informasi`)
       .then((res) => res.json())
@@ -37,11 +38,12 @@ export default function InformasiEkskulviewer() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto mt-2 p-4 bg-white rounded-2xl shadow-md h-[510px] flex flex-col">
+    <div className="max-w-2xl mx-auto mt-2 p-4 bg-white rounded-2xl shadow-md h-[510px] flex flex-col z-50">
       <div className="flex justify-between items-center border-b pb-2">
         <h2 className="text-lg font-semibold flex items-center">
           <FaBell className="mr-2" /> Informasi Ekskul
         </h2>
+        <GreenButton />
       </div>
 
       {/* Daftar Informasi (scroll jika lebih dari tinggi container) */}
@@ -74,8 +76,8 @@ export default function InformasiEkskulviewer() {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Informasi Detail"
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-        overlayClassName="fixed inset-0"
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]"
+        overlayClassName="fixed inset-0 z-[9999]"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md sm:w-full w-72 max-h-[420px] overflow-y-auto">
           {selectedInfo && (
@@ -86,7 +88,7 @@ export default function InformasiEkskulviewer() {
                 <img src="/images/profil.jpg" alt="User" className="w-6 h-6 rounded-full mr-2" />
                 {selectedInfo.author} / {selectedInfo.time}
               </div>
-              <div className="mt-4 flex justify-center">
+              <div className="mt-4 flex sm:justify-end justify-center">
                 <button
                   onClick={closeModal}
                   className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-2 rounded-lg"

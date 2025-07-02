@@ -32,6 +32,7 @@ const AttendanceMonthTable = ({ selectedDate }) => {
       if (selectedClass && selectedClass !== "Semua Kelas") params.append("kelas", selectedClass);
       params.append("bulan", bulan);
       params.append("tahun", tahun);
+      params.append("role", "siswa"); // ✅ Tambahkan filter hanya siswa
 
       const res = await fetch(`http://localhost:8000/api/list-absensi-siswa?${params.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch data");

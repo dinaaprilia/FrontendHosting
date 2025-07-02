@@ -1,19 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FaPlayCircle, FaCheckCircle } from "react-icons/fa"; // hanya ikon yang dipakai
+import { FaPlayCircle, FaCheckCircle } from "react-icons/fa";
 import ActivityNowPopup from "./KegiatanBerlangsung";
 import ActivityEndPopup from "./KegiatanSelesai";
-// import AmountPopup from "./JumlahPartisipan";
-// import ResponsiblePopup from "./Penanggungjawab";
 
 const KegiatanSummary = () => {
   const [popupType, setPopupType] = useState(null);
   const [summary, setSummary] = useState({
     berlangsung: 0,
     selesai: 0,
-    // peserta: 0,
-    // penanggung_jawab: 0,
   });
 
   useEffect(() => {
@@ -33,31 +29,21 @@ const KegiatanSummary = () => {
     {
       label: "Kegiatan Berlangsung",
       value: summary.berlangsung,
-      icon: <FaPlayCircle />,
-      color: "border-blue-400",
+      icon: <FaPlayCircle className="text-[#2d6ec4] text-5xl" />,
+      borderColor: "border-[#2d6ec4]",
+      bgColor: "bg-white",
+      textColor: "text-[#2d6ec4]",
       popup: "KegiatanBerlangsung",
     },
     {
       label: "Kegiatan Selesai",
       value: summary.selesai,
-      icon: <FaCheckCircle />,
-      color: "border-gray-400",
+      icon: <FaCheckCircle className="text-[#337C8E] text-5xl" />,
+      borderColor: "border-[#337C8E]",
+      bgColor: "bg-white",
+      textColor: "text-[#337C8E]",
       popup: "KegiatanSelesai",
     },
-    // {
-    //   label: "Jumlah Partisipan",
-    //   value: summary.peserta,
-    //   icon: <FaUsers />,
-    //   color: "border-green-400",
-    //   popup: "JumlahPartisipan",
-    // },
-    // {
-    //   label: "Penanggung Jawab",
-    //   value: summary.penanggung_jawab,
-    //   icon: <FaUserTie />,
-    //   color: "border-yellow-400",
-    //   popup: "Penanggungjawab",
-    // },
   ];
 
   const handleClick = (popup) => {
@@ -69,12 +55,12 @@ const KegiatanSummary = () => {
       {data.map((item, index) => (
         <button
           key={index}
-          className={`flex flex-col items-center p-6 border-2 rounded-xl shadow-md ${item.color} bg-white cursor-pointer hover:bg-gray-100 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 active:scale-95`}
+          className={`flex flex-col items-center p-6 border-4 rounded-xl shadow-md ${item.borderColor} ${item.bgColor} ${item.textColor} cursor-pointer hover:brightness-105 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2`}
           onClick={() => handleClick(item.popup)}
         >
-          <div className="text-5xl text-gray-700 mb-4">{item.icon}</div>
-          <p className="text-lg font-semibold text-gray-600">{item.label}</p>
-          <p className="text-3xl font-bold text-gray-800 mt-2">{item.value}</p>
+          <div className="mb-4">{item.icon}</div>
+          <p className="text-lg font-semibold">{item.label}</p>
+          <p className="text-3xl font-bold mt-2">{item.value}</p>
         </button>
       ))}
 
@@ -84,12 +70,6 @@ const KegiatanSummary = () => {
       {popupType === "KegiatanSelesai" && (
         <ActivityEndPopup onClose={() => setPopupType(null)} />
       )}
-      {/* {popupType === "JumlahPartisipan" && (
-        <AmountPopup onClose={() => setPopupType(null)} />
-      )}
-      {popupType === "Penanggungjawab" && (
-        <ResponsiblePopup onClose={() => setPopupType(null)} />
-      )} */}
     </div>
   );
 };

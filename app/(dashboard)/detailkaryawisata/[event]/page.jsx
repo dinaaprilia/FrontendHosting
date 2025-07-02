@@ -13,16 +13,8 @@ export default function EventDetail() {
   const searchParams = useSearchParams();
 
   // Ambil judul dari slug URL (misal: "Taman-Situs-Budaya" -> "Taman Situs Budaya")
-  const slug = params.event || '';
-  const judul = decodeURIComponent(
-    slug
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ')
-  );
-
-  // Ambil tanggal dari query string
-  const tanggal = searchParams.get('tanggal') || '';
+const judul = searchParams.get('judul') || '';
+const tanggal = searchParams.get('tanggal') || '';
 
   return (
     <div className="flex h-screen overflow-hidden">

@@ -161,13 +161,13 @@ export default function KehadiranEkskul({ ekskulId, ekskulName }) {
       </div>
 
       <div className="py-4 text-center ml-5 -mt-5 max-sm:ml-0">
-        <button className="px-4 py-2 bg-blue-700 text-white rounded-md flex items-center justify-center w-full sm:w-auto" onClick={handleGenerate}>
+        <button className="px-4 py-2 bg-blue-700 text-white rounded-md flex items-center justify-center w-full sm:w-auto text-sm" onClick={handleGenerate}>
           <FaExternalLinkAlt className="mr-2" /> Generate Absensi
         </button>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full border-t border-gray-300 text-sm table-fixed">
+        <table className="w-full border-t border-gray-300 text-sm table-fixed max-sm:text-xs">
           <thead>
             <tr className="border-b border-gray-300 text-center">
               <th className="py-2 w-[5%]">No</th>
@@ -215,14 +215,14 @@ export default function KehadiranEkskul({ ekskulId, ekskulName }) {
       {hasGenerated && (
         <div className="mt-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full">
           {isEditing ? (
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md w-full sm:w-auto" onClick={handleSave}>Simpan</button>
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-md w-full sm:w-auto text-sm" onClick={handleSave}>Simpan</button>
           ) : (
-            <button className="px-4 py-2 bg-green-500 text-white rounded-md w-full sm:w-auto" onClick={handleEdit}>Edit</button>
+            <button className="px-4 py-2 bg-green-500 text-white rounded-md w-full sm:w-auto text-sm" onClick={handleEdit}>Edit</button>
           )}
         </div>
       )}
 
-      {lastEdit && <p className="mt-2 text-gray-600 text-sm">Last Edit: {lastEdit}</p>}
+      {lastEdit && <p className="mt-2 text-gray-600 text-xs">Last Edit: {lastEdit}</p>}
     </div>
   );
 }

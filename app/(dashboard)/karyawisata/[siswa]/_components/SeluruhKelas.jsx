@@ -16,7 +16,7 @@ const ClassGrid = () => {
   const router = useRouter(); // ✅ Inisialisasi router
 
   const handleClassClick = (className) => {
-    router.push(`/inputkaryawisata?kelas=${encodeURIComponent(className)}`); // ✅ Router diperbaiki
+router.push(`/inputkaryawisata/siswa?kelas=${encodeURIComponent(className)}`);
   };
 
   const handleButtonClick = () => {

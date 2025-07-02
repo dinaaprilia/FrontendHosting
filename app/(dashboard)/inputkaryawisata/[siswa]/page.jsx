@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import { FaArrowLeft } from "react-icons/fa";
-import ListForm from "./_components/Tourlistt";
+import ListForm from "./_components/Tourliist";
 import StudentList from "./_components/Siswalist";
 
 
@@ -31,7 +31,7 @@ export default function InputPiket() {
           </button>
         </div>
         
-        <ListForm/>
+        <ListForm isViewer={true} />
 
         <div className="mt-5">
         <StudentList/> 

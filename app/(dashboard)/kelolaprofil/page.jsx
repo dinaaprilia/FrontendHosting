@@ -4,7 +4,6 @@ import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import ProfileCard from "./_components/ProfilAkun";
 
-
 export default function Profil() {
   return (
     <div className="flex h-screen overflow-hidden"> 

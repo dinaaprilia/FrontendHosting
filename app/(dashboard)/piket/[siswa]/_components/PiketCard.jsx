@@ -34,7 +34,7 @@ export default function PiketCard() {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-[#869ddd] p-6 rounded-2xl shadow-lg w-full max-w-7xl h-[220px] max-sm:h-auto max-sm:flex-col flex justify-between items-start max-sm:items-center max-sm:text-center mt-5">
+    <div className="bg-[#869ddd] p-6 rounded-2xl shadow-lg w-full max-w-7xl h-[220px] max-sm:h-auto max-sm:flex-col flex justify-between items-start max-sm:items-center max-sm:text-center sm:mt-5 mt-2">
       <div className="flex-1 flex flex-col justify-center max-sm:items-center">
         <div className="flex items-center gap-3 max-sm:flex-col max-sm:gap-1">
           <FaBullhorn className="text-white text-2xl" />

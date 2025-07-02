@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import WelcomeBox from "./_components/WelcomeBox";
@@ -8,28 +9,33 @@ import BoxTiga from "./_components/BoxTiga";
 import RecentActivity from "./_components/AktivitasTerkini";
 import InformasiListGuru from "./_components/Informasidata";
 import ListInformsiswa from "./siswa/_components/InformasiUmum";
-import HarianAbsensi from "./siswa/_components/SekilasAbsen";
+import HarianAbsensiee from "./siswa/_components/SekilasAbsen";
 import EventCalendarGuru from "./_components/Kalender";
 import EventCalendar from "./siswa/_components/KalenderSiswa";
 import DaftarEkskul from "./siswa/_components/SekilasEkskul";
 import WelcomeBoxortu from "./_components/OrtuBox";
 import AttendanceTable from "../piket/[siswa]/_components/RiwayatSiswaPiket";
+import AktivitasKegiatan from "./_components/DaftarKegiatanAkt";
 import dynamic from "next/dynamic";
 
-// Load grafik kehadiran hanya di client
+// Tambahkan ini:
+import { useUserContext } from "@/hooks/UserContext";
+
+// Dynamic import chart
 const KehadiranChartGuru = dynamic(() => import("./_components/KehadiranChart"), {
   ssr: false,
 });
 
 export default function Beranda() {
-  const [role, setRole] = useState(null);
+  const { user } = useUserContext();
+  const role = user?.role;
 
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.role) {
-      setRole(userData.role);
-    }
-  }, []);
+  // Optional: bisa juga buat data siswa kalau role orangtua
+  const studentId = user?.childId || user?.student?.id;
+
+  if (!user) {
+    return <p className="text-center mt-10 text-red-500">Memuat data pengguna...</p>;
+  }
 
   return (
     <div className="flex h-screen">
@@ -43,23 +49,21 @@ export default function Beranda() {
 
         {role === "guru" ? (
           <>
-            {/* Dashboard GURU */}
             <WelcomeBox />
             <BoxTiga />
             <div className="flex flex-col md:flex-row max-w-6xl mx-auto gap-4 mt-4">
               <div className="w-full md:w-1/2"><InformasiListGuru /></div>
               <div className="w-full md:w-1/2"><EventCalendarGuru /></div>
             </div>
+            <KehadiranChartGuru />
           </>
         ) : role === "siswa" ? (
           <>
-            {/* Dashboard SISWA */}
             <BoxWelcome />
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <div><ListInformsiswa /></div>
-              <div className="mt-4 md:mt-2"><HarianAbsensi /></div>
+              <div className="mt-4 md:mt-2"><HarianAbsensiee /></div>
             </div>
-
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <div><DaftarEkskul /></div>
               <div className="md:-mt-4"><EventCalendar /></div>
@@ -67,17 +71,17 @@ export default function Beranda() {
           </>
         ) : role === "orangtua" ? (
           <>
-            {/* Dashboard ORANG TUA */}
             <WelcomeBoxortu />
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <HarianAbsensi/>
-              <DaftarEkskul/>
-              <AttendanceTable/>
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:mt-4 mt-2">
+              <div><HarianAbsensiee studentId={studentId} /></div>
+              <div className="sm:mt-1 -mt-2"><DaftarEkskul studentId={studentId} /></div>
+            </div>
+            <div className="sm:mt-2 mt-1">
+               <AttendanceTable studentId={studentId} />
             </div>
           </>
         ) : role === "admin" ? (
           <>
-            {/* Dashboard ADMIN */}
             <WelcomeBox />
             <BoxTiga />
             <div className="w-full max-w-6xl mx-auto">
@@ -88,9 +92,10 @@ export default function Beranda() {
               <div className="w-full md:w-1/2"><EventCalendarGuru /></div>
             </div>
             <KehadiranChartGuru />
+            <AktivitasKegiatan />
           </>
         ) : (
-          <p className="text-center mt-10 text-red-500">Memuat data pengguna...</p>
+          <p className="text-center mt-10 text-red-500">Role tidak dikenali.</p>
         )}
       </main>
     </div>

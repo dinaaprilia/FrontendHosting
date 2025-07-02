@@ -84,19 +84,15 @@ export default function StudentList() {
                 <td className="p-4 sm:pl-20 pl-2">{index + 1}.</td>
                 <td className="p-4 flex items-center gap-2">
                   <Image
-                    src={student.avatar || "/avatar.png"}
-                    alt="Avatar"
-                    width={24}
-                    height={24}
-                    className="rounded-full"
-                  />
-                  <Link
-                    href={`/detail-profil/${student.id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {student.nama}
-                  </Link>
-                </td>
+    src={student.avatar && student.avatar !== "" ? student.avatar : "/images/profil.png"}
+    alt={`Foto ${student.nama}`}
+    width={32}
+    height={32}
+    className="rounded-full object-cover"
+    onError={(e) => (e.target.src = "/images/profil.png")}
+  />
+  <span className="font-medium text-gray-800">{student.nama}</span>
+</td>
                 <td className="p-4 pr-7">{student.nisn}</td>
                 <td className="p-4 pr-2">
                   <span
@@ -109,7 +105,7 @@ export default function StudentList() {
                     {student.jenis_kelamin === "P" ? "Perempuan" : "Laki-laki"}
                   </span>
                 </td>
-                <td className="border border-gray-300 p-2">
+                <td className=" p-2">
                   {student.tanggal_lahir
                     ? new Date(student.tanggal_lahir).toLocaleDateString("id-ID", {
                         day: "2-digit",

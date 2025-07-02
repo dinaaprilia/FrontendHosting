@@ -9,6 +9,9 @@ export default function ProfileDetailGuru({ user, onClose }) {
   const [formData, setFormData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [jabatanList, setJabatanList] = useState([]);
+  const [agamaList] = useState([
+    'Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'
+  ]);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [showTambahJabatan, setShowTambahJabatan] = useState(false);
   const [jabatanBaru, setJabatanBaru] = useState('');
@@ -120,7 +123,7 @@ export default function ProfileDetailGuru({ user, onClose }) {
         </div>
       )}
 
-      <div className="max-w-4xl bg-white p-8 rounded-2xl shadow-xl relative w-full">
+       <div className="bg-white p-4 sm:p-8 rounded-2xl shadow-xl relative w-[95%] max-w-4xl mx-auto h-[400px] sm:h-auto sm:overflow-hidden overflow-y-auto">
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
           onClick={onClose}
@@ -130,7 +133,7 @@ export default function ProfileDetailGuru({ user, onClose }) {
 
         <h2 className="text-center text-2xl font-semibold mb-6">Detail Profil</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="col-span-1 flex justify-center">
             <div className="w-28 h-28 bg-gray-100 rounded-2xl overflow-hidden shadow-md">
               <img
@@ -141,8 +144,8 @@ export default function ProfileDetailGuru({ user, onClose }) {
             </div>
           </div>
 
-          <div className="col-span-2 grid grid-cols-2 gap-x-10 gap-y-6">
-            {['nama', 'email', 'nomor_hp', 'agama'].map((field) => (
+          <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+            {['nama', 'email', 'nomor_hp'].map((field) => (
               <div key={field}>
                 <label className="font-semibold text-black capitalize">
                   {field.replace('_', ' ')}
@@ -160,6 +163,25 @@ export default function ProfileDetailGuru({ user, onClose }) {
                 )}
               </div>
             ))}
+
+            <div>
+              <label className="font-semibold text-black">Agama</label>
+              {isEditing ? (
+                <select
+                  name="agama"
+                  value={formData.agama || ''}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded"
+                >
+                  <option value="">Pilih Agama</option>
+                  {agamaList.map((a, idx) => (
+                    <option key={idx} value={a}>{a}</option>
+                  ))}
+                </select>
+              ) : (
+                <p>{user.agama || '-'}</p>
+              )}
+            </div>
 
             <div>
               <label className="font-semibold text-black">Tanggal Lahir</label>

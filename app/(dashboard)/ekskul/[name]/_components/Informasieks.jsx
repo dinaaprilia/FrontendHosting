@@ -76,7 +76,7 @@ export default function InformasiEkskul() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto mt-2 p-4 bg-white rounded-2xl shadow-md h-[510px] flex flex-col">
+    <div className="max-w-2xl mx-auto mt-2 p-4 bg-white rounded-2xl shadow-md h-[510px] flex flex-col z-50">
       <div className="flex justify-between items-center border-b pb-2">
         <h2 className="text-lg font-semibold flex items-center">
           <FaBell className="mr-2" /> Informasi Ekskul
@@ -114,8 +114,8 @@ export default function InformasiEkskul() {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Informasi Detail"
-        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-        overlayClassName="fixed inset-0"
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[999]"
+        overlayClassName="fixed inset-0 z-50"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md sm:w-full w-72 max-h-[420px] overflow-y-auto">
           {selectedInfo && (
