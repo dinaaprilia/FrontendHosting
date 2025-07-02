@@ -14,7 +14,7 @@ const RecentActivity = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/recent-activity", {
+        const response = await fetch("https://backendfix-production.up.railway.app/api/recent-activity", {
           headers: {
             "Content-Type": "application/json",
             // Jika endpoint dilindungi oleh JWT:
