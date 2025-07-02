@@ -16,7 +16,7 @@ export default function AbsensiViewer() {
       const token = localStorage.getItem('token');
 
       try {
-        const resUser = await fetch("http://localhost:8000/api/user", {
+        const resUser = await fetch("https://backendfix-production.up.railway.app/api/user", {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -26,7 +26,7 @@ export default function AbsensiViewer() {
         const kelasUser = resultUser.user.kelas;
         setKelas(kelasUser);
 
-        const resAbsensi = await fetch(`http://localhost:8000/api/absensi-hari-ini-kelas?kelas=${kelasUser}`, {
+        const resAbsensi = await fetch(`https://backendfix-production.up.railway.app/api/absensi-hari-ini-kelas?kelas=${kelasUser}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
