@@ -13,7 +13,7 @@ export default function TotalPopup({ onClose }) {
   useEffect(() => {
   const fetchUsersWithTotal = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/total-user');
+      const res = await fetch('https://backendfix-production.up.railway.app/api/total-user');
       if (!res.ok) throw new Error('Gagal mengambil data');
       const data = await res.json();
 
