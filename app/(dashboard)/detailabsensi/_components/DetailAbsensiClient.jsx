@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
-import StudentCard from "./_components/DetailSiswa";
-import AttendanceTable from "./_components/RiwayatBulanan";
+import StudentCard from "./DetailSiswa";
+import AttendanceTable from "./RiwayatBulanan";
 
 export default function DetailAbsensiClient() {
   const searchParams = useSearchParams();
