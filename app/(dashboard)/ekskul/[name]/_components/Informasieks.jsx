@@ -29,7 +29,7 @@ export default function InformasiEkskul() {
 
   const handleDelete = async () => {
     try {
-      await fetch(`http://localhost:8000/api/informasi/${selectedInfo.id}`, {
+      await fetch(`https://backendfix-production.up.railway.app/api/informasi/${selectedInfo.id}`, {
         method: 'DELETE',
       });
 
@@ -46,7 +46,7 @@ export default function InformasiEkskul() {
 
   const handleSaveEdit = async () => {
     try {
-      await fetch(`http://localhost:8000/api/informasi/${selectedInfo.id}`, {
+      await fetch(`https://backendfix-production.up.railway.app/api/informasi/${selectedInfo.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: editedText }),
@@ -69,7 +69,7 @@ export default function InformasiEkskul() {
 
     setEkskulName(ekskul.name);
 
-    fetch(`http://localhost:8000/api/ekskul/${ekskulId}/informasi`)
+    fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/informasi`)
       .then((res) => res.json())
       .then((data) => setInformasiData(data))
       .catch((err) => console.error('❌ Gagal ambil informasi:', err));
