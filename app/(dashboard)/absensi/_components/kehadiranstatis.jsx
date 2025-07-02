@@ -20,7 +20,7 @@ const AttendanceCard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/statistik-hari-ini");
+        const response = await fetch("https://backendfix-production.up.railway.app/api/statistik-hari-ini");
         const json = await response.json();
         setData(json.data);
       } catch (error) {
