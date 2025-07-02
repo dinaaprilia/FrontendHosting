@@ -32,7 +32,7 @@ export default function ProfileDetailGuru({ user, onClose }) {
     const fetchJabatan = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:8000/api/jabatan', {
+        const res = await fetch('https://backendfix-production.up.railway.app/api/jabatan', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -68,7 +68,7 @@ export default function ProfileDetailGuru({ user, onClose }) {
         kelas: showTambahJabatan ? jabatanBaru : formData.kelas,
       };
 
-      const res = await fetch(`http://localhost:8000/api/users/${user.id}`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/users/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export default function ProfileDetailGuru({ user, onClose }) {
 
   const fotoProfilURL = user?.foto_profil?.startsWith('http')
     ? user.foto_profil
-    : `http://localhost:8000/storage/${user.foto_profil}`;
+    : `https://backendfix-production.up.railway.app/storage/${user.foto_profil}`;
 
   if (!user) return null;
 
