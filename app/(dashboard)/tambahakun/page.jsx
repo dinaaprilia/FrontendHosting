@@ -19,7 +19,7 @@ export default function TambahAkun() {
     setHasMounted(true);
 
     const fetchSiswa = async () => {
-      const res = await fetch("http://localhost:8000/api/jumlah-siswa");
+      const res = await fetch("https://backendfix-production.up.railway.app/api/jumlah-siswa");
       const data = await res.json();
       const total = data.laki_laki + data.perempuan;
       setUserGenderData({
@@ -29,7 +29,7 @@ export default function TambahAkun() {
     };
 
     const fetchGuru = async () => {
-      const res = await fetch("http://localhost:8000/api/jumlah-guru");
+      const res = await fetch("https://backendfix-production.up.railway.app/api/jumlah-guru");
       const data = await res.json();
       const total = data.laki_laki + data.perempuan;
       setAdminGenderData({
