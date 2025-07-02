@@ -10,7 +10,7 @@ export default function DaftarEkskul() {
     const fetchEkskul = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:8000/api/ekskul-saya", {
+        const response = await fetch("https://backendfix-production.up.railway.app/api/ekskul-saya", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
