@@ -14,7 +14,7 @@ const AttendanceTable = ({ selectedDate }) => {
       const token = localStorage.getItem('token');
 
       try {
-        const resUser = await fetch('http://localhost:8000/api/user', {
+        const resUser = await fetch('https://backendfix-production.up.railway.app/api/user', {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
@@ -29,7 +29,7 @@ const AttendanceTable = ({ selectedDate }) => {
         const tahun = selectedDate.getFullYear();
 
         const resAbsensi = await fetch(
-          `http://localhost:8000/api/absensi-by-user?user_id=${userId}&bulan=${bulan}&tahun=${tahun}`,
+          `https://backendfix-production.up.railway.app/api/absensi-by-user?user_id=${userId}&bulan=${bulan}&tahun=${tahun}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
