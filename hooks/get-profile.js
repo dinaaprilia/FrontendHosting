@@ -22,7 +22,7 @@ const getProfile= () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:8000/api/user-profile", {
+      const response = await axios.get("https://backendfix-production.up.railway.app/api/user-profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
