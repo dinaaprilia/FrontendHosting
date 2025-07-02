@@ -13,7 +13,7 @@ export default function PopupForm({ onAddEkskul, onClose }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [showConfirm, setShowConfirm] = useState(false); // 🆕 Konfirmasi
 
-  const API_URL = 'http://localhost:8000/api';
+  const API_URL = 'https://backendfix-production.up.railway.app/api';
 
   useEffect(() => {
     const fetchAdmins = async () => {
