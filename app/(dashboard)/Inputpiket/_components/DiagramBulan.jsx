@@ -26,7 +26,7 @@ const DiagramBulan = () => {
       const tahun = selectedDate.getFullYear();
 
       try {
-        const response = await axios.get(`http://localhost:8000/api/kontribusi-piket`, {
+        const response = await axios.get(`https://backendfix-production.up.railway.app/api/kontribusi-piket`, {
           params: { bulan, tahun }
         });
 
