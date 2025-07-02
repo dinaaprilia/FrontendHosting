@@ -8,7 +8,7 @@ export default function KaryaCard() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/perjalanan-wisata-sebelumnya')
+    axios.get('https://backendfix-production.up.railway.app/api/perjalanan-wisata-sebelumnya')
       .then(res => {
         const sorted = [...res.data].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
         setEvents(sorted);
