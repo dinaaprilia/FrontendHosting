@@ -20,7 +20,7 @@ export default function StudentParticipation({ judul, tanggal }) {
   useEffect(() => {
     if (!judul || !tanggal || judul === '-' || tanggal === '-') return;
 
-    axios.get("http://localhost:8000/api/absensi-karya-wisata/peserta", {
+    axios.get("https://backendfix-production.up.railway.app/api/absensi-karya-wisata/peserta", {
       params: {
         judul: judul.toLowerCase(),
         tanggal,
