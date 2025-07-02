@@ -13,7 +13,7 @@ export default function listInform() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(null);
 
-  const API_BASE = 'http://localhost:8000/api/informasi';
+  const API_BASE = 'https://backendfix-production.up.railway.app/api/informasi';
 
   useEffect(() => {
     fetch(API_BASE)
@@ -90,7 +90,7 @@ export default function listInform() {
               <img
                 src={
                   info?.photo
-                    ? `http://localhost:8000/storage/${info.photo}`
+                    ? `https://backendfix-production.up.railway.app/storage/${info.photo}`
                     : "/images/profil.png"
                 }
                 alt="User"
