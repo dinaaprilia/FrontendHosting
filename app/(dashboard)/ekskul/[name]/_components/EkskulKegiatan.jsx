@@ -40,7 +40,7 @@ export default function KegiatanEksCard() {
 
   useEffect(() => {
     if (!ekskulId) return;
-    fetch(`http://localhost:8000/api/ekskul/${ekskulId}/kegiatan`)
+    fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/kegiatan`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
@@ -68,13 +68,13 @@ export default function KegiatanEksCard() {
 
       try {
         if (kegiatanId) {
-          await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/kegiatan/${kegiatanId}`, {
+          await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/kegiatan/${kegiatanId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, date, start: startDate }) // ✅ NEW
           });
         } else {
-          const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/kegiatan`, {
+          const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/kegiatan`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, date, start: startDate }) // ✅ NEW
@@ -96,7 +96,7 @@ export default function KegiatanEksCard() {
   const handleDelete = async () => {
     if (!kegiatanId) return;
     try {
-      await fetch(`http://localhost:8000/api/kegiatan/${kegiatanId}`, {
+      await fetch(`https://backendfix-production.up.railway.app/api/kegiatan/${kegiatanId}`, {
         method: "DELETE",
       });
       setTitle("");
