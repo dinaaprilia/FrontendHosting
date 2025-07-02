@@ -13,7 +13,7 @@ export default function PiketCard() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/piket-card")
+    fetch("https://backendfix-production.up.railway.app/api/piket-card")
       .then((res) => {
         if (!res.ok) throw new Error("Gagal ambil data");
         return res.json();
