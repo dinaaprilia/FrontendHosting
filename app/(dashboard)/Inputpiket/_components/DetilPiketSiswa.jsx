@@ -29,7 +29,7 @@ export default function DetailPiketPopup({ onClose, anggota }) {
       if (!token || !anggota?.nisn) return;
 
       try {
-        const url = `http://localhost:8000/api/piket/riwayat-nisn/${anggota.nisn}?bulan=${selectedMonth}&tahun=${selectedYear}`;
+        const url = `https://backendfix-production.up.railway.app/api/piket/riwayat-nisn/${anggota.nisn}?bulan=${selectedMonth}&tahun=${selectedYear}`;
         const res = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
