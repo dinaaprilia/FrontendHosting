@@ -55,7 +55,7 @@ export default function AttendanceForm() {
     const today = new Date().toISOString().slice(0, 10);
     const fetchPiket = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/absensi-piket?kelas=${kelas}&tanggal=${today}`);
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/absensi-piket?kelas=${kelas}&tanggal=${today}`);
         if (!res.ok) throw new Error("Gagal mengambil data absensi");
         const data = await res.json();
         if (!data.data || data.data.length === 0) {
@@ -141,7 +141,7 @@ export default function AttendanceForm() {
       piket: piketArray,
     };
     try {
-      const response = await fetch("http://localhost:8000/api/input-piket", {
+      const response = await fetch("https://backendfix-production.up.railway.app/api/input-piket", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
