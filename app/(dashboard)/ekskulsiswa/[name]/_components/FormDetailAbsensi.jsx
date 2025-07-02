@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://backendfix-production.up.railway.app/api";
 
 export default function RekapanChart({ ekskulId }) {
   const [data, setData] = useState([]);
