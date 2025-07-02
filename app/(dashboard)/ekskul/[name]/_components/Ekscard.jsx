@@ -27,7 +27,7 @@ const EkskulCard = () => {
 
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/description`, {
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/description`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -48,7 +48,7 @@ const EkskulCard = () => {
     if (!ekskulId) return;
 
     try {
-      await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/description`, {
+      await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/description`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
