@@ -18,7 +18,7 @@ const AktivitasKegiatan = () => {
   const bukaModalPeserta = (judul, startDateObj) => {
     if (!startDateObj) return;
     const tanggalFormatted = new Date(startDateObj).toLocaleDateString("sv-SE");
-    fetch(`http://localhost:8000/api/peserta-karya-wisata?judul=${encodeURIComponent(judul)}&tanggal=${tanggalFormatted}`)
+    fetch(`https://backendfix-production.up.railway.app/api/peserta-karya-wisata?judul=${encodeURIComponent(judul)}&tanggal=${tanggalFormatted}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
@@ -38,7 +38,7 @@ const AktivitasKegiatan = () => {
   ];
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/semua-kegiatan")
+    fetch("https://backendfix-production.up.railway.app/api/semua-kegiatan")
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
