@@ -14,7 +14,7 @@ export default function InfoKaryaWisata() {
 
   const fetchCurrentInfo = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/karya-wisata-info/current-title");
+      const res = await axios.get("https://backendfix-production.up.railway.app/api/karya-wisata-info/current-title");
       const data = res.data?.data;
       if (data) {
         setTitle(data.title || "-");
