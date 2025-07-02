@@ -35,7 +35,7 @@ export default function UploadPhotoModal({ onClose }) {
     const ekskulId = JSON.parse(localStorage.getItem("selectedEkskul"))?.id;
     if (!ekskulId) return;
 
-    fetch(`http://localhost:8000/api/ekskul/${ekskulId}/galeri`)
+    fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/galeri`)
       .then((res) => res.json())
       .then((data) => setGallery(data))
       .catch((err) => console.error("❌ Gagal fetch galeri:", err));
