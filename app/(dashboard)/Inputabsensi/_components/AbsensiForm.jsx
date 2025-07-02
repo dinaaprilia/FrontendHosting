@@ -29,7 +29,7 @@ export default function AttendanceForm() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:8000/api/siswa-kelas?kelas=${encodeURIComponent(kelas)}`);
+        const response = await fetch(`https://backendfix-production.up.railway.app/api/siswa-kelas?kelas=${encodeURIComponent(kelas)}`);
         if (!response.ok) throw new Error("Gagal mengambil data siswa");
         const data = await response.json();
         setStudents(data);
@@ -46,7 +46,7 @@ export default function AttendanceForm() {
     const today = new Date().toISOString().slice(0, 10);
     const fetchAbsensi = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/absensi?kelas=${kelas}&tanggal=${today}`);
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/absensi?kelas=${kelas}&tanggal=${today}`);
         if (!res.ok) throw new Error("Gagal mengambil data absensi");
         const data = await res.json();
         if (!data.data || data.data.length === 0) {
