@@ -10,7 +10,7 @@ export default function TeacherPopup({ onClose }) {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/guru'); // Pastikan endpoint ini benar dan sesuai Laravel route
+        const res = await fetch('https://backendfix-production.up.railway.app/api/guru'); // Pastikan endpoint ini benar dan sesuai Laravel route
         const json = await res.json();
         if (json.status === 'success') {
           setTeachers(json.data);
