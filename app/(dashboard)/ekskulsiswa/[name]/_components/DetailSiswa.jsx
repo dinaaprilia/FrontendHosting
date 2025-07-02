@@ -27,7 +27,7 @@ export default function DetailSiswaPopup({ onClose, anggota }) {
       if (!token || !anggota?.id) return;
 
       try {
-        const res = await fetch(`http://localhost:8000/api/ekskul/anggota/${anggota.id}/riwayat?bulan=${selectedMonth}&tahun=${selectedYear}`, {
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/anggota/${anggota.id}/riwayat?bulan=${selectedMonth}&tahun=${selectedYear}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
