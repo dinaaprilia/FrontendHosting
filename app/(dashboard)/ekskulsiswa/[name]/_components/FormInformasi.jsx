@@ -11,7 +11,7 @@ export default function FormInformasiViewer() {
     const ekskulId = JSON.parse(localStorage.getItem("selectedEkskul"))?.id;
     if (!ekskulId) return;
 
-    fetch(`http://localhost:8000/api/ekskul/${ekskulId}/informasi`)
+    fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/informasi`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
