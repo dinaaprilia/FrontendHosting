@@ -21,7 +21,7 @@ const useUser = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:8000/api/user", {
+      const response = await axios.get("https://backendfix-production.up.railway.app/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
