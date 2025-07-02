@@ -21,7 +21,7 @@ export default function InformasiList() {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await fetch('http://localhost:8000/api/informasi', {
+        const res = await fetch('https://backendfix-production.up.railway.app/api/informasi', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -53,7 +53,7 @@ const handleAddInfo = async (newInfo) => {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch('http://localhost:8000/api/input-informasi', {  // <-- pastikan ini sudah benar
+    const response = await fetch('https://backendfix-production.up.railway.app/api/input-informasi', {  // <-- pastikan ini sudah benar
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const handleAddInfo = async (newInfo) => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await fetch(`http://localhost:8000/api/informasi/${selectedInfo.id}`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/informasi/${selectedInfo.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -104,7 +104,7 @@ const handleAddInfo = async (newInfo) => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await fetch(`http://localhost:8000/api/informasi/${selectedInfo.id}`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/informasi/${selectedInfo.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ const handleAddInfo = async (newInfo) => {
             <p className="mt-2 text-gray-700 font-medium text-sm break-words">{getShortText(info.text)}</p>
             <div className="mt-2 text-gray-500 text-sm flex items-center flex-wrap">
               <img
-                src={`http://localhost:8000/storage/${info.foto_profil || 'default.jpg'}`}
+                src={`https://backendfix-production.up.railway.app/storage/${info.foto_profil || 'default.jpg'}`}
                 alt="User"
                 className="w-5 h-5 rounded-full mr-2"
               />
