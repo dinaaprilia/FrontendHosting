@@ -20,7 +20,7 @@ export default function UpdateProfile() {
 
     console.log("📤 Data yang dikirim ke backend:", body);
 
-    await axios.put('http://localhost:8000/api/edit-profile', body, {
+    await axios.put('https://backendfix-production.up.railway.app/api/edit-profile', body, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
