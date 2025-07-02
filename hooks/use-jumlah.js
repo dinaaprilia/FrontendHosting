@@ -22,7 +22,7 @@ const useJumlah = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:8000/api/jumlahUser", {
+      const response = await axios.get("https://backendfix-production.up.railway.app/api/jumlahUser", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
