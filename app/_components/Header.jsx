@@ -34,7 +34,7 @@ const Header = () => {
         <img
           src={
             user?.foto_profil
-              ? `http://localhost:8000/storage/${user.foto_profil}`
+              ? `https://backendfix-production.up.railway.app/storage/${user.foto_profil}`
               : "/images/profil.png"
           }
           alt="Profile"
@@ -54,7 +54,7 @@ const Header = () => {
           <img
             src={
               user?.foto_profil
-                ? `http://localhost:8000/storage/${user.foto_profil}`
+                ? `https://backendfix-production.up.railway.app/storage/${user.foto_profil}`
                 : "/images/profil.png"
             }
             alt="Profile"
