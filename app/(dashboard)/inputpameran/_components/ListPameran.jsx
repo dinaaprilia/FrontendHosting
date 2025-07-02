@@ -23,7 +23,7 @@ export default function ListForm() {
     if (!kelasParam) return;
     const fetchStudents = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/siswa-kelas?kelas=${encodeURIComponent(kelasParam)}`);
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/siswa-kelas?kelas=${encodeURIComponent(kelasParam)}`);
         const data = await res.json();
         setStudents(data);
       } catch (err) {
@@ -39,7 +39,7 @@ export default function ListForm() {
 
     const fetchPameran = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/absensi-pameran?kelas=${kelas}&tanggal=${today}`);
+        const res = await fetch(`https://backendfix-production.up.railway.app/api/absensi-pameran?kelas=${kelas}&tanggal=${today}`);
         const data = await res.json();
 
         if (!data.data || data.data.length === 0) {
@@ -128,7 +128,7 @@ export default function ListForm() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/input-pameran', {
+      const response = await fetch('https://backendfix-production.up.railway.app/api/input-pameran', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
