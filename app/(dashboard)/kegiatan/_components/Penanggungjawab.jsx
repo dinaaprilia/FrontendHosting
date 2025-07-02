@@ -9,7 +9,7 @@ export default function ResponsiblePopup({ onClose }) {
 
   useEffect(() => {
     // Ganti URL ini sesuai dengan endpoint backend-mu
-    fetch('http://localhost:8000/api/penanggung-jawab')
+    fetch('https://backendfix-production.up.railway.app/api/penanggung-jawab')
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
