@@ -19,7 +19,8 @@ export default function InputAbsensiPage({ searchParams }) {
           <h1 className="sm:text-3xl text-2xl text-black font-bold">
             Input Absensi - {kelas}
           </h1>
-          <BackButton />
+                    <BackButton />
+
         </div>
 
         <div className="mt-5">
