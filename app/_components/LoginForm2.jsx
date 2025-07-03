@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoPerson, IoLockClosed, IoEye, IoEyeOff } from "react-icons/io5";
-import useLogin from "@/hooks/use-login"; // pastikan path benar
+import useLogin from "@/hooks/use-login"; 
 
 const LoginForm = () => {
     const [identifier, setIdentifier] = useState("");
@@ -21,7 +21,7 @@ const LoginForm = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen transform translate-y-20">
-            <div className="sm:w-[320px] w-[260px] p-4 px-6 bg-white shadow-2xl rounded-2xl sm:max-h-[450px] max-h-[350px]"
+            <div className="sm:w-[320px] w-[260px] p-4 px-6 bg-white shadow-2xl rounded-2xl sm:max-h-[450px] h-auto""
                 style={{ boxShadow: "8px 8px 8px rgba(0, 0, 0, 0.3)" }}>
                 
                 {/* Logo */}
