@@ -38,7 +38,7 @@ export default function Beranda() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-y-auto">
       <Header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md" />
       <Sidebar />
 
