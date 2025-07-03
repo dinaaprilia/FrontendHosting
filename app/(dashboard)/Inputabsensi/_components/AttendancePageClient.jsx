@@ -1,20 +1,24 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
-import AttendanceForm from "./AbsensiForm";
-import StudentList from "./ListSiswa";
-import BackButton from "./BackButton";
+import { FaArrowLeft } from "react-icons/fa";
+import AttendanceForm from "./_components/AbsensiForm";
+import StudentList from "./_components/ListSiswa";
+import BackButton from "./_components/BackButton";
+import { useSearchParams } from "next/navigation";
 
 export default function AttendancePageClient() {
   const searchParams = useSearchParams();
   const kelas = searchParams.get("kelas") || "Tidak Diketahui";
 
   useEffect(() => {
+    // Hide global scroll when this page is mounted
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
+
+    // Restore global scroll when leaving this page
     return () => {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
