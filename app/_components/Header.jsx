@@ -33,9 +33,7 @@ const Header = () => {
       <div className="flex sm:hidden bg-[#f9fafd] p-2 rounded-full shadow-md items-center space-x-2 absolute sm:right-4 right-2 sm:top-2 top-1">
         <img
           src={
-            user?.foto_profil
-              ? `https://backendfix-production.up.railway.app/storage/${user.foto_profil}`
-              : "/images/profil.png"
+           "/images/profil.png"
           }
           alt="Profile"
           className="sm:w-8 w-6 sm:h-8 h-6 rounded-full object-cover"
