@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import { FaArrowLeft } from "react-icons/fa";
-import AttendanceForm from "./_components/AbsensiForm";
-import StudentList from "./_components/ListSiswa";
-import BackButton from "./_components/BackButton";
+import AttendanceForm from "./AbsensiForm";
+import StudentList from "./ListSiswa";
+import BackButton from "./BackButton";
 import { useSearchParams } from "next/navigation";
 
 export default function AttendancePageClient() {
