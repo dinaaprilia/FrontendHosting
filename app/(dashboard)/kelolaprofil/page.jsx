@@ -6,7 +6,7 @@ import ProfileCard from "./_components/ProfilAkun";
 
 export default function Profil() {
   return (
-    <div className="flex sm:h-screen h-auto"> 
+    <div className="flex sm:h-screen h-auto overflow-y-auto"> 
       {/* Header */}
       <Header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md" />
 
