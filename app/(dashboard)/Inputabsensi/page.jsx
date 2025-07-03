@@ -1,13 +1,29 @@
-import React from "react";
+"use client"; 
+
+import React, { useEffect } from "react";
 import Sidebar from "@/app/_components/Sidebar";
 import Header from "@/app/_components/Header";
 import { FaArrowLeft } from "react-icons/fa";
 import AttendanceForm from "./_components/AbsensiForm";
 import StudentList from "./_components/ListSiswa";
 import BackButton from "./_components/BackButton";
+import { useSearchParams } from "next/navigation";
 
-export default function InputAbsensiPage({ searchParams }) {
-  const kelas = searchParams.kelas || "Tidak Diketahui";
+export default function InputAbsensiPage() {
+  const searchParams = useSearchParams();
+  const kelas = searchParams.get("kelas") || "Tidak Diketahui";
+
+  useEffect(() => {
+    // Hide global scroll when this page is mounted
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    // Restore global scroll when leaving this page
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -19,8 +35,7 @@ export default function InputAbsensiPage({ searchParams }) {
           <h1 className="sm:text-3xl text-2xl text-black font-bold">
             Input Absensi - {kelas}
           </h1>
-                    <BackButton />
-
+          <BackButton />
         </div>
 
         <div className="mt-5">
