@@ -25,14 +25,17 @@ const handler = NextAuth({
 
         const data = await res.json();
 
-        if (res.ok && data?.user) {
+       if (res.ok && data?.user) {
   return {
     id: data.user.id,
-    name: data.user.nama, // atau data.user.name tergantung field Laravel
+    name: data.user.nama,
     email: data.user.email,
-    image: data.user.foto_profil, // ✅ Ini WAJIB agar bisa dipakai sebagai session.user.image
+    image: data.user.foto_profil
+      ? `https://backendfix-production.up.railway.app/storage/${data.user.foto_profil}`
+      : null,
   };
 }
+
 
         return null;
       },
