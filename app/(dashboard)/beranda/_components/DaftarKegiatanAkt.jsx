@@ -160,7 +160,7 @@ const endRaw = item.is_karya_wisata === "1"
   };
 
   return (
-    <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-4 text-center mt-5">
+    <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-4 text-center mt-5 overflo-y-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Daftar Kegiatan Aktivitas</h2>
         <button
