@@ -51,9 +51,7 @@ const Header = () => {
         <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
           <img
             src={
-              user?.foto_profil
-                ? `https://backendfix-production.up.railway.app/storage/${user.foto_profil}`
-                : "/images/profil.png"
+              "/images/profil.png"
             }
             alt="Profile"
             className="w-8 h-8 rounded-full object-cover"
