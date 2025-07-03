@@ -135,7 +135,7 @@ export default function AttendanceForm() {
       absensi: absensiArray,
     };
     try {
-      const response = await fetch("http://localhost:8000/api/input-absensi", {
+      const response = await fetch("https://backendfix-production.up.railway.app/api/input-absensi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
