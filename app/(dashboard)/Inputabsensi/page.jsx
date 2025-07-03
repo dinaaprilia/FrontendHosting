@@ -15,7 +15,7 @@ export default function InputAbsensiPage({ searchParams }) {
       <Sidebar />
 
       <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
-        <div className="flex items-center justify-between sm:mt-14 mt-10 sm:mb-4 mb-2 sm:max-w-6xl mx-auto">
+        <div className="flex items-center justify-between sm:mt-14 mt-10 sm:mb-4 mb-2 max-w-6xl mx-auto">
           <h1 className="sm:text-3xl text-2xl text-black font-bold">
             Input Absensi - {kelas}
           </h1>
