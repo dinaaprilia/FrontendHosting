@@ -13,17 +13,16 @@ export default function AttendancePageClient() {
   const searchParams = useSearchParams();
   const kelas = searchParams.get("kelas") || "Tidak Diketahui";
 
-  useEffect(() => {
-    // Hide global scroll when this page is mounted
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+ useEffect(() => {
+  document.body.classList.add("noscroll");
+  document.documentElement.classList.add("noscroll");
 
-    // Restore global scroll when leaving this page
-    return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-    };
-  }, []);
+  return () => {
+    document.body.classList.remove("noscroll");
+    document.documentElement.classList.remove("noscroll");
+  };
+}, []);
+
 
   return (
     <div className="flex h-screen overflow-hidden">
