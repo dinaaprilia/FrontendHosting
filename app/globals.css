@@ -22,14 +22,15 @@ body {
 }
 html, body {
   height: 100%;
-  overflow-x: hidden; 
-  overflow-y: hidden;
+  overflow: hidden;
 }
 .siswa-position {
   top: calc(50% - 200px); /* mobile default */
 }
+
 @media (min-width: 640px) {
   .siswa-position {
     top: calc(50% - 280px); /* desktop */
   }
 }
+
