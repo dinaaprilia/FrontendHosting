@@ -6,7 +6,7 @@ import ProfileCard from "./_components/ProfilAkun";
 
 export default function Profil() {
   return (
-    <div className="flex sm:h-screen h-auto"> 
+    <div className="flex sm:h-screen h-auto sm:overflow-hidden overflow-y-auto"> 
       {/* Header */}
       <Header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md" />
 
@@ -14,7 +14,7 @@ export default function Profil() {
       <Sidebar />
 
       {/* Konten Utama */}
-      <main className="flex-1 p-4 bg-gray-200 overflow-y-auto mt-16 sm:mt-0">
+      <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
         <h1 className="sm:text-3xl text-2xl text-black font-bold w-full max-w-6xl sm:mt-14 mt-10 sm:-mb-4 -mb-8">
           Profil
         </h1>
