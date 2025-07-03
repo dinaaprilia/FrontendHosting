@@ -39,9 +39,7 @@ export default function ProfileCard() {
 <img
   key={lastUpdate}
   src={
-    profile?.foto_profil
-      ? `https://backendfix-production.up.railway.app/storage/${profile.foto_profil}?t=${lastUpdate}`
-      : "/images/profil.png"
+    "/images/profil.png"
   }
   alt="Profile"
   className="rounded-xl object-cover sm:w-[220px] w-[120px] sm:h-[200px] h-[120px] "
