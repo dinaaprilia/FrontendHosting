@@ -28,6 +28,10 @@ html, body {
 .siswa-position {
   top: calc(50% - 200px); /* mobile default */
 }
+.noscroll {
+  overflow: hidden !important;
+  height: 100% !important;
+}
 
 @media (min-width: 640px) {
   .siswa-position {
