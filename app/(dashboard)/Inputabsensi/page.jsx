@@ -10,7 +10,7 @@ export default function InputAbsensiPage({ searchParams }) {
   const kelas = searchParams.kelas || "Tidak Diketahui";
 
   return (
-    <div className="flex sm:h-screen h-auto overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
       <Header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md" />
       <Sidebar />
 
