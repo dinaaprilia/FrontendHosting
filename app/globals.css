@@ -24,4 +24,12 @@ html, body {
   height: 100%;
   overflow: hidden;
 }
+.siswa-position {
+  top: calc(50% - 200px); /* mobile default */
+}
 
+@media (min-width: 640px) {
+  .siswa-position {
+    top: calc(50% - 280px); /* desktop */
+  }
+}
