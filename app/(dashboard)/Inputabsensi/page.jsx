@@ -8,8 +8,9 @@ import BackButton from "./_components/BackButton";
 
 export default function InputAbsensiPage({ searchParams }) {
   const kelas = searchParams.kelas || "Tidak Diketahui";
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md" />
       <Sidebar />
 
@@ -18,8 +19,7 @@ export default function InputAbsensiPage({ searchParams }) {
           <h1 className="sm:text-3xl text-2xl text-black font-bold">
             Input Absensi - {kelas}
           </h1>
-                    <BackButton />
-
+          <BackButton />
         </div>
 
         <div className="mt-5">
