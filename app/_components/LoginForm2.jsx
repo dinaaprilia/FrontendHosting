@@ -21,7 +21,7 @@ const LoginForm = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen transform translate-y-20">
-            <div className="sm:w-[320px] w-[260px] p-4 px-6 bg-white shadow-2xl rounded-2xl sm:max-h-[450px] h-auto""
+            <div className="sm:w-[320px] w-[260px] p-4 px-6 bg-white shadow-2xl rounded-2xl sm:max-h-[450px] h-auto"
                 style={{ boxShadow: "8px 8px 8px rgba(0, 0, 0, 0.3)" }}>
                 
                 {/* Logo */}
