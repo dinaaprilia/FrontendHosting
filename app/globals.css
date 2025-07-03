@@ -25,6 +25,7 @@ html, body {
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
 .siswa-position {
   top: calc(50% - 200px); /* mobile default */
 }
