@@ -184,11 +184,9 @@ const handleAddInfo = async (newInfo) => {
             </p>
             <div className="mt-2 text-gray-500 text-sm flex items-center flex-wrap">
   <img
-    src={
-      info?.photo
-        ? `https://backendfix-production.up.railway.app/storage/${info.photo}`
-        : "/images/profil.png"
-    }
+              src={
+           "/images/profil.png"
+          }
     alt="User"
     className="w-8 h-8 rounded-full object-cover mr-2"
   />
