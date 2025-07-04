@@ -12,7 +12,7 @@ export default function InputAbsensiApelClient() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-between sm:mt-14 mt-10 sm:mb-4 mb-2 max-w-6xl mx-auto">
+      <div className="flex items-center justify-between sm:mt-14 mt-10 sm:mb-4 mb-2 max-w-6xl">
         <h1 className="sm:text-3xl text-2xl text-black font-bold">
           Input Absensi - {kelas}
         </h1>

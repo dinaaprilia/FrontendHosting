@@ -243,7 +243,7 @@ const UserTable = () => {
       )}
 
       {showAddAccountPopup && (
-        <div className="fixed mt-10 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed mt-10 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white h-auto p-6 rounded-2xl shadow-lg max-w-4xl relative">
             <button
               className="absolute top-2 right-2 text-gray-600 text-xl"

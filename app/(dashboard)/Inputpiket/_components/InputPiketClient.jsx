@@ -25,7 +25,7 @@ export default function InputAbsensiClient() {
       </div>
 
       <div className="mt-5">
-        {/* <AttendanceForm /> */}
+        <AttendanceForm />
       </div>
 
       <div className="mt-5">

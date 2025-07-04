@@ -220,13 +220,12 @@ export default function AttendanceForm() {
   }, [popupMessage]);
 
   return (
-    <>
+      <div className="bg-white p-6 rounded-2xl shadow-md w-full overflow-x-auto relative">
       {popupMessage && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center">
           {popupMessage}
         </div>
       )}
-      <div className="max-w-7xl mx-auto p-5 border rounded-2xl shadow-md bg-white relative">
         <style>
           {`
             input[type="radio"]:disabled {
@@ -338,6 +337,5 @@ export default function AttendanceForm() {
 
         {lastEdit && <p className="mt-2 text-gray-600">Last Edit: {lastEdit}</p>}
       </div>
-    </>
   );
 }
