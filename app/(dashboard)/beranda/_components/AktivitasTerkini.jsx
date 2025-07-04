@@ -70,7 +70,7 @@ const RecentActivity = () => {
                   <div className="flex items-center justify-center gap-2">
                     <img
                       src={"/images/profil.png"}
-                      alt={activity.name}
+          alt="Profile"
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                     />
                     <span className="truncate max-w-[100px] sm:max-w-none">{activity.name}</span>

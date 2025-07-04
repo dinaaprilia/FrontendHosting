@@ -277,8 +277,8 @@ export default function AttendanceForm() {
         {loading && <p>Loading data siswa...</p>}
         {error && <p className="text-red-600">{error}</p>}
         {!loading && !error && (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] border-t border-gray-300">
+          <div className="overflow-x-auto max-sm:-mx-4">
+            <table className="min-w-full border-t border-gray-300">
               <thead>
                 <tr className="border-b border-gray-300">
                   <th className="py-2">No</th>
