@@ -6,7 +6,7 @@ import InputAbsensiApelClient from "./_components/InputAbsensiClient";
 export default function InputAbsensiPage() {
   return (
     <div className="flex h-screen overflow-hidden">
-      <Header className="top-0 left-0 w-full bg-white z-50 shadow-md" />
+      <Header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md" />
       <Sidebar />
 
       <main className="flex-1 p-4 bg-gray-200 overflow-y-auto">
