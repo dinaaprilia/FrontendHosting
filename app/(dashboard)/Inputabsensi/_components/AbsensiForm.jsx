@@ -226,7 +226,7 @@ export default function AttendanceForm() {
           {popupMessage}
         </div>
       )}
-      <div className="max-w-7xl mx-auto p-5 border rounded-2xl shadow-md bg-white">
+      <div className="max-w-7xl mx-auto p-5 border rounded-2xl shadow-md bg-white relative">
         <style>
           {`
             input[type="radio"]:disabled {

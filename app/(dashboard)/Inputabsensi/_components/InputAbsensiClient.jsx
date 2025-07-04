@@ -2,19 +2,19 @@
 
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import AttendanceForm from "./AbsensiPiket";
-import StudentList from "./ListSIswa";
+import AttendanceForm from "./AbsensiForm";
+import StudentList from "./ListSiswa";
 import { FaArrowLeft } from "react-icons/fa";
 
-export default function InputAbsensiClient() {
+export default function InputAbsensiApelClient() {
   const searchParams = useSearchParams();
   const kelas = searchParams.get("kelas") || "Tidak Diketahui";
 
   return (
     <>
-      <div className="flex items-center justify-between sm:mt-14 mt-10 sm:mb-4 mb-2 max-w-6xl">
+      <div className="flex flex-col items-center justify-between sm:mt-14 mt-10 sm:mb-4 mb-2 max-w-6xl mx-auto">
         <h1 className="sm:text-3xl text-2xl text-black font-bold">
-          Input Piket - {kelas}
+          Input Absensi - {kelas}
         </h1>
         <button
           onClick={() => window.history.back()}
@@ -25,7 +25,7 @@ export default function InputAbsensiClient() {
       </div>
 
       <div className="mt-5">
-        {/* <AttendanceForm /> */}
+        <AttendanceForm />
       </div>
 
       <div className="mt-5">

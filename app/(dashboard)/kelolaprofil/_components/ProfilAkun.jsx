@@ -33,7 +33,7 @@ export default function ProfileCard() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-7xl mx-auto sm:h-[485px] h-auto flex flex-col mt-10 px-10">
+    <div className="bg-white p-6 rounded-lg shadow-md max-w-7xl mx-auto sm:h-auto h-auto flex flex-col mt-10 px-10">
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
         <div className="sm:pl-10 scroll-pl-5 sm:mt-10 mt-2 ">
 <img
