@@ -32,9 +32,11 @@ const Header = () => {
       {/* Mobile */}
       <div className="flex sm:hidden bg-[#f9fafd] p-2 rounded-full shadow-md items-center space-x-2 absolute sm:right-4 right-2 sm:top-2 top-1">
         <img
-          src={
-           "/images/profil.png"
-          }
+            src={
+    user?.foto_profil
+      ? user.foto_profil // langsung pakai URL
+      : "/images/profil.png"
+  }
           alt="Profile"
           className="sm:w-8 w-6 sm:h-8 h-6 rounded-full object-cover"
         />
@@ -50,9 +52,11 @@ const Header = () => {
       <div className="hidden sm:flex bg-[#f9fafd] p-3 rounded-3xl shadow-md items-center space-x-3 h-10 absolute right-6 top-1">
         <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
           <img
-            src={
-              "/images/profil.png"
-            }
+              src={
+    user?.foto_profil
+      ? user.foto_profil // langsung pakai URL
+      : "/images/profil.png"
+  }
             alt="Profile"
             className="w-8 h-8 rounded-full object-cover"
           />

@@ -20,7 +20,7 @@ export default function listInform() {
   const [editedTitle, setEditedTitle] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
   const { data, loading, error, getUserData } = useUserContext();
-  
+
 
   const API_BASE = 'https://backendfix-production.up.railway.app/api/informasi';
 
@@ -30,9 +30,9 @@ export default function listInform() {
       .then((data) => setInformasiData(data));
   }, []);
 
-    useEffect(() => {
-      getUserData();
-    }, []);
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   const openModal = (info) => {
     setSelectedInfo(info);
@@ -97,31 +97,31 @@ export default function listInform() {
       });
   };
 
-const handleAddInfo = async (newInfo) => {
-  const token = localStorage.getItem('token');
+  const handleAddInfo = async (newInfo) => {
+    const token = localStorage.getItem('token');
 
-  try {
-    const response = await fetch('https://backendfix-production.up.railway.app/api/input-informasi', {  // <-- pastikan ini sudah benar
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(newInfo),
-    });
+    try {
+      const response = await fetch('https://backendfix-production.up.railway.app/api/input-informasi', {  // <-- pastikan ini sudah benar
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(newInfo),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Gagal menambahkan informasi');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Gagal menambahkan informasi');
+      }
+
+      const savedInfo = await response.json();
+
+      setInformasiData((prev) => [savedInfo, ...prev]);
+    } catch (error) {
+      console.error('Error saat menambahkan informasi:', error.message);
     }
-
-    const savedInfo = await response.json();
-
-    setInformasiData((prev) => [savedInfo, ...prev]);
-  } catch (error) {
-    console.error('Error saat menambahkan informasi:', error.message);
-  }
-};
+  };
 
 
   const getShortText = (text) => {
@@ -159,9 +159,8 @@ const handleAddInfo = async (newInfo) => {
       </div>
 
       <div
-        className={`mt-4 space-y-3 ${
-          informasiData.length > 2 ? 'max-h-[350px] overflow-y-auto pr-1' : ''
-        }`}
+        className={`mt-4 space-y-3 ${informasiData.length > 2 ? 'max-h-[350px] overflow-y-auto pr-1' : ''
+          }`}
       >
         {informasiData.map((info, index) => (
           <div
@@ -170,9 +169,8 @@ const handleAddInfo = async (newInfo) => {
             onClick={() => openModal(info)}
           >
             <div
-              className={`inline-block px-3 py-1 text-sm font-semibold text-white rounded-md ${
-                isToday(info.date) ? 'bg-orange-500' : 'bg-blue-600'
-              }`}
+              className={`inline-block px-3 py-1 text-sm font-semibold text-white rounded-md ${isToday(info.date) ? 'bg-orange-500' : 'bg-blue-600'
+                }`}
             >
               {info?.date ? formatTanggal(info.date) : 'Tanggal tidak tersedia'}
             </div>
@@ -183,17 +181,23 @@ const handleAddInfo = async (newInfo) => {
               {getShortText(info?.text?.trim() || '-')}
             </p>
             <div className="mt-2 text-gray-500 text-sm flex items-center flex-wrap">
-  <img
-              src={
-           "/images/profil.png"
-          }
-    alt="User"
-    className="w-8 h-8 rounded-full object-cover mr-2"
-  />
-  <span className="truncate">
-    {info?.author?.trim() || 'Anonim'} / {info?.time?.trim() || '-'}
-  </span>
-</div>
+              <img
+                src={
+                  info?.photo
+                    ? `https://backendfix-production.up.railway.app/storage/${info.photo}`
+                    : "/images/profil.png"
+                }
+                alt="User"
+                className="w-8 h-8 rounded-full object-cover mr-2"
+                onError={(e) => {
+                  e.currentTarget.src = "/images/profil.png";
+                }}
+              />
+
+              <span className="truncate">
+                {info?.author?.trim() || 'Anonim'} / {info?.time?.trim() || '-'}
+              </span>
+            </div>
           </div>
         ))}
       </div>
@@ -241,8 +245,11 @@ const handleAddInfo = async (newInfo) => {
 
               <div className="text-sm text-gray-500 flex items-center mb-4">
                 <img
-                  src={selectedInfo?.photo || '/images/profil.jpg'}
-                  alt="User"
+                  src={
+                    selectedInfo?.photo
+                      ? `https://backendfix-production.up.railway.app/storage/${selectedInfo.photo}`
+                      : "/images/profil.png"
+                  } alt="User"
                   className="w-6 h-6 rounded-full mr-2"
                 />
                 {selectedInfo?.author?.trim() || '-'} / {selectedInfo?.time?.trim() || '-'}

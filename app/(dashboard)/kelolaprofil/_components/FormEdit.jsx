@@ -97,21 +97,23 @@ export default function ProfileEditPopup({ isOpen, onClose, onUpdated }) {
         <h2 className="sm:text-2xl text-xl font-bold text-center sm:mb-6 mb-1">Kelola Profil</h2>
         <div className="flex flex-col md:flex-row items-center sm:gap-6 gap-2">
           <div className="relative mt-3 w-[100px] h-[100px] sm:w-[210px] sm:h-[210px]">
-  <Image
-    key={(previewUrl || data?.foto_profil) + lastUpdate}
-    src={
-      previewUrl
-        ? previewUrl
-        : data?.foto_profil
-        ? `http://localhost:8000/storage/${data.foto_profil}?t=${lastUpdate}`
-        : "/images/profil.jpg"
-    }
-    alt="Foto Profil"
-    fill
-    className="rounded-xl object-cover"
-    priority
-    unoptimized
-  />
+<img
+  key={(previewUrl || data?.foto_profil) + lastUpdate}
+  src={
+    previewUrl
+      ? previewUrl
+      : data?.foto_profil && data.foto_profil !== ""
+      ? `https://backendfix-production.up.railway.app/storage/${data.foto_profil}?t=${lastUpdate}`
+      : "/images/profil.jpg"
+  }
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "/images/profil.jpg"; // fallback saat error
+  }}
+  alt="Foto Profil"
+  className="w-full h-full object-cover rounded-xl"
+/>
+
   <input
     type="file"
     ref={fileInputRef}

@@ -23,12 +23,11 @@ export default function ProfileCard() {
     }
   }, [data]);
 
-  // Dapat menerima timestamp dari FormEdit
   const refreshProfile = async (newTimestamp = Date.now()) => {
     const updated = await getProfileUser();
     if (updated) {
       setProfile(updated);
-      setLastUpdate(newTimestamp); // paksa ganti gambar
+      setLastUpdate(newTimestamp);
     }
   };
 
@@ -36,14 +35,16 @@ export default function ProfileCard() {
     <div className="bg-white p-6 rounded-lg shadow-md max-w-7xl mx-auto sm:h-auto h-auto flex flex-col mt-10 px-10">
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
         <div className="sm:pl-10 scroll-pl-5 sm:mt-10 mt-2 ">
-<img
-  key={lastUpdate}
-  src={
-    "/images/profil.png"
-  }
-  alt="Profile"
-  className="rounded-xl object-cover sm:w-[220px] w-[120px] sm:h-[200px] h-[120px] "
-/>
+          <img
+            key={lastUpdate}
+            src={
+              profile?.foto_profil
+                ? profile.foto_profil
+                : "/images/profil.png"
+            }
+            alt="Profile"
+            className="rounded-xl object-cover sm:w-[220px] w-[120px] sm:h-[200px] h-[120px] "
+          />
 
         </div>
 
@@ -57,38 +58,38 @@ export default function ProfileCard() {
             <p className="text-gray-700 font-medium sm:text-lg text-base">{profile?.role}</p>
           </div>
           {profile?.role !== "admin" && (
-  <div>
-    <p className="font-bold sm:text-lg text-base">
-      {profile?.role === "guru" ? "NIP" : "NISN"}
-    </p>
-    <p className="text-gray-700 font-medium sm:text-lg text-base">
-      {profile?.role === "guru" ? profile?.nip : profile?.nisn}
-    </p>
-  </div>
-)}
+            <div>
+              <p className="font-bold sm:text-lg text-base">
+                {profile?.role === "guru" ? "NIP" : "NISN"}
+              </p>
+              <p className="text-gray-700 font-medium sm:text-lg text-base">
+                {profile?.role === "guru" ? profile?.nip : profile?.nisn}
+              </p>
+            </div>
+          )}
           <div>
             <p className="font-bold sm:text-lg text-base">Status</p>
             <p className="text-gray-700 font-medium sm:text-lg text-base">{profile?.kelas ?? "Non-Kelas"}</p>
           </div>
           {profile?.role !== 'admin' && (
-  <div>
-    <p className="font-semibold sm:text-lg text-base">Jenis Kelamin</p>
-    <p className="text-gray-700 font-medium sm:text-lg text-base">
-      {profile?.jenis_kelamin === "L"
-        ? "Laki-laki"
-        : profile?.jenis_kelamin === "P"
-        ? "Perempuan"
-        : "-"}
-    </p>
-  </div>
-)}
+            <div>
+              <p className="font-semibold sm:text-lg text-base">Jenis Kelamin</p>
+              <p className="text-gray-700 font-medium sm:text-lg text-base">
+                {profile?.jenis_kelamin === "L"
+                  ? "Laki-laki"
+                  : profile?.jenis_kelamin === "P"
+                    ? "Perempuan"
+                    : "-"}
+              </p>
+            </div>
+          )}
 
           {profile?.role !== 'admin' && (
-  <div>
-    <p className="font-semibold sm:text-lg text-base">Agama</p>
-    <p className="text-gray-700 font-medium sm:text-lg text-base">{profile?.agama}</p>
-  </div>
-)}
+            <div>
+              <p className="font-semibold sm:text-lg text-base">Agama</p>
+              <p className="text-gray-700 font-medium sm:text-lg text-base">{profile?.agama}</p>
+            </div>
+          )}
           <div>
             <p className="font-semibold sm:text-lg text-base">No HP</p>
             <p className="text-gray-700 font-medium sm:text-lg text-base">{profile?.nomor_hp || "-"}</p>

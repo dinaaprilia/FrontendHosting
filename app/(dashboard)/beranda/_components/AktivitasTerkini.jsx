@@ -17,8 +17,6 @@ const RecentActivity = () => {
         const response = await fetch("https://backendfix-production.up.railway.app/api/recent-activity", {
           headers: {
             "Content-Type": "application/json",
-            // Jika endpoint dilindungi oleh JWT:
-            // 'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
         });
 
@@ -69,7 +67,11 @@ const RecentActivity = () => {
                 <td className="py-3 px-2">
                   <div className="flex items-center justify-center gap-2">
                     <img
-                      src={"/images/profil.png"}
+                        src={
+    activity?.avatar
+      ? activity.avatar // langsung pakai URL
+      : "/images/profil.png"
+  }
           alt="Profile"
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                     />
