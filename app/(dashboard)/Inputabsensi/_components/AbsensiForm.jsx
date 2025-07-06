@@ -22,6 +22,7 @@ export default function AttendanceForm() {
   const [hasAttendanceData, setHasAttendanceData] = useState(false);
   const [lastDate, setLastDate] = useState(new Date().toISOString().slice(0, 10));
   const [popupMessage, setPopupMessage] = useState("");
+  const [hasGeneratedToday, setHasGeneratedToday] = useState(false);
 
   useEffect(() => {
     if (!kelas) return;
@@ -86,12 +87,19 @@ export default function AttendanceForm() {
     if (kelas) fetchAbsensi();
   }, [kelas]);
 
+  useEffect(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `generatedAbsensi-${kelas}-${today}`;
+    const stored = localStorage.getItem(key);
+    if (stored === "true") {
+      setHasGeneratedToday(true);
+    }
+  }, [kelas]);
+
   const handleAttendanceChange = (nisn, status) => {
     if (!isEditing) return;
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const formattedTime = `${hours}:${minutes}`;
+    const formattedTime = now.toTimeString().slice(0, 5);
     setAttendance((prev) => ({
       ...prev,
       [nisn]: {
@@ -104,13 +112,20 @@ export default function AttendanceForm() {
 
   const handleGenerate = () => {
     const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const key = `generatedAbsensi-${kelas}-${today}`;
+    localStorage.setItem(key, "true");
+    setHasGeneratedToday(true);
+
     const dayName = now.toLocaleDateString("id-ID", { weekday: "long" });
     const date = now.toLocaleDateString("id-ID");
     const fullDay = `${dayName}, ${date}`;
     setDay(fullDay);
-    const start = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+
+    const start = now.toTimeString().slice(0, 5);
     const endTimeObj = new Date(now.getTime() + 30 * 60000);
-    const end = `${endTimeObj.getHours().toString().padStart(2, "0")}:${endTimeObj.getMinutes().toString().padStart(2, "0")}`;
+    const end = endTimeObj.toTimeString().slice(0, 5);
+
     setStartTime(start);
     setEndTime(end);
     setIsEditable(true);
@@ -121,11 +136,13 @@ export default function AttendanceForm() {
       setPopupMessage("Klik Generate dulu sebelum Save");
       return;
     }
+
     const absensiArray = Object.entries(attendance).map(([nisn, value]) => ({
       nisn,
       status: value.status,
       waktu_absen: value.time,
     }));
+
     const payload = {
       kelas,
       tanggal: new Date().toISOString().slice(0, 10),
@@ -134,6 +151,7 @@ export default function AttendanceForm() {
       selesai: endTime,
       absensi: absensiArray,
     };
+
     try {
       const response = await fetch("https://backendfix-production.up.railway.app/api/input-absensi", {
         method: "POST",
@@ -168,6 +186,11 @@ export default function AttendanceForm() {
     setIsEditable(false);
     setLastEdit(null);
     setHasAttendanceData(false);
+
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `generatedAbsensi-${kelas}-${today}`;
+    localStorage.removeItem(key);
+    setHasGeneratedToday(false);
   };
 
   useEffect(() => {
@@ -178,11 +201,6 @@ export default function AttendanceForm() {
         setLastDate(today);
       }
     }, 60000);
-    const today = new Date().toISOString().slice(0, 10);
-    if (today !== lastDate) {
-      resetForm();
-      setLastDate(today);
-    }
     return () => clearInterval(intervalId);
   }, [lastDate]);
 
@@ -190,8 +208,8 @@ export default function AttendanceForm() {
     if (!endTime) return;
     const checkEndTime = () => {
       const now = new Date();
-      const [endHour, endMinute] = endTime.split(":" ).map(Number);
-      const endDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, endMinute, 0);
+      const [endHour, endMinute] = endTime.split(":").map(Number);
+      const endDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, endMinute);
       if (now >= endDateTime) {
         setAttendance((prev) => {
           const updated = {};
@@ -220,122 +238,111 @@ export default function AttendanceForm() {
   }, [popupMessage]);
 
   return (
-      <div className="bg-white p-6 rounded-2xl shadow-md w-full overflow-x-auto relative">
+    <div className="bg-white p-6 rounded-2xl shadow-md w-full overflow-x-auto relative">
       {popupMessage && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white px-6 py-3 rounded-lg shadow-lg z-50 text-center">
           {popupMessage}
         </div>
       )}
-        <style>
-          {`
-            input[type="radio"]:disabled {
-              accent-color: black;
-              cursor: not-allowed;
-            }
-          `}
-        </style>
 
-        {/* Info Kelas */}
-        <div className="mb-4 ml-0 sm:ml-5 gap-2 flex flex-col sm:block text-sm">
-          <div className="flex">
-            <strong className="w-28">Kelas</strong> <span>: {kelas}</span>
-          </div>
-          <div className="flex">
-            <strong className="w-28">Hari</strong> <span>: {day}</span>
-          </div>
-          <div className="flex">
-            <strong className="w-28">Mulai</strong> <span>: {startTime}</span>
-          </div>
-          <div className="flex">
-            <strong className="w-28">Selesai</strong> <span>: {endTime}</span>
-          </div>
+      <div className="mb-4 ml-0 sm:ml-5 gap-2 flex flex-col sm:block text-sm">
+        <div className="flex">
+          <strong className="w-28">Kelas</strong> <span>: {kelas}</span>
         </div>
-
-        {/* Tombol Generate */}
-        <div className="py-4 text-center sm:text-left sm:ml-5 -mt-5">
-          <button
-            className="px-4 py-2 bg-blue-700 text-white rounded-md flex items-center justify-center"
-            onClick={handleGenerate}
-          >
-            <FaExternalLinkAlt className="mr-2" />
-            Generate Absensi
-          </button>
+        <div className="flex">
+          <strong className="w-28">Hari</strong> <span>: {day}</span>
         </div>
-
-        {/* Input Pencarian */}
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Cari nama siswa..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border px-3 py-2 rounded-md w-full max-w-md"
-          />
+        <div className="flex">
+          <strong className="w-28">Mulai</strong> <span>: {startTime}</span>
         </div>
-
-        {/* Tabel Absensi */}
-        {loading && <p>Loading data siswa...</p>}
-        {error && <p className="text-red-600">{error}</p>}
-        {!loading && !error && (
-          <div className="overflow-x-auto max-sm:-mx-4">
-            <table className="min-w-full border-t border-gray-300">
-              <thead>
-                <tr className="border-b border-gray-300">
-                  <th className="py-2">No</th>
-                  <th className="py-2">Nama</th>
-                  <th className="py-2">Hadir</th>
-                  <th className="py-2">Tidak Hadir</th>
-                  <th className="py-2">Terlambat</th>
-                  <th className="py-2">Waktu</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.map((student, index) => {
-                  const uniqueId = student.nisn;
-                  return (
-                    <tr key={`${student.id ?? index}-${index}`} className="border-b border-gray-300 text-center">
-                      <td className="py-2">{index + 1}.</td>
-                      <td className="py-6 pl-3 text-left">{student.nama}</td>
-                      {["Hadir", "Tidak Hadir", "Terlambat"].map((status) => (
-                        <td key={status} className="py-2 px-6">
-                          <input
-                            type="radio"
-                            id={`attendance-${uniqueId}-${status}`}
-                            name={`attendance-${uniqueId}`}
-                            value={status}
-                            checked={attendance[uniqueId]?.status === status}
-                            onChange={() => handleAttendanceChange(uniqueId, status)}
-                            disabled={!isEditing}
-                            className="accent-blue-600"
-                          />
-                          <label htmlFor={`attendance-${uniqueId}-${status}`} className="sr-only">
-                            {status}
-                          </label>
-                        </td>
-                      ))}
-                      <td className="py-2">{attendance[uniqueId]?.time || "-"}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* Tombol Save / Edit */}
-        <div className="mt-4 flex flex-col sm:flex-row gap-2">
-          {(isEditing || !hasAttendanceData) ? (
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={handleSave}>
-              Save
-            </button>
-          ) : (
-            <button className="px-4 py-2 bg-green-500 text-white rounded-md" onClick={handleEdit}>
-              Edit
-            </button>
-          )}
+        <div className="flex">
+          <strong className="w-28">Selesai</strong> <span>: {endTime}</span>
         </div>
-
-        {lastEdit && <p className="mt-2 text-gray-600">Last Edit: {lastEdit}</p>}
       </div>
+
+      <div className="py-4 text-center sm:text-left sm:ml-5 -mt-5">
+        <button
+          className={`px-4 py-2 ${hasGeneratedToday ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+            } text-white rounded-md flex items-center justify-center`}
+          onClick={handleGenerate}
+          disabled={hasGeneratedToday}
+        >
+          <FaExternalLinkAlt className="mr-2" />
+          {hasGeneratedToday ? "Sudah Digenerate" : "Generate Absensi"}
+        </button>
+      </div>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Cari nama siswa..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border px-3 py-2 rounded-md w-full max-w-md"
+        />
+      </div>
+
+      {loading && <p>Loading data siswa...</p>}
+      {error && <p className="text-red-600">{error}</p>}
+      {!loading && !error && (
+        <div className="overflow-x-auto max-sm:-mx-4">
+          <table className="min-w-full border-t border-gray-300">
+            <thead>
+              <tr className="border-b border-gray-300">
+                <th className="py-2">No</th>
+                <th className="py-2">Nama</th>
+                <th className="py-2">Hadir</th>
+                <th className="py-2">Tidak Hadir</th>
+                <th className="py-2">Terlambat</th>
+                <th className="py-2">Waktu</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredStudents.map((student, index) => {
+                const uniqueId = student.nisn;
+                return (
+                  <tr key={`${student.id ?? index}-${index}`} className="border-b border-gray-300 text-center">
+                    <td className="py-2">{index + 1}.</td>
+                    <td className="py-6 pl-3 text-left">{student.nama}</td>
+                    {["Hadir", "Tidak Hadir", "Terlambat"].map((status) => (
+                      <td key={status} className="py-2 px-6">
+                        <input
+                          type="radio"
+                          id={`attendance-${uniqueId}-${status}`}
+                          name={`attendance-${uniqueId}`}
+                          value={status}
+                          checked={attendance[uniqueId]?.status === status}
+                          onChange={() => handleAttendanceChange(uniqueId, status)}
+                          disabled={!isEditing}
+                          className="accent-blue-600"
+                        />
+                        <label htmlFor={`attendance-${uniqueId}-${status}`} className="sr-only">
+                          {status}
+                        </label>
+                      </td>
+                    ))}
+                    <td className="py-2">{attendance[uniqueId]?.time || "-"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="mt-4 flex flex-col sm:flex-row gap-2">
+        {(isEditing || !hasAttendanceData) ? (
+          <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={handleSave}>
+            Save
+          </button>
+        ) : (
+          <button className="px-4 py-2 bg-green-500 text-white rounded-md" onClick={handleEdit}>
+            Edit
+          </button>
+        )}
+      </div>
+
+      {lastEdit && <p className="mt-2 text-gray-600">Last Edit: {lastEdit}</p>}
+    </div>
   );
 }

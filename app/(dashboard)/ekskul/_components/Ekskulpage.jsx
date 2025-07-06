@@ -7,6 +7,7 @@ import { IoMdLogIn } from 'react-icons/io';
 import PopupForm from './EkskulForm';
 import axios from 'axios';
 import { useUserContext } from '@/hooks/UserContext'; // pastikan path ini sesuai
+import Image from 'next/image';
 
 export default function EkskulList() {
   const router = useRouter();
@@ -56,8 +57,8 @@ export default function EkskulList() {
       image: data.image?.startsWith('http')
         ? data.image
         : data.image
-        ? `https://backendfix-production.up.railway.app/${data.image.replace(/^\/+/g, '')}`
-        : '/images/default.png',
+          ? `https://backendfix-production.up.railway.app/${data.image.replace(/^\/+/g, '')}`
+          : '/images/default.png',
     };
   };
 
@@ -117,20 +118,20 @@ export default function EkskulList() {
           <p className="text-center text-gray-500 col-span-2">Belum ada data ekskul.</p>
         ) : (
           ekskulData.map((ekskul, index) => {
-            const imageSrc = ekskul.image
-              ? ekskul.image.startsWith('http')
-                ? ekskul.image
-                : `https://backendfix-production.up.railway.app/${ekskul.image}`
-              : '/images/default.png';
+            const imageSrc = ekskul.image?.startsWith('http')
+              ? ekskul.image.replace('http://', 'https://') // pakai https, buang http
+              : `https://backendfix-production.up.railway.app/${ekskul.image.replace(/^\/+/, '')}`;
 
             return (
               <div
                 key={`ekskul-${index}`}
                 className="bg-blue-100 rounded-xl shadow-lg overflow-hidden relative"
               >
-                <img
+                <Image
                   src={imageSrc}
                   alt={ekskul.name}
+                  width={400}
+                  height={160}
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4">

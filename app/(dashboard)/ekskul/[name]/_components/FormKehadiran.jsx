@@ -65,7 +65,11 @@ export default function KehadiranEkskul({ ekskulId, ekskulName }) {
           setAttendance({});
           setIsEditing(false);
           setIsEditable(false);
-          setHasGenerated(false);
+
+          // Cek apakah sebelumnya sudah digenerate di localStorage
+          const todayKey = `generated-${ekskulId}-${day}`;
+          const alreadyGenerated = localStorage.getItem(todayKey);
+          setHasGenerated(!!alreadyGenerated);
         }
       } catch (err) {
         console.error("❌ Gagal load absensi:", err);
@@ -119,6 +123,14 @@ export default function KehadiranEkskul({ ekskulId, ekskulName }) {
   const handleEdit = () => setIsEditing(true);
 
   const handleGenerate = () => {
+    const todayKey = `generated-${ekskulId}-${day}`;
+    const alreadyGenerated = localStorage.getItem(todayKey);
+
+    if (alreadyGenerated) {
+      alert("Absensi sudah digenerate hari ini untuk ekskul ini.");
+      return;
+    }
+
     const now = new Date();
     setDay(now.toISOString().slice(0, 10));
     setStartTime(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true }));
@@ -126,6 +138,9 @@ export default function KehadiranEkskul({ ekskulId, ekskulName }) {
     setIsEditable(true);
     setIsEditing(true);
     setHasGenerated(true);
+
+    // Simpan flag bahwa sudah digenerate
+    localStorage.setItem(todayKey, "true");
   };
 
   return (
@@ -160,11 +175,19 @@ export default function KehadiranEkskul({ ekskulId, ekskulName }) {
         </div>
       </div>
 
-      <div className="py-4 text-center ml-5 -mt-5 max-sm:ml-0">
-        <button className="px-4 py-2 bg-blue-700 text-white rounded-md flex items-center justify-center w-full sm:w-auto text-sm" onClick={handleGenerate}>
-          <FaExternalLinkAlt className="mr-2" /> Generate Absensi
+      
+      <div className="py-4 text-center sm:text-left sm:ml-5 -mt-5">
+        <button
+          className={`px-4 py-2 ${hasGenerated ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+            } text-white rounded-md flex items-center justify-center`}
+          onClick={handleGenerate}
+          disabled={hasGenerated}
+        >
+          <FaExternalLinkAlt className="mr-2" />
+          {hasGenerated ? "Sudah Digenerate" : "Generate Absensi"}
         </button>
       </div>
+
 
       <div className="overflow-x-auto">
         <table className="w-full border-t border-gray-300 text-sm table-fixed max-sm:text-xs">

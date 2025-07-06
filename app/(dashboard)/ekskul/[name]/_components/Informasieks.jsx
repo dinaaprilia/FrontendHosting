@@ -102,7 +102,7 @@ export default function InformasiEkskul() {
             <p className="text-indigo-900 font-bold mt-2 text-lg">{ekskulName}</p>
             <p className="text-gray-700 font-medium mt-1">{info.description}</p>
             <div className="mt-2 text-gray-500 text-sm flex items-center">
-              <img src="/images/profil.jpg" alt="User" className="w-5 h-5 rounded-full mr-2" />
+              <img src="/images/profil.png" alt="User" className="w-5 h-5 rounded-full mr-2" />
               {info.author} / {info.time}
             </div>
           </div>

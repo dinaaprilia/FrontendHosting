@@ -22,6 +22,7 @@ export default function AttendanceForm() {
   const [hasAttendanceData, setHasAttendanceData] = useState(false);
   const [lastDate, setLastDate] = useState(new Date().toISOString().slice(0, 10));
   const [notification, setNotification] = useState(null);
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const showNotification = (message, type = "success") => {
     setNotification({ message, type });
@@ -53,11 +54,14 @@ export default function AttendanceForm() {
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
+    const todayKey = `generated-piket-${kelas}-${today}`;
+
     const fetchPiket = async () => {
       try {
         const res = await fetch(`https://backendfix-production.up.railway.app/api/absensi-piket?kelas=${kelas}&tanggal=${today}`);
         if (!res.ok) throw new Error("Gagal mengambil data absensi");
         const data = await res.json();
+
         if (!data.data || data.data.length === 0) {
           setHasAttendanceData(false);
           setAttendance({});
@@ -84,6 +88,8 @@ export default function AttendanceForm() {
           setIsEditing(false);
           setIsEditable(false);
         }
+
+        setHasGenerated(!!localStorage.getItem(todayKey));
         setPiketFetched(true);
       } catch (error) {
         console.error("Error fetching piket:", error.message);
@@ -110,16 +116,30 @@ export default function AttendanceForm() {
   };
 
   const handleGenerate = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const todayKey = `generated-piket-${kelas}-${today}`;
+    const alreadyGenerated = localStorage.getItem(todayKey);
+
+    if (alreadyGenerated) {
+      alert("Absensi piket sudah digenerate hari ini untuk kelas ini.");
+      return;
+    }
+
     const now = new Date();
     const dayName = now.toLocaleDateString("id-ID", { weekday: "long" });
     const date = now.toLocaleDateString("id-ID");
     setDay(`${dayName}, ${date}`);
+
     const start = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
     const endTimeObj = new Date(now.getTime() + 30 * 60000);
     const end = `${endTimeObj.getHours().toString().padStart(2, "0")}:${endTimeObj.getMinutes().toString().padStart(2, "0")}`;
     setStartTime(start);
     setEndTime(end);
     setIsEditable(true);
+    setIsEditing(true);
+    setHasGenerated(true);
+
+    localStorage.setItem(todayKey, "true");
   };
 
   const handleSave = async () => {
@@ -154,6 +174,7 @@ export default function AttendanceForm() {
       showNotification("Piket berhasil disimpan!", "success");
       setIsEditing(false);
       setIsEditable(false);
+      setHasAttendanceData(true);
     } catch (err) {
       showNotification("Gagal: " + err.message, "error");
     }
@@ -161,68 +182,16 @@ export default function AttendanceForm() {
 
   const handleEdit = () => setIsEditing(true);
 
-  const resetForm = () => {
-    setAttendance({});
-    setDay("");
-    setStartTime("");
-    setEndTime("");
-    setIsEditing(true);
-    setIsEditable(false);
-    setLastEdit(null);
-    setHasAttendanceData(false);
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const today = new Date().toISOString().slice(0, 10);
-      if (today !== lastDate) {
-        resetForm();
-        setLastDate(today);
-      }
-    }, 60000);
-    return () => clearInterval(intervalId);
-  }, [lastDate]);
-
-  useEffect(() => {
-    if (!endTime) return;
-    const checkEndTime = () => {
-      const now = new Date();
-      const [endHour, endMinute] = endTime.split(":").map(Number);
-      const endDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHour, endMinute);
-      if (now >= endDateTime) {
-        setAttendance((prev) => {
-          const updated = {};
-          Object.keys(prev).forEach((nisn) => {
-            updated[nisn] = {
-              status: "Tidak Hadir",
-              time: prev[nisn]?.time || "",
-            };
-          });
-          return updated;
-        });
-        setIsEditing(false);
-        setIsEditable(false);
-      }
-    };
-    checkEndTime();
-    const intervalId = setInterval(checkEndTime, 60000);
-    return () => clearInterval(intervalId);
-  }, [endTime]);
-
   return (
     <div className="max-w-7xl mx-auto p-5 border rounded-2xl shadow-md bg-white relative">
-      {/* Notifikasi popup */}
-     {notification && (
-  <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-    px-6 py-3 rounded shadow-xl z-50 text-center text-white text-sm
-    ${notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
-    {notification.message}
-  </div>
-)}
+      {notification && (
+        <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+          px-6 py-3 rounded shadow-xl z-50 text-center text-white text-sm
+          ${notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
+          {notification.message}
+        </div>
+      )}
 
-      <style>{`input[type="radio"]:disabled { accent-color: black; cursor: not-allowed; }`}</style>
-
-      {/* Info Kelas */}
       <div className="mb-4 ml-5 gap-4 max-sm:ml-2 max-sm:text-sm max-sm:space-y-1">
         <div className="flex max-sm:flex-col max-sm:items-start"><strong className="w-28 max-sm:w-auto">Kelas</strong> <span>: {kelas}</span></div>
         <div className="flex max-sm:flex-col max-sm:items-start"><strong className="w-28 max-sm:w-auto">Hari</strong><span>: {day && ` ${day}`}</span></div>
@@ -231,10 +200,15 @@ export default function AttendanceForm() {
       </div>
 
       {/* Tombol Generate */}
-      <div className="py-4 text-center -mt-6 max-sm:-mt-3">
-        <button className="px-4 py-2 bg-blue-700 text-white rounded-md flex items-center justify-center gap-2 text-sm max-sm:text-xs max-sm:px-3 max-sm:py-1" onClick={handleGenerate}>
-          <FaExternalLinkAlt size={14} className="max-sm:w-3 max-sm:h-3" />
-          Generate Absensi
+      <div className="py-4 text-center sm:text-left sm:ml-5 -mt-5">
+        <button
+          className={`px-4 py-2 ${hasGenerated ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"} 
+            text-white rounded-md flex items-center justify-center`}
+          onClick={handleGenerate}
+          disabled={hasGenerated}
+        >
+          <FaExternalLinkAlt className="mr-2" />
+          {hasGenerated ? "Sudah Digenerate" : "Generate Absensi"}
         </button>
       </div>
 
@@ -254,18 +228,20 @@ export default function AttendanceForm() {
             {filteredStudents.map((student, index) => {
               const uniqueId = student.nisn;
               return (
-                <tr key={`${student.id ?? index}-${index}`} className="border-b border-gray-300 text-center">
+                <tr key={student.nisn} className="border-b border-gray-300 text-center">
                   <td className="py-2">{index + 1}.</td>
                   <td className="py-6 pl-3 text-left">{student.nama}</td>
                   {["berkontribusi", "tidak berkontribusi"].map((status) => (
                     <td key={status} className="py-2 px-10">
-                      <input type="radio" id={`attendance-${uniqueId}-${status}`} name={`attendance-${uniqueId}`} value={status}
+                      <input
+                        type="radio"
+                        name={`attendance-${uniqueId}`}
+                        value={status}
                         checked={attendance[uniqueId]?.status === status}
                         onChange={() => handleAttendanceChange(uniqueId, status)}
                         disabled={!isEditing}
                         className="accent-blue-600"
                       />
-                      <label htmlFor={`attendance-${uniqueId}-${status}`} className="sr-only">{status}</label>
                     </td>
                   ))}
                   <td className="py-2">{attendance[uniqueId]?.time || "-"}</td>

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FiUploadCloud, FiTrash2 } from "react-icons/fi";
+import { useUserContext } from "@/hooks/UserContext"; // ✅ Import user context
 
 export default function UploadGallery({ judul, tanggal }) {
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -14,6 +15,8 @@ export default function UploadGallery({ judul, tanggal }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [selectedImageId, setSelectedImageId] = useState(null);
   const fileInputRef = useRef(null);
+
+  const { user } = useUserContext(); // ✅ Ambil data user dan role
 
   useEffect(() => {
     if (judul && tanggal && judul !== "-" && tanggal !== "-") {
@@ -119,18 +122,21 @@ export default function UploadGallery({ judul, tanggal }) {
           📅 Tanggal: <strong>{tanggal || "-"}</strong>
         </p>
 
-        <label className="cursor-pointer flex items-center justify-center p-3 bg-blue-200 rounded-md hover:bg-blue-300 transition mb-4">
-          <FiUploadCloud className="mr-2" />
-          <span className="font-medium text-gray-700">Upload Gambar</span>
-          <input
-            type="file"
-            multiple
-            className="hidden"
-            onChange={handleImageUpload}
-            ref={fileInputRef}
-            accept="image/*"
-          />
-        </label>
+        {/* ✅ Tombol upload hanya untuk non-siswa */}
+        {user?.role !== 'siswa' && (
+          <label className="cursor-pointer flex items-center justify-center p-3 bg-blue-200 rounded-md hover:bg-blue-300 transition mb-4">
+            <FiUploadCloud className="mr-2" />
+            <span className="font-medium text-gray-700">Upload Gambar</span>
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleImageUpload}
+              ref={fileInputRef}
+              accept="image/*"
+            />
+          </label>
+        )}
 
         {previewImages.length > 0 && (
           <div className="mb-4">
@@ -162,30 +168,33 @@ export default function UploadGallery({ judul, tanggal }) {
                     alt={`Uploaded ${index}`}
                     className="w-full h-auto rounded-md shadow-sm"
                   />
-                  <button
-                    onClick={() => handleDeleteImage(img.id)}
-                    className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
-                    title="Hapus Foto"
-                  >
-                    <FiTrash2 size={16} />
-                  </button>
+                  {user?.role !== 'siswa' && (
+                    <button
+                      onClick={() => handleDeleteImage(img.id)}
+                      className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+                      title="Hapus Foto"
+                    >
+                      <FiTrash2 size={16} />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        <div className="mt-4">
-          <button
-            onClick={handleUpload}
-            className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
-          >
-            Upload ke Sistem
-          </button>
-        </div>
+        {user?.role !== 'siswa' && (
+          <div className="mt-4">
+            <button
+              onClick={handleUpload}
+              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
+            >
+              Upload ke Sistem
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* ✅ Popup Sukses */}
       {showSuccess && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-72 text-center">
@@ -215,7 +224,6 @@ export default function UploadGallery({ judul, tanggal }) {
         </div>
       )}
 
-      {/* 🗑️ Konfirmasi Hapus */}
       {showConfirmDelete && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-72 text-center">

@@ -95,6 +95,9 @@ export default function listInform() {
                 }
                 alt="User"
                 className="w-8 h-8 rounded-full object-cover mr-2"
+                onError={(e) => {
+                  e.currentTarget.src = "/images/profil.png";
+                }}
               />
               <span className="truncate">
                 {info?.author?.trim() || 'Anonim'} / {info?.time?.trim() || '-'}

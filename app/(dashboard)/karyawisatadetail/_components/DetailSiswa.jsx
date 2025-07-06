@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default function StudentParticipation({ judul, tanggal }) {
   const [students, setStudents] = useState([]);
-  const [filterStatus, setFilterStatus] = useState("semua"); // tambah state filter
+  const [filterStatus, setFilterStatus] = useState("semua");
 
   const formatDateWithDay = (dateStr) => {
     if (!dateStr) return "-";
@@ -34,7 +34,13 @@ export default function StudentParticipation({ judul, tanggal }) {
       });
   }, [judul, tanggal]);
 
-  const filteredStudents = students.filter((s) => {
+  // Hapus duplikat berdasarkan nama (hanya ambil entri pertama)
+  const uniqueStudents = Array.from(
+    new Map(students.map(item => [item.nama?.toLowerCase(), item])).values()
+  );
+
+  // Lalu filter berdasarkan status
+  const filteredStudents = uniqueStudents.filter((s) => {
     if (filterStatus === 'semua') return true;
     return s.status?.toLowerCase() === filterStatus;
   });
@@ -51,65 +57,58 @@ export default function StudentParticipation({ judul, tanggal }) {
           </div>
         </div>
         <div className="flex mt-2 sm:mt-0 space-x-2">
-          <button
-            onClick={() => setFilterStatus('semua')}
-            className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${
-              filterStatus === 'semua' ? 'bg-blue-600 text-white' : 'bg-white text-gray-800'
-            }`}
-          >
-            Semua
-          </button>
-          <button
-            onClick={() => setFilterStatus('hadir')}
-            className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${
-              filterStatus === 'hadir' ? 'bg-green-600 text-white' : 'bg-white text-gray-800'
-            }`}
-          >
-            Hadir
-          </button>
-          <button
-            onClick={() => setFilterStatus('tidak hadir')}
-            className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${
-              filterStatus === 'tidak hadir' ? 'bg-red-600 text-white' : 'bg-white text-gray-800'
-            }`}
-          >
-            Tidak Hadir
-          </button>
+          {['semua', 'hadir', 'tidak hadir'].map(status => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              className={`px-3 py-1.5 rounded-full text-sm font-semibold border ${
+                filterStatus === status
+                  ? status === 'hadir'
+                    ? 'bg-green-600 text-white'
+                    : status === 'tidak hadir'
+                      ? 'bg-red-600 text-white'
+                      : 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-800'
+              }`}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="max-h-[520px] overflow-y-auto border rounded-md">
-    <table className="w-full border-collapse text-left">
-      <thead className="sticky top-0 bg-gray-50 z-10">
-        <tr className="border-b text-gray-600">
-          <th className="p-3 text-sm font-medium text-center w-16">No</th>
-          <th className="p-3 text-sm font-medium text-center">Nama</th>
-          <th className="p-3 text-sm font-medium text-center">Kelas</th>
-          <th className="p-3 text-sm font-medium text-center">Status</th>
-          <th className="p-3 text-sm font-medium text-center">Waktu</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredStudents.map((s, i) => (
-          <tr key={i} className="border-b hover:bg-gray-50 transition-all">
-            <td className="p-3 text-center">{i + 1}</td>
-            <td className="p-3 text-center">{s.nama || '-'}</td>
-            <td className="p-3 text-center">{s.kelas || '-'}</td>
-            <td className="p-3 text-center">
-              <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow ${
-                s.status?.toLowerCase() === 'hadir'
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-red-100 text-red-700'
-              }`}>
-                {s.status}
-              </span>
-            </td>
-            <td className="p-3 text-center">{s.waktu}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
+        <table className="w-full border-collapse text-left">
+          <thead className="sticky top-0 bg-gray-50 z-10">
+            <tr className="border-b text-gray-600">
+              <th className="p-3 text-sm font-medium text-center w-16">No</th>
+              <th className="p-3 text-sm font-medium text-center">Nama</th>
+              <th className="p-3 text-sm font-medium text-center">Kelas</th>
+              <th className="p-3 text-sm font-medium text-center">Status</th>
+              <th className="p-3 text-sm font-medium text-center">Waktu</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredStudents.map((s, i) => (
+              <tr key={i} className="border-b hover:bg-gray-50 transition-all">
+                <td className="p-3 text-center">{i + 1}</td>
+                <td className="p-3 text-center">{s.nama || '-'}</td>
+                <td className="p-3 text-center">{s.kelas || '-'}</td>
+                <td className="p-3 text-center">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow ${
+                    s.status?.toLowerCase() === 'hadir'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-red-100 text-red-700'
+                  }`}>
+                    {s.status}
+                  </span>
+                </td>
+                <td className="p-3 text-center">{s.waktu}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }

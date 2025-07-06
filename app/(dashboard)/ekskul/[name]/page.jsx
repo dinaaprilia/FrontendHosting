@@ -88,7 +88,6 @@ export default function EkskulDetail() {
             <KehadiranEkskul ekskulId={ekskulId} ekskulName={ekskulName} />
           </div>
 
-          {/* ✅ Tambahkan RekapanChart di bagian paling bawah */}
           <div className="relative w-full flex flex-col items-center mt-6">
             {ekskulId && <RekapanChart ekskulId={ekskulId} />}
           </div>
