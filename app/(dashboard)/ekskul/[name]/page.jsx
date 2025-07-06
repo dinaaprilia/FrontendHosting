@@ -52,7 +52,7 @@ export default function EkskulDetail() {
             />
           </div>
 
-          <div className="sm:p-6 p-0 sm:mt-2 -mt-20 sm:max-w-7xl max-w-80 rounded-2xl min-h-[400px] flex items-center">
+          <div className="sm:p-6 p-0 sm:mt-2 -mt-20 sm:max-w-7xl max-w-full rounded-2xl min-h-[400px] flex items-center">
             <div className="relative w-full flex flex-col items-center">
               <ImageBox />
             </div>

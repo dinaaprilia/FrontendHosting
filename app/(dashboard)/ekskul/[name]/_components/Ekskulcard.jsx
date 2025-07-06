@@ -139,7 +139,7 @@ const buildImageURL = (rawImage) => {
         </div>
 
         {/* Konten Overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 text-center gap-2 sm:gap-4">
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 text-center gap-2  sm:gap-4">
           <h2 className="text-xl sm:text-3xl text-white font-extrabold drop-shadow">
             {ekskulName}
           </h2>

@@ -65,7 +65,7 @@ export default function UploadPhotoModal({ onClose }) {
     formData.append("description", description);
 
     try {
-      const res = await fetch(`http://localhost:8000/api/ekskul/${ekskulId}/galeri`, {
+      const res = await fetch(`https://backendfix-production.up.railway.app/api/ekskul/${ekskulId}/galeri`, {
         method: "POST",
         body: formData,
       });
@@ -82,7 +82,7 @@ export default function UploadPhotoModal({ onClose }) {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:8000/api/galeri/${id}`, {
+      await fetch(`https://backendfix-production.up.railway.app/api/galeri/${id}`, {
         method: "DELETE",
       });
       setGallery((prev) => prev.filter((item) => item.id !== id));
