@@ -47,13 +47,18 @@ const StudentCard = () => {
     <div className="bg-white border rounded-2xl p-4 flex flex-col sm:flex-row gap-6 items-center sm:items-start shadow-md w-full mt-8 py-4">
       {/* Foto Profil */}
       <div className="w-40 h-52 sm:w-48 sm:h-56 overflow-hidden rounded-lg sm:mt-0 mt-5 sm:mb-0 -mb-10">
-        <Image
-          src={data.foto || "/images/profil.png"}
+        <img
+          src={
+            data?.foto
+              ? `https://backendfix-production.up.railway.app/storage/${data.foto}`
+              : "/images/profil.png"
+          }
           alt="Profile Picture"
           width={192}
           height={224}
           className="object-cover sm:w-full w-40 sm:h-full h-40"
         />
+
       </div>
 
       {/* Informasi + Statistik */}
