@@ -41,13 +41,15 @@ export default function AttendanceTable() {
         const resultUser = await resUser.json();
         const kelas = resultUser.user.kelas;
 
-        setUser({
-          name: resultUser.user.nama,
-          kelas: kelas ?? '-',
-          photo: resultUser.user.foto_profil
-            ? `https://backendfix-production.up.railway.app/storage/${resultUser.user.foto_profil}`
-            : '/images/profil.png',
-        });
+setUser({
+  name: resultUser.user.nama,
+  kelas: kelas ?? '-',
+  photo: resultUser.user.foto_profil?.startsWith('http')
+    ? resultUser.user.foto_profil
+    : `https://backendfix-production.up.railway.app/storage/${resultUser.user.foto_profil || ''}`,
+});
+
+
 
         const resData = await fetch(`https://backendfix-production.up.railway.app/api/piket-saya?bulan=${selectedMonth}&tahun=${selectedYear}`, {
           headers: {
