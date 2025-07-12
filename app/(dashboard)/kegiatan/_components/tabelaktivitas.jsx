@@ -106,7 +106,9 @@ const endRaw = item.is_karya_wisata === "1"
 
   const filteredActivities = activities.filter((activity) => {
     const matchCategory =
-      selectedCategory === "Semua Kegiatan" || activity.category === selectedCategory;
+  selectedCategory === "Semua Kegiatan" ||
+  (selectedCategory === "Ekstrakurikuler" && activity.category?.includes("Ekstrakurikuler")) ||
+  (selectedCategory === "Karya Wisata" && activity.category === "Karya Wisata");
 
     const matchMonth =
       selectedMonth === "Semua" ||
