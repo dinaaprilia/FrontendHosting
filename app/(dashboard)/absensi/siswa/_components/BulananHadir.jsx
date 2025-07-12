@@ -33,11 +33,12 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
           id: userData.id,
           nama: userData.nama,
           kelas: userData.kelas ?? '-',
-          foto_profil: userData.foto_profil
-            ? `https://backendfix-production.up.railway.app/storage/${userData.foto_profil}`
-            : '/images/profil.png',
+          foto_profil: userData.foto_profil?.startsWith('http')
+            ? userData.foto_profil
+            : `https://backendfix-production.up.railway.app/storage/${userData.foto_profil}`,
           role: userData.role,
         });
+
 
         if (userData.role === 'orangtua') {
           const anakId = localStorage.getItem("anakId");
@@ -140,7 +141,7 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
     return <div className="text-center py-10 text-gray-500">Memuat data pengguna...</div>;
   }
 
-  const displayFoto = user.role === 'orangtua' ? dataAnak?.foto_profil : user.foto_profil;
+  const displayFoto = user.foto_profil;
   const displayNama = user.role === 'orangtua' ? dataAnak?.nama : user.nama;
   const displayKelas = user.role === 'orangtua' ? dataAnak?.kelas : user.kelas;
 
@@ -158,13 +159,15 @@ export default function KehadiranBulanan({ selectedDate, setSelectedDate }) {
       </div>
 
       <div className="w-24 h-24 sm:w-36 sm:h-36 relative rounded-full overflow-hidden mx-auto mb-4 sm:mb-6">
-        <Image
+        <img
           src={displayFoto}
-          alt="Foto Siswa"
+          alt="Foto Profil"
           width={144}
           height={144}
           style={{ objectFit: 'cover', borderRadius: '9999px' }}
         />
+
+
       </div>
 
       <h3 className="font-bold text-lg sm:text-2xl text-gray-900">{displayNama}</h3>
