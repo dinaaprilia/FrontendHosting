@@ -104,11 +104,11 @@ export default function ProfileEditPopup({ isOpen, onClose, onUpdated }) {
                   ? previewUrl
                   : data?.foto_profil && data.foto_profil !== ""
                     ? `https://backendfix-production.up.railway.app/storage/${data.foto_profil}?t=${lastUpdate}`
-                    : "/images/profil.jpg"
+                    : "/images/profil.png"
               }
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = "/images/profil.jpg"; // fallback saat error
+                e.target.src = "/images/profil.png"; // fallback saat error
               }}
               alt="Foto Profil"
               className="w-full h-full object-cover rounded-xl"
