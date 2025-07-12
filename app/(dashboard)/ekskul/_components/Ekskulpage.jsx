@@ -118,9 +118,13 @@ export default function EkskulList() {
           <p className="text-center text-gray-500 col-span-2">Belum ada data ekskul.</p>
         ) : (
           ekskulData.map((ekskul, index) => {
-            const imageSrc = ekskul.image?.startsWith('http')
-              ? ekskul.image.replace('http://', 'https://') // pakai https, buang http
-              : `https://backendfix-production.up.railway.app/${ekskul.image.replace(/^\/+/, '')}`;
+            let imageSrc = "/default-image.jpg"; // fallback jika image null
+
+            if (ekskul.image) {
+                imageSrc = ekskul.image.startsWith("http")
+                 ? ekskul.image.replace("http://", "https://")
+               : `https://backendfix-production.up.railway.app/${ekskul.image.replace(/^\/+/, "")}`;
+        }
 
             return (
               <div
