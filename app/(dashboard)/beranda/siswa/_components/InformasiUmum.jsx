@@ -128,8 +128,13 @@ export default function listInform() {
                 {selectedInfo?.text?.trim() || '-'}
               </p>
               <div className="text-sm text-gray-500 flex items-center mb-4">
+                
                 <img
-                  src={selectedInfo?.photo || '/images/profil.jpg'}
+                  src={selectedInfo?.photo 
+                    ? `https://backendfix-production.up.railway.app/storage/${selectedInfo?.photo}`
+                    : "/images/profil.png"
+                  }
+                  
                   alt="User"
                   className="w-6 h-6 rounded-full mr-2"
                 />
