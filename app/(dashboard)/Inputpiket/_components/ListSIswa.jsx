@@ -87,23 +87,23 @@ export default function StudentList() {
               <tr key={`${student.nisn}-${index}`} className="border-b">
                 <td className="p-3 sm:p-4 sm:pl-20">{index + 1}.</td>
                 <td className="p-3 sm:p-4 flex items-center gap-2">
-                  <Image
+                  <img
                     src={
                       student.foto_profil
-                        ? `http://localhost:8000/${student.foto_profil}`
+                        ? `https://backendfix-production.up.railway.app/storage/${student.foto_profil}`
                         : "/images/profil.png"
                     }
                     alt="Avatar"
                     width={24}
                     height={24}
-                    className="rounded-full"
+                    className="rounded-full object-cover"
                   />
                   <button
                     className="text-blue-500 hover:underline"
                     onClick={() => {
                       setSelectedStudent({
                         ...student,
-                        kelas: student.kelas || kelas // ⬅️ masukkan kelas secara eksplisit
+                        kelas: student.kelas || kelas
                       });
                       setPopupOpen(true);
                     }}
@@ -114,11 +114,10 @@ export default function StudentList() {
                 <td className="p-2 sm:pr-10">{student.nisn}</td>
                 <td className="p-3 sm:p-4 sm:pr-2">
                   <span
-                    className={`px-3 py-1 text-xs sm:text-sm rounded-full text-white ${
-                      student.jenis_kelamin === "P"
-                        ? "bg-pink-400"
-                        : "bg-purple-500 ml-2"
-                    }`}
+                    className={`px-3 py-1 text-xs sm:text-sm rounded-full text-white ${student.jenis_kelamin === "P"
+                      ? "bg-pink-400"
+                      : "bg-purple-500 ml-2"
+                      }`}
                   >
                     {student.jenis_kelamin === "P"
                       ? "Perempuan"
@@ -128,13 +127,13 @@ export default function StudentList() {
                 <td className="p-3 sm:p-6">
                   {student.tanggal_lahir
                     ? new Date(student.tanggal_lahir).toLocaleDateString(
-                        "id-ID",
-                        {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        }
-                      )
+                      "id-ID",
+                      {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      }
+                    )
                     : "-"}
                 </td>
               </tr>
