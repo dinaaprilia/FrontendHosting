@@ -83,24 +83,27 @@ export default function StudentList() {
               <tr key={`${student.nisn}-${index}`} className="border-b">
                 <td className="p-4 sm:pl-20 pl-2">{index + 1}.</td>
                 <td className="p-4 flex items-center gap-2">
-                  <Image
-    src={student.avatar && student.avatar !== "" ? student.avatar : "/images/profil.png"}
-    alt={`Foto ${student.nama}`}
-    width={32}
-    height={32}
-    className="rounded-full object-cover"
-    onError={(e) => (e.target.src = "/images/profil.png")}
-  />
-  <span className="font-medium text-gray-800">{student.nama}</span>
-</td>
+                  <img
+                    src={
+                      student.foto_profil
+                        ? `https://backendfix-production.up.railway.app/storage/${student.foto_profil}`
+                        : "/images/profil.png"
+                    }
+                    alt={`Foto ${student.nama}`}
+                    width={32}
+                    height={32}
+                    className="rounded-full object-cover"
+                  />
+
+                  <span className="font-medium text-gray-800">{student.nama}</span>
+                </td>
                 <td className="p-4 pr-7">{student.nisn}</td>
                 <td className="p-4 pr-2">
                   <span
-                    className={`px-3 py-1 text-sm rounded-full text-white ${
-                      student.jenis_kelamin === "P"
+                    className={`px-3 py-1 text-sm rounded-full text-white ${student.jenis_kelamin === "P"
                         ? "bg-pink-400"
                         : "bg-purple-500 ml-2"
-                    }`}
+                      }`}
                   >
                     {student.jenis_kelamin === "P" ? "Perempuan" : "Laki-laki"}
                   </span>
@@ -108,10 +111,10 @@ export default function StudentList() {
                 <td className=" p-2">
                   {student.tanggal_lahir
                     ? new Date(student.tanggal_lahir).toLocaleDateString("id-ID", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })
                     : "-"}
                 </td>
               </tr>
